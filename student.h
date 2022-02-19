@@ -10,7 +10,8 @@ enum gender {
     other
 };
 struct scoreboard {
-    int* student_id;
+    int student_id;
+    string student_name;
     float mid;
     float final;
     float other;
