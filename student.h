@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include "date.h"
-#include "course.h"
 
 using namespace std;
 enum gender {
@@ -25,8 +24,8 @@ struct student {
     string social_id;
     string username;
     string password;
+    string* course_id;
     scoreboard* scoreboard;
-    course* course;
 };
 struct uniclass {
     string class_name;

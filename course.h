@@ -1,15 +1,15 @@
 #pragma once
 #include <string>
 #include "date.h"
-#include "teacher.h"
+#include "staff.h"
 #include "student.h"
 
 using namespace std;
 
 struct course {
-    int course_id;
+    string course_id;
     string course_name;
-    teacher* teacher;
+    int teacher_id;
     int max_num_student;
     student* student;
     date start_date;

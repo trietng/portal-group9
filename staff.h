@@ -1,14 +1,13 @@
 #pragma once
 #include <string>
 #include "date.h"
-#include "course.h"
 
 using namespace std;
 
-struct teacher {
-    int teacher_id;
+struct staff {
+    int staff_id;
     string name;
     string username;
     string password;
-    course* course;
+    string* course_id;
 };
