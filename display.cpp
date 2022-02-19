@@ -2,8 +2,9 @@
 
 using namespace std;
 
+HANDLE hStdOut;
+
 void clrscr() {
-    HANDLE                     hStdOut;
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     DWORD                      count;
     DWORD                      cellCount;
@@ -36,4 +37,24 @@ void clrscr() {
 
     /* Move the cursor home */
     SetConsoleCursorPosition(hStdOut, homeCoords);
+}
+
+void gotoXY(SHORT x, SHORT y) {
+	COORD cursorPos = { x, y };
+	hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(hStdOut, cursorPos);
+}
+
+SHORT getX() {
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleScreenBufferInfo(hStdOut, &csbi);
+	return csbi.dwCursorPosition.Y;
+}
+
+SHORT getY() {
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleScreenBufferInfo(hStdOut, &csbi);
+	return csbi.dwCursorPosition.Y;
 }
