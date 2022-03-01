@@ -1,13 +1,13 @@
 #pragma once
 #include <string>
 #include "date.h"
+#include "authentication.h"
 
 using namespace std;
 
 struct staff {
     int staff_id;
     string name;
-    string username;
-    string password;
+    account account;
     string* course_id;
 };

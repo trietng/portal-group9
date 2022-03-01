@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "date.h"
+#include "authentication.h"
 
 using namespace std;
 enum gender {
@@ -22,8 +23,7 @@ struct student {
     gender gender;
     date dob;
     string social_id;
-    string username;
-    string password;
+    account account;
     string* course_id;
     scoreboard* scoreboard;
 };

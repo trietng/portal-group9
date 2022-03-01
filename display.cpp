@@ -41,20 +41,20 @@ void clrscr() {
 
 void gotoXY(SHORT x, SHORT y) {
 	COORD cursorPos = { x, y };
-	hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	hStdOut = GetStdHandle( STD_OUTPUT_HANDLE );
 	SetConsoleCursorPosition(hStdOut, cursorPos);
 }
 
 SHORT getX() {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
-    hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    hStdOut = GetStdHandle( STD_OUTPUT_HANDLE );
 	GetConsoleScreenBufferInfo(hStdOut, &csbi);
-	return csbi.dwCursorPosition.Y;
+	return csbi.dwCursorPosition.X;
 }
 
 SHORT getY() {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
-    hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    hStdOut = GetStdHandle( STD_OUTPUT_HANDLE );
 	GetConsoleScreenBufferInfo(hStdOut, &csbi);
 	return csbi.dwCursorPosition.Y;
 }
