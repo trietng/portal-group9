@@ -1,7 +1,9 @@
 #pragma once
 #include <iostream>
 #include <chrono>
-#include <string.h>
+#include <string>
+#include <cstring>
+#include <cmath>
 
 struct date {
     int second, minute, hour, day, month, year;
@@ -19,5 +21,6 @@ int to_day(const date& d0);
 int cmpdate(const date& d1, const date& d2);
 int get_weekday(date d0);
 date getsysdate();
-void outputequalizer(const int& digits, const int& pos, const char& ch);
+std::string string_equalizer(const int& digits, const int& pos, const char& ch);
 void outputdate(const date& d0, const bool& showtime);
+std::string string_cast(date d0);

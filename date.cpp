@@ -236,25 +236,33 @@ int countdigits(long long x) {
     return 19;
 }
 
-void outputequalizer(const int& digits, const int& pos, const char& ch) {
-    for (int i = 0; i < pos - digits; i++) {
-        cout << ch;
-    }
+std::string string_equalizer(const int& digits, const int& pos, const char& ch) {
+    return string(pos - digits, ch);
 }
 
 void outputdate(const date& d0, const bool& showtime) {
     if (showtime) {
-        outputequalizer(countdigits(d0.hour), 2, '0');
+        cout << string_equalizer(countdigits(d0.hour), 2, '0');
         cout << d0.hour << ":"; 
-        outputequalizer(countdigits(d0.minute), 2, '0'); 
+        cout << string_equalizer(countdigits(d0.minute), 2, '0'); 
         cout << d0.minute << ":";
-        outputequalizer(countdigits(d0.second), 2, '0'); 
+        cout << string_equalizer(countdigits(d0.second), 2, '0'); 
         cout << d0.second << " ";
     }
-    outputequalizer(countdigits(d0.day), 2, '0');
+    cout << string_equalizer(countdigits(d0.day), 2, '0');
     cout << d0.day << "/";
-    outputequalizer(countdigits(d0.month), 2, '0');
+    cout << string_equalizer(countdigits(d0.month), 2, '0');
     cout << d0.month << "/";
-    outputequalizer(countdigits(d0.year), 4, '0');
+    cout << string_equalizer(countdigits(d0.year), 4, '0');
     cout << d0.year;
+}
+
+std::string string_cast(date d0) {
+    std::string str = string_equalizer(countdigits(d0.year), 4, '0') + to_string(d0.year) + "/" +
+    string_equalizer(countdigits(d0.month), 2, '0') + to_string(d0.month) + "/" +
+    string_equalizer(countdigits(d0.day), 2, '0')+ to_string(d0.day) + "-" +
+    string_equalizer(countdigits(d0.hour), 2, '0') + to_string(d0.hour) + ":" +
+    string_equalizer(countdigits(d0.minute), 2, '0') + to_string(d0.minute) + ":" +
+    string_equalizer(countdigits(d0.second), 2, '0') + to_string(d0.second);
+    return str;
 }
