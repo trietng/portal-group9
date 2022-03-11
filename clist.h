@@ -14,14 +14,22 @@ public:
 
 template <typename T>
 class cqueue {
-private:
+protected:
     snode<T> *phead;
     snode<T> *ptail;
     int counter;
 public:
     class iterator {
     private:
+        friend cqueue;
         snode<T>* pcur;
+        void erase_next() {
+            if (pcur->pnext) {
+                snode<T>* pdel = pcur->pnext;
+                pcur->pnext = pcur->pnext->pnext;
+                delete pdel;
+            }
+        }
     public:
         iterator() {
             pcur = nullptr;
@@ -33,11 +41,11 @@ public:
             this->pcur = ptr;
             return *this;
         }
-        bool operator==(const iterator& it) {
-            return pcur == it.pcur;
+        bool operator==(const iterator& it) const {
+            return (this->pcur == it.pcur);
         }
-        bool operator!=(const iterator& it) {
-            return pcur != it.pcur;
+        bool operator!=(const iterator& it) const {
+            return (pcur != it.pcur);
         }
         iterator& operator++() {
             if (pcur) {
@@ -57,13 +65,6 @@ public:
         }
         T& operator*() {
             return pcur->data;
-        }
-        void erase_next() {
-            if (pcur->pnext) {
-                snode<T>* pdel = pcur->pnext;
-                pcur->pnext = pcur->pnext->pnext;
-                delete pdel;
-            }
         }
     };
     cqueue() {
@@ -129,5 +130,11 @@ public:
     }
     iterator end() {
         return iterator(ptail);
+    }
+    void erase_next(iterator& now) {
+        if (now.next() == end()) {
+            ptail = now.pcur;
+        }
+        now.erase_next();
     }
 };

@@ -16,54 +16,47 @@ void file_copy(const string& dest, const string& source) {
     fout << fin.rdbuf();
 }
 
-void readUserDB(account*& phead) {
+
+cqueue<account> readUserDB() {
     ifstream fin;
     string line, word;
-    account* pcur = phead;
-    account* pprev = NULL;
+    account temp;
+    cqueue<account> db;
     fin.open("userdb.csv");
     if (fin.is_open()) {
         while (getline(fin, line)) {
             stringstream ss(line);
-            getline(ss, pcur->username, ',');
-            getline(ss, pcur->password, ',');
+            getline(ss, temp.username, ',');
+            getline(ss, temp.password, ',');
             getline(ss, word, ',');
-            pcur->type = to_int(word);
-            pcur->pnext = new account;
-            pprev = pcur;
-            pcur = pcur->pnext;
+            temp.type = to_int(word);
+            db.push_back(temp);
         }
-        delete pcur;
-        pprev->pnext = nullptr;
         fin.close();
     }
+    return db;
 }
 
-void addAccount(account*& phead, string& username, string& password, bool& type) {
-    account* pnew = new account;
-    pnew->username = username;
-    pnew->password = password;
-    pnew->type = type;
-    pnew->pnext = phead;
-    phead = pnew;
+void addAccount(cqueue<account>& db, string username, string password, const bool& type) {
+    account acc0;
+    acc0.username = username;
+    acc0.password = password;
+    acc0.type = type;
+    db.push_back(acc0);
 }
 
-void removeAccount(account*& phead, string& username) {
-    if (phead->username == username) {
-        account* pdel = phead;
-        phead = phead->pnext;
-        delete pdel;
-        return;
+bool removeAccount(cqueue<account>& db, string username) {
+    if (db.front().username == username) {
+        db.pop_front();
+        return true;
     }
-    account* pcur = phead;
-    while (pcur != nullptr) {
-        if (pcur->pnext->username == username) {
-            account* pdel = pcur->pnext;
-            pcur->pnext = pcur->pnext->pnext;
-            delete pdel;
-            break;
+    for (auto i = db.begin(); i != db.end(); i++) {
+        if ((*(i.next())).username == username) {
+            db.erase_next(i);
+            return true;
         }
     }
+    return false;
 }
 
 void wipeUserDB() {
@@ -71,15 +64,13 @@ void wipeUserDB() {
     remove("userdb.old.csv");
 }
 
-account* findAccount(account* phead, string& username) {
-    account* pcur = phead;
-    while (pcur != nullptr) {
-        if (pcur->username == username) {
-            return pcur;
+account* findAccount(cqueue<account>& db, string username) {
+    for (auto i = db.begin(); i != db.end(); i++) {
+        if ((*i).username == username) {
+            return &(*i);
         }
-        pcur = pcur->pnext;
     }
-    return pcur;
+    return nullptr;
 }
 
 void logAttempt(account* attempt, const bool& is_success) {
@@ -113,14 +104,14 @@ int is_password(string& password) {
     return 1;
 }
 
-account* promptLogin(account* phead) {
+account* promptLogin(cqueue<account>& db) {
     string stmp;
     account* ptmp;
     int check;
     do {
         cout << "Username: ";
         getline(cin, stmp);
-        ptmp = findAccount(phead, stmp);
+        ptmp = findAccount(db, stmp);
         if (!ptmp) {
             cout << "No such username. Please try again.\n";
         }
@@ -147,26 +138,15 @@ account* promptLogin(account* phead) {
     return ptmp;
 }
 
-void display(account* phead) {
-    account* pcur = phead;
-    while (pcur != nullptr) {
-        cout << pcur->username;
-        cout << "\n" << pcur->password << "\n";
-        if (pcur->type == 0) {
+void display(cqueue<account>& db) {
+    for (auto i = db.begin(); i != nullptr; ++i) {
+        cout << (*i).username << " " << (*i).password << " ";
+        if ((*i).type == 0) {
             cout << "staff";
         }
         else {
             cout << "student";
         }
         cout << "\n";
-        pcur = pcur->pnext;
-    }
-}
-
-void remove_slist(account*& phead) {
-    while (phead != nullptr) {
-        account* pdel = phead;
-        phead = phead->pnext;
-        delete pdel;
     }
 }
