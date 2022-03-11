@@ -20,6 +20,41 @@ private:
     snode<T> *ptail;
     int counter;
 public:
+    class iterator {
+    private:
+        snode<T>* pcur;
+    public:
+        iterator() {
+            pcur = nullptr;
+        }
+        iterator(snode<T>* ptr) {
+            pcur = ptr;
+        }
+        iterator& operator=(snode<T>* ptr) {
+            this->pcur = ptr;
+            return *this;
+        }
+        bool operator==(const iterator& it) {
+            return pcur == it.pcur;
+        }
+        bool operator!=(const iterator& it) {
+            return pcur != it.pcur;
+        }
+        iterator& operator++() {
+            if (pcur) {
+                pcur = pcur->pnext;
+            }
+            return *this;
+        }
+        iterator operator++(int) {
+            iterator tmp(*this);
+            operator++();
+            return tmp;
+        }
+        int& operator*() {
+            return pcur->data;
+        }
+    };
     cqueue() {
         phead = nullptr;
         ptail = nullptr;
@@ -30,8 +65,10 @@ public:
             pop_front();
         }
     }
+    
     void push_front(T data) {
         snode<T>* pnew = new snode<T>;
+        pnew->data = data;
         pnew->pnext = phead;
         phead = pnew;
         if (!ptail) {
@@ -77,5 +114,10 @@ public:
     T back() {
         return ptail->data;
     }
-    
+    iterator begin() {
+        return iterator(phead);
+    }
+    snode<T>* end() {
+        return ptail;
+    }
 };
