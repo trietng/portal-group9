@@ -6,11 +6,9 @@
 //dclist: doubly circular linked list (future support)
 
 template <typename T>
-class snode {
-public:
+struct snode {
     T data;
     snode* pnext;
-    template <typename> friend class cqueue;
 };
 
 template <typename T>
@@ -51,7 +49,7 @@ public:
             operator++();
             return tmp;
         }
-        int& operator*() {
+        T& operator*() {
             return pcur->data;
         }
     };
@@ -117,7 +115,7 @@ public:
     iterator begin() {
         return iterator(phead);
     }
-    snode<T>* end() {
-        return ptail;
+    iterator end() {
+        return iterator(ptail);
     }
 };
