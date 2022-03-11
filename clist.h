@@ -14,7 +14,7 @@ public:
 
 template <typename T>
 class cqueue {
-protected:
+private:
     snode<T> *phead;
     snode<T> *ptail;
     int counter;
@@ -28,6 +28,7 @@ public:
                 snode<T>* pdel = pcur->pnext;
                 pcur->pnext = pcur->pnext->pnext;
                 delete pdel;
+                pdel = nullptr;
             }
         }
     public:
