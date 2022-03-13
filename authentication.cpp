@@ -16,7 +16,6 @@ void file_copy(const string& dest, const string& source) {
     fout << fin.rdbuf();
 }
 
-
 cqueue<account> readUserDB() {
     ifstream fin;
     string line, word;

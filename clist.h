@@ -137,5 +137,6 @@ public:
             ptail = now.pcur;
         }
         now.erase_next();
+        counter--;
     }
 };
