@@ -139,4 +139,30 @@ public:
         now.erase_next();
         counter--;
     }
+    void connect (snode<T>* pHeadtmp)
+    {
+        if (!phead)
+        {
+            phead=pHeadtmp;
+        }
+        else
+        {
+            snode <T>* p;
+            ptail->pnext=pHeadtmp;
+            for (p=phead;p->pnext;p=p->pnext);
+            ptail=p;
+        }
+    }
+    snode<T>* First ()
+    {
+        snode<T>* tmp;
+        tmp=phead;
+        return tmp;
+    }
+    snode<T>* Next(snode<T>* tmp)
+    {
+        snode<T>* p;
+        p=tmp->pnext;
+        return p;
+    }
 };
