@@ -106,17 +106,27 @@ int is_password(string& password) {
 account* promptLogin(cqueue<account>& db) {
     string stmp;
     account* ptmp;
-    int check;
+    int check,times=0;
     do {
+        if (times>5)
+        {
+            return nullptr;
+        }
         cout << "Username: ";
         getline(cin, stmp);
         ptmp = findAccount(db, stmp);
         if (!ptmp) {
             cout << "No such username. Please try again.\n";
+            times+=1;
         }
     } while (!ptmp);
     stmp.clear();
     do {
+        times+=1;
+        if (times>5)
+        {
+            return nullptr;
+        }
         cout << "Password: ";
         getline(cin, stmp);
         check = is_password(stmp);
@@ -149,3 +159,4 @@ void display(cqueue<account>& db) {
         cout << "\n";
     }
 }
+
