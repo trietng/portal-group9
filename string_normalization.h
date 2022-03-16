@@ -11,9 +11,7 @@
 
 #endif /* string_normalization_h */
 
-#include <iostream>
-#include <cstring>
-using namespace std;
+#include "lib.h"
 
 //void normalize_string (string str)
 char* string_to_char (string str);

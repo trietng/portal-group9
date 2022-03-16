@@ -11,11 +11,9 @@
 
 #endif /* render_profile_h */
 
-
+#include "lib.h"
 #include "string_normalization.h"
-#include <sstream>
-#include <fstream>
-#include <typeinfo>
+
 
 template<typename T>
 class snode {

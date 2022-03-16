@@ -1,9 +1,4 @@
-//
-//  render_profile.cpp
-//  profile_staff
-//
-//  Created by kel's mac on 15/03/2022.
-//
+
 
 #include "render_profile.h"
 template<typename T>
@@ -34,8 +29,8 @@ profile_staff get_inf_staff (string str)
     stringstream str_ss(str);
     char* pc;
     getline(str_ss,prof.name,';');
-    pc=string_to_char(prof.name);
-    prof.name=upper(pc);
+    //pc=string_to_char(prof.name);
+    //prof.name=upper(pc);
     //cout<<prof.name;
     getline(str_ss,prof.office,';');
     getline(str_ss,prof.position,';');
@@ -59,37 +54,37 @@ void render_staff_profile()
     cin.ignore();
     if (a==1)
     {
-        for (auto t=list.First();t;t=list.Next(t))
+        for (auto t=list.begin();t!=nullptr;t++)
         {
             cout<<"-------------------------"<<endl;
-            cout<<"name: "<<t->data.name<<endl;
-            cout<<"office: "<<t->data.office<<endl;
-            cout<<"position: "<<t->data.position<<endl;
-            cout<<"phone: 0"<<t->data.phone<<endl;
-            cout<<"email: "<<t->data.mail<<endl;
+            cout<<"name: "<<(*t).name<<endl;
+            cout<<"office: "<<(*t).office<<endl;
+            cout<<"position: "<<(*t).position<<endl;
+            cout<<"phone: 0"<<(*t).phone<<endl;
+            cout<<"email: "<<(*t).mail<<endl;
         }
     }
     if (a==2)
     {
         cout<<"input name: ";
         getline(cin,str);
-        p=string_to_char(str);
+        //p=string_to_char(str);
         //str=upper_first_char(p);
         /*cout<<str;*/
-        str=upper(p);
-        for (auto t=list.First();t;t=list.Next(t))
+        //str=upper(p);
+        for (auto t=list.begin();t!=nullptr;t++)
         {
-            if (str.compare(t->data.name)==0)
+            if (str.compare((*t).name)==0)
             {
                 cout<<"-------------------------"<<endl;
-                cout<<"name: "<<t->data.name<<endl;
-                cout<<"office: "<<t->data.office<<endl;
-                cout<<"position: "<<t->data.position<<endl;
-                cout<<"phone: 0"<<t->data.phone<<endl;
-                cout<<"email: "<<t->data.mail<<endl;
+                cout<<"name: "<<(*t).name<<endl;
+                cout<<"office: "<<(*t).office<<endl;
+                cout<<"position: "<<(*t).position<<endl;
+                cout<<"phone: 0"<<(*t).phone<<endl;
+                cout<<"email: "<<(*t).mail<<endl;
                 break;
             }
-            if (t->pnext==nullptr)
+            if (t==nullptr)
             {
                 cout<<"no existed staff profile."<<endl;
             }
