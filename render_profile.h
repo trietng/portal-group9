@@ -1,9 +1,3 @@
-//
-//  render_profile.h
-//  profile_staff
-//
-//  Created by kel's mac on 15/03/2022.
-//
 
 #ifndef render_profile_h
 #define render_profile_h
@@ -12,15 +6,46 @@
 #endif /* render_profile_h */
 
 #include "lib.h"
-#include "string_normalization.h"
+#include "string.h"
+#include "date.h"
 
 
-template<typename T>
+
+struct account {
+    string username;
+    string password;
+    bool type;//0 if staff, 1 if student
+};
+
+
+class profile_staff
+{
+public:
+    string name, office, position, phone, mail;
+};
+
+class student
+{
+public:
+    int student_id;
+    string name;
+    string Class;
+    int year;
+    //gender gender;
+    date dob;
+    string social_id;
+    account account;
+    string* course_id;
+    //scoreboard* scoreboard;
+};
+
+template <typename T>
 class snode {
 public:
     T data;
     snode* pnext;
 };
+
 template <typename T>
 class cqueue {
 private:
@@ -77,6 +102,46 @@ public:
             return pcur->data;
         }
     };
+    class const_iterator {
+    private:
+        snode<T>* pcur;
+    public:
+        const_iterator() {
+            pcur = nullptr;
+        }
+        const_iterator(snode<T>* ptr) {
+            pcur = ptr;
+        }
+        const_iterator& operator=(snode<T>* ptr) {
+            this->pcur = ptr;
+            return *this;
+        }
+        bool operator==(const const_iterator& it) const {
+            return (this->pcur == it.pcur);
+        }
+        bool operator!=(const const_iterator& it) const {
+            return (pcur != it.pcur);
+        }
+        const_iterator& operator++() {
+            if (pcur) {
+                pcur = pcur->pnext;
+            }
+            return *this;
+        }
+        const_iterator operator++(int) {
+            const_iterator tmp(*this);
+            operator++();
+            return tmp;
+        }
+        const_iterator next() {
+            const_iterator tmp(*this);
+            ++tmp;
+            return tmp;
+        }
+        T& operator*() const {
+            return pcur->data;
+        }
+    };
     cqueue() {
         phead = nullptr;
         ptail = nullptr;
@@ -129,10 +194,10 @@ public:
     int size() {
         return counter;
     }
-    T front() {
+    T& front() {
         return phead->data;
     }
-    T back() {
+    T& back() {
         return ptail->data;
     }
     iterator begin() {
@@ -141,6 +206,12 @@ public:
     iterator end() {
         return iterator(ptail);
     }
+    const_iterator cbegin() const {
+        return const_iterator(phead);
+    }
+    const_iterator cend() const {
+        return const_iterator(ptail);
+    }
     void erase_next(iterator& now) {
         if (now.next() == end()) {
             ptail = now.pcur;
@@ -148,50 +219,14 @@ public:
         now.erase_next();
         counter--;
     }
-    void connect (snode<T>* pHeadtmp)
-    {
-        if (!phead)
-        {
-            phead=pHeadtmp;
-        }
-        else
-        {
-            snode <T>* p;
-            ptail->pnext=pHeadtmp;
-            for (p=phead;p->pnext;p=p->pnext);
-            ptail=p;
-        }
-    }
-    snode<T>* First ()
-    {
-        snode<T>* tmp;
-        tmp=phead;
-        return tmp;
-    }
-    snode<T>* Next(snode<T>* tmp)
-    {
-        snode<T>* p;
-        p=tmp->pnext;
-        return p;
-    }
-}; //delete when include "clist.h"
-class profile_staff
-{
-public:
-    string name, office, position, phone, mail;
-};
-class profile_student
-{
-public:
-    string name,Class,phone, mail;
-    double gpa;
-    int year;
-};
+};//delete when include "clist.h"
+
+
+cqueue <profile_staff> take_from_file_staff ();
+cqueue <student> take_from_file_student ();
 profile_staff get_inf_staff (string str);
-profile_student get_inf_student (string str);
-template <typename T>
-cqueue<T> take_from_file (string path);
-void render_staff_profile();
-void render_student_profile();//building
+student get_inf_student (string str);
+void render_staff_profile(cqueue<profile_staff> list);
+void render_student_profile(cqueue<student> lists);//building
 void render_course_inf(); //bulding
 void render_semester_inf(); //building
