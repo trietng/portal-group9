@@ -91,6 +91,7 @@ void render_staff_profile(cqueue<profile_staff> list)
     }
     if (a==2)
     {
+        bool is_ex=false;
         cout<<"input name: ";
         getline(cin,str);
         //p=string_to_char(str);
@@ -107,14 +108,14 @@ void render_staff_profile(cqueue<profile_staff> list)
                 cout<<"position: "<<(*t).position<<endl;
                 cout<<"phone: 0"<<(*t).phone<<endl;
                 cout<<"email: "<<(*t).mail<<endl;
+                is_ex=true;
                 break;
             }
-            if (t++==nullptr)
-            {
-                cout<<"no existed staff profile."<<endl;
-            }
         }
-        
+        if (is_ex==false)
+        {
+            cout<<"your profile is not existed."<<endl;
+        }
     }
 }
 
@@ -144,15 +145,19 @@ void render_student_profile(cqueue<student> lists)
     }
     if (as==2)
     {
-        cout<<"input name: ";
+        int a;
+        bool is_ex=false;
+        cout<<"input name/ID: ";
         getline(cin,strs);
-        ps=string_to_char(strs);
+        stringstream id (strs);
+        id>>a;
+        //ps=string_to_char(strs);
         //str=upper_first_char(p);
         //cout<<strs;
         //strs=upper(ps);
         for (auto tm=lists.begin();tm!=nullptr;tm++)
         {
-            if (strs.compare((*tm).name)==0)
+            if (strs.compare((*tm).name)==0 || (*tm).student_id==a)
             {
                 cout<<"-------------------------"<<endl;
                 cout<<"ID: "<<(*tm).student_id<<endl;
@@ -161,13 +166,13 @@ void render_student_profile(cqueue<student> lists)
                 cout<<"year: "<<(*tm).year<<endl;
                 cout<<"social ID: "<<(*tm).social_id<<endl;
                 cout<<"account: "<<(*tm).account.username<<endl;
+                is_ex=true;
                 break;
             }
-            if (tm++==nullptr)
-            {
-                cout<<"no existed staff profile."<<endl;
-            }
         }
-        
+        if (is_ex==false)
+        {
+            cout<<"your profile is not existed."<<endl;
+        }
     }
 }
