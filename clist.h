@@ -68,6 +68,46 @@ public:
             return pcur->data;
         }
     };
+    class const_iterator {
+    private:
+        snode<T>* pcur;
+    public:
+        const_iterator() {
+            pcur = nullptr;
+        }
+        const_iterator(snode<T>* ptr) {
+            pcur = ptr;
+        }
+        const_iterator& operator=(snode<T>* ptr) {
+            this->pcur = ptr;
+            return *this;
+        }
+        bool operator==(const const_iterator& it) const {
+            return (this->pcur == it.pcur);
+        }
+        bool operator!=(const const_iterator& it) const {
+            return (pcur != it.pcur);
+        }
+        const_iterator& operator++() {
+            if (pcur) {
+                pcur = pcur->pnext;
+            }
+            return *this;
+        }
+        const_iterator operator++(int) {
+            const_iterator tmp(*this);
+            operator++();
+            return tmp;
+        }
+        const_iterator next() {
+            const_iterator tmp(*this);
+            ++tmp;
+            return tmp;
+        }
+        T& operator*() const {
+            return pcur->data;
+        }
+    };
     cqueue() {
         phead = nullptr;
         ptail = nullptr;
@@ -132,37 +172,17 @@ public:
     iterator end() {
         return iterator(ptail);
     }
+    const_iterator cbegin() const {
+        return const_iterator(phead);
+    }
+    const_iterator cend() const {
+        return const_iterator(ptail);
+    }
     void erase_next(iterator& now) {
         if (now.next() == end()) {
             ptail = now.pcur;
         }
         now.erase_next();
         counter--;
-    }
-    void connect (snode<T>* pHeadtmp)
-    {
-        if (!phead)
-        {
-            phead=pHeadtmp;
-        }
-        else
-        {
-            snode <T>* p;
-            ptail->pnext=pHeadtmp;
-            for (p=phead;p->pnext;p=p->pnext);
-            ptail=p;
-        }
-    }
-    snode<T>* First ()
-    {
-        snode<T>* tmp;
-        tmp=phead;
-        return tmp;
-    }
-    snode<T>* Next(snode<T>* tmp)
-    {
-        snode<T>* p;
-        p=tmp->pnext;
-        return p;
     }
 };
