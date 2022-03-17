@@ -160,10 +160,10 @@ public:
     int size() {
         return counter;
     }
-    T front() {
+    T& front() {
         return phead->data;
     }
-    T back() {
+    T& back() {
         return ptail->data;
     }
     iterator begin() {

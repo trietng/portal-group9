@@ -29,6 +29,10 @@ int get_weekday(date d0) {
     return h;
 }
 
+void strext(char* dest, const std::string& source, const int& start, const int& end) {
+    strcpy(dest, (source.substr(start, end - start + 1)).c_str());
+}
+
 void strext(char* dest, const char* source, const int& start, const int& end) {
     int j = 0;
     for (int i = start; i <= end; i++) {
@@ -44,6 +48,27 @@ int to_int(const char* str) {
         res = res * 10 + str[i] - '0';
     }
     return res;
+}
+
+date to_date(const std::string& str) {
+    date d0;
+    char tmp[5][6];
+    int begin = 0, end = -2, j = 0;
+    for (int i = 0; i <= str.length(); i++) {
+        if ((isdateseperator(str[i])) || (str[i] == '\0')) {
+            begin = end + 2;
+            end = i - 1;
+            strext(tmp[j], str, begin, end);
+            j++;
+        }
+    }
+    d0.second = to_int(tmp[0]);
+    d0.minute = to_int(tmp[1]);
+    d0.hour = to_int(tmp[2]);
+    d0.day = to_int(tmp[3]);
+    d0.month = to_int(tmp[4]);
+    d0.year = to_int(tmp[5]);
+    return d0;
 }
 
 date to_date(const char* str) {
