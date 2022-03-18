@@ -9,6 +9,9 @@
 using namespace std;
 using namespace filesystem;
 
+/*
+position to the get the folder name of a schoolyear from its path
+*/
 const int pos_sy = 5;
 
 struct course {
@@ -25,13 +28,17 @@ struct course {
 struct semester {
     date start_date;
     date end_date;
-    cqueue<course> course;
+    string folder_name;
+    string folder_path;
 };
 struct schoolyear {
     date start_date;
     date end_date;
-    string name;
+    string folder_name;
+    string folder_path;
 };
 
-cqueue<path> getLocalSchoolyear();
+cqueue<path> getSchoolyearPath();
 cqueue<schoolyear> genSchoolyearList(const cqueue<path>& path);
+cqueue<path> getSemesterPath(const schoolyear& sy);
+cqueue<semester> genSemesterList(const cqueue<path>& path);

@@ -24,10 +24,10 @@ struct student {
     date dob;
     string social_id;
     account account;
-    string* course_id;
-    scoreboard* scoreboard;
+    string course_id;
+    scoreboard scoreboard;
 };
 struct uniclass {
     string class_name;
-    student* student;
+    student student;
 };
