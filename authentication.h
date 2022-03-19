@@ -13,6 +13,7 @@ struct account {
     string username;
     string password;
     bool type;//0 if staff, 1 if student
+    string profile_path;
 };
 
 int to_int(const string& str);

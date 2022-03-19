@@ -23,7 +23,6 @@ struct student {
     gender gender;
     date dob;
     string social_id;
-    account account;
     cqueue<string> course_path;
     scoreboard scoreboard;
 };

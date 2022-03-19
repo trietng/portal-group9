@@ -5,6 +5,6 @@
 
 void viewCourses(student& student);
 void viewClasses();
-void viewStudentsinclass(unicalss& classname);
+void viewStudentsinclass(uniclass& classname);
 void viewCourses(semester Semester);
 void viewStudentsinCourse(course course);

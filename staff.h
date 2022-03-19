@@ -8,6 +8,6 @@ using namespace std;
 struct staff {
     string staff_name;
     string staff_path;
-    account account;
+    string username;
     cqueue<string> course_id;
 };

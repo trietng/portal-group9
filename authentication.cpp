@@ -21,7 +21,7 @@ cqueue<account> readUserDB() {
     string line, word;
     account temp;
     cqueue<account> db;
-    fin.open("userdb.csv");
+    fin.open("data\\userdb.csv");
     if (fin.is_open()) {
         while (getline(fin, line)) {
             stringstream ss(line);
@@ -74,7 +74,7 @@ account* findAccount(cqueue<account>& db, string username) {
 
 void logAttempt(account* attempt, const bool& is_success) {
     ofstream fout;
-    fout.open("log.txt", ios::app);
+    fout.open("data\\log.txt", ios::app);
     fout << "\n" << string_cast(getsysdate()) << " " << attempt->username << " ";
     if (is_success) {
         fout << "success";
