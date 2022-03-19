@@ -29,6 +29,7 @@ cqueue<account> readUserDB() {
             getline(ss, temp.password, ',');
             getline(ss, word, ',');
             temp.type = to_int(word);
+            getline(ss, temp.profile_path, ',');
             db.push_back(temp);
         }
         fin.close();
@@ -36,12 +37,8 @@ cqueue<account> readUserDB() {
     return db;
 }
 
-void addAccount(cqueue<account>& db, string username, string password, const bool& type) {
-    account acc0;
-    acc0.username = username;
-    acc0.password = password;
-    acc0.type = type;
-    db.push_back(acc0);
+void void addAccount(cqueue<account>& db, const account& acc) {
+    db.push_back(acc);
 }
 
 bool removeAccount(cqueue<account>& db, string username) {
@@ -64,7 +61,7 @@ void wipeUserDB() {
 }
 
 account* findAccount(cqueue<account>& db, string username) {
-    for (auto i = db.begin(); i != db.end(); i++) {
+    for (auto i = db.begin(); i != nullptr; i++) {
         if ((*i).username == username) {
             return &(*i);
         }

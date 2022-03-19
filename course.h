@@ -14,6 +14,18 @@ position to the get the folder name of a schoolyear from its path
 */
 const int pos_sy = 5;
 
+struct schoolyear {
+    date start_date;
+    date end_date;
+    string folder_name;
+    string folder_path;
+};
+struct semester {
+    date start_date;
+    date end_date;
+    string folder_name;
+    string folder_path;
+};
 struct course {
     string course_id;
     string course_name;
@@ -26,18 +38,6 @@ struct course {
     date start_date;
     date end_date;
     int credits;
-};
-struct semester {
-    date start_date;
-    date end_date;
-    string folder_name;
-    string folder_path;
-};
-struct schoolyear {
-    date start_date;
-    date end_date;
-    string folder_name;
-    string folder_path;
 };
 
 cqueue<path> getSchoolyearPath();
