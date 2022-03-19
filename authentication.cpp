@@ -37,7 +37,7 @@ cqueue<account> readUserDB() {
     return db;
 }
 
-void void addAccount(cqueue<account>& db, const account& acc) {
+void addAccount(cqueue<account>& db, const account& acc) {
     db.push_back(acc);
 }
 
