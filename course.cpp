@@ -2,7 +2,7 @@
 
 cqueue<path> getSchoolyearPath() {
     cqueue<path> list;
-    for (auto const& dir : directory_iterator{"data"}) {
+    for (auto const& dir : directory_iterator{"data\\Courses"}) {
         if (dir.is_directory()) {
             list.push_back(dir.path());
         }

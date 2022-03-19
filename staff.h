@@ -6,8 +6,8 @@
 using namespace std;
 
 struct staff {
-    int staff_id;
-    string name;
+    string staff_name;
+    string staff_path;
     account account;
-    string* course_id;
+    cqueue<string> course_id;
 };

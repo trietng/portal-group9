@@ -10,8 +10,7 @@ enum gender {
     other
 };
 struct scoreboard {
-    int student_id;
-    string student_name;
+    string course_id;
     float mid;
     float final;
     float other;
@@ -19,15 +18,17 @@ struct scoreboard {
 };
 struct student {
     int student_id;
+    string student_path;
     string name;
     gender gender;
     date dob;
     string social_id;
     account account;
-    string course_id;
+    cqueue<string> course_path;
     scoreboard scoreboard;
 };
 struct uniclass {
     string class_name;
-    student student;
+    string class_path;
+    int max_student;
 };

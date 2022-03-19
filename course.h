@@ -17,13 +17,15 @@ const int pos_sy = 5;
 struct course {
     string course_id;
     string course_name;
-    int teacher_id;
+    string course_path;
+    semester semester;
+    schoolyear schoolyear;
+    staff* lecturer;
     int max_num_student;
-    cqueue<student> student;
+    cqueue<string> student_path;
     date start_date;
     date end_date;
     int credits;
-    cqueue<scoreboard> scoreboard;
 };
 struct semester {
     date start_date;
