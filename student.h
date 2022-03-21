@@ -31,3 +31,7 @@ struct uniclass {
     string class_path;
     int max_student;
 };
+
+string F_ID (int ID); //take 2 first number of ID
+
+void get_student_path (int ID,string &path_re);
