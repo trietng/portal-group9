@@ -35,3 +35,8 @@ struct uniclass {
 string F_ID (int ID); //take 2 first number of ID
 
 void get_student_path (int ID,string &path_re);
+
+course take_course (string str);
+
+
+cqueue<course> take_course_profile (string path,int schoolyear,int sem); //merge two years into one integer (for ex:2020-2021->20202021)
