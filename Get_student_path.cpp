@@ -1,6 +1,7 @@
-
-
 #include "student.h"
+
+namespace fs = std::filesystem;
+
 string F_ID (int ID)
 {
     while (to_string(ID).length()>2)
@@ -20,7 +21,7 @@ void get_student_path (int ID,string &path_re)
     int tmp_ID;
     for (auto &link : fs::directory_iterator(path))
     {
-        string path2=link.path();
+        string path2=link.path().string();
         for (auto &link2 : fs::directory_iterator(path2))
         {
             //cout<<link2.path()<<endl;
@@ -31,7 +32,7 @@ void get_student_path (int ID,string &path_re)
             fin.close();
             if (tmp_ID==ID)
             {
-                path_re=link2.path();
+                path_re=link2.path().string();
                 return;
             }
         }
