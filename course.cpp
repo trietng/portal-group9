@@ -68,3 +68,12 @@ cqueue<semester> genSemesterList(const cqueue<path>& path) {
     return list;
 }
 
+bool isBeginning(const date& d0, const cqueue<path>& sy_path) {
+    string year = to_string(d0.year) + "+" + to_string(d0.year + 1);
+    for (auto i = sy_path.cbegin(); i != nullptr; ++i) {
+        if ((*i).string() == year) {
+            return true;
+        }
+    }
+    return false;
+}

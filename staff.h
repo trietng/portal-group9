@@ -12,3 +12,5 @@ struct staff {
     string username;
     cqueue<string> course_id;
 };
+
+staff* loadProfile(account* acc);
