@@ -1,4 +1,3 @@
-#include "student.h"
 #include "course.h"
 course take_course (string str)
 {

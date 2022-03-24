@@ -48,3 +48,6 @@ cqueue<semester> genSemesterList(const cqueue<path>& path);
 bool isBeginning(const date& d0, const cqueue<path>& sy_path);
 void createDateProperties(const string& folder_path, const date& start, const date& end);
 schoolyear createNewSchoolyear(const date &today);
+course take_course (string str);
+cqueue<course> take_course_profile (string path,int schoolyear,int sem); //merge two years into one integer (for ex:2020-2021->20202021)
+
