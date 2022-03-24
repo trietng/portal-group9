@@ -282,6 +282,15 @@ void outputdate(const date& d0, const bool& showtime) {
     cout << d0.year;
 }
 
+void outputdate(const date& d0, ofstream& fout) { 
+    fout << d0.day << "/";
+    fout << d0.minute << "/"; 
+    fout << d0.second << "/";
+    cout << d0.day << "/";
+    cout << d0.month << "/";
+    cout << d0.year;
+}
+
 std::string string_cast(date d0) {
     std::string str = string_equalizer(countdigits(d0.year), 4, '0') + to_string(d0.year) + "/" +
     string_equalizer(countdigits(d0.month), 2, '0') + to_string(d0.month) + "/" +
@@ -290,4 +299,26 @@ std::string string_cast(date d0) {
     string_equalizer(countdigits(d0.minute), 2, '0') + to_string(d0.minute) + ":" +
     string_equalizer(countdigits(d0.second), 2, '0') + to_string(d0.second);
     return str;
+}
+
+date set_date(const int& second, const int& minute, const int& hour, const int& day, const int& month, const int& year) {
+    date d0;
+    d0.second = second;
+    d0.minute = minute;
+    d0.hour = hour;
+    d0.day = day;
+    d0.minute = month;
+    d0.year = year;
+    return d0;
+}
+
+date set_date(const int& day, const int& month, const int& year) {
+    date d0;
+    d0.second = 0;
+    d0.minute = 0;
+    d0.hour = 0;
+    d0.day = day;
+    d0.minute = month;
+    d0.year = year;
+    return d0;
 }

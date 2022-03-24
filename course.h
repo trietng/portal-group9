@@ -46,4 +46,5 @@ cqueue<schoolyear> genSchoolyearList(const cqueue<path>& path);
 cqueue<path> getSemesterPath(const schoolyear& sy);
 cqueue<semester> genSemesterList(const cqueue<path>& path);
 bool isBeginning(const date& d0, const cqueue<path>& sy_path);
-void createNewSchoolyear(const string& sy_name);
+void createDateProperties(const string& folder_path, const date& start, const date& end);
+schoolyear createNewSchoolyear(const date &today);
