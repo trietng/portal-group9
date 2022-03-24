@@ -21,6 +21,7 @@ struct schoolyear {
     string folder_path;
 };
 struct semester {
+    int schoolyear;
     date start_date;
     date end_date;
     string folder_name;
