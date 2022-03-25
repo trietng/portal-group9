@@ -1,9 +1,12 @@
 #pragma once
 #include <string>
+#include <filesystem>
 #include "date.h"
 #include "authentication.h"
 
 using namespace std;
+namespace fs = std::filesystem;
+
 enum gender {
     male,
     female,
@@ -35,4 +38,3 @@ struct uniclass {
 string F_ID (int ID); //take 2 first number of ID
 
 void get_student_path (int ID,string &path_re);
-

@@ -6,11 +6,11 @@
 #include <cstring>
 #include <cmath>
 
+using namespace std;
+
 struct date {
     int second, minute, hour, day, month, year;
 };
-
-using namespace std;
 
 void strext(char* dest, const std::string& source, const int& start, const int& end);
 void strext(char* dest, const char* source, const int& start, const int& end);

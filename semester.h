@@ -17,11 +17,6 @@
 #include "course.h"
 
 using namespace std;
-namespace fs=std::filesystem;
-struct date
-{
-    int day,month,year;
-};
 
 string create_sem_folder (int schoolyear,int sem);
 

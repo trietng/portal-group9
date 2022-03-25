@@ -1,11 +1,7 @@
 #pragma once
-#include <iostream>
-#include <windows.h>
-
-using namespace std;
+#include <cstdlib>
+#include <chrono>
+#include <thread>
 
 void clrscr();
-void gotoXY(SHORT x, SHORT y);
-SHORT getX();
-SHORT getY();
-void setBgColor(WORD color);
+void thread_sleep(const unsigned int& time);

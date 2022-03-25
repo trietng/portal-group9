@@ -16,7 +16,7 @@ int dialogYesNo(const char& input) {
     return -1;
 }
 
-void staff_menu(staff*& user, date& today, cqueue<path>& sy_path, cqueue<schoolyear>& sy) {
+void staff_menu(staff*& user, date& today, cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy) {
     cout << "Academic staff menu";
     cout << "\nToday is ";
     outputdate(today, false);
@@ -39,12 +39,11 @@ void staff_menu(staff*& user, date& today, cqueue<path>& sy_path, cqueue<schooly
 }
 
 void portal() {
-    cqueue<path> sy_path = getSchoolyearPath();
+    cqueue<fs::path> sy_path = getSchoolyearPath();
     cqueue<schoolyear> sy = genSchoolyearList(sy_path);
     cqueue<account> acc_db = readUserDB();
     account* acc = promptLogin(acc_db);
     date today = getsysdate();
-    clrscr();
     if (acc->type == 0) {
         staff* user = loadProfile(acc);
         staff_menu(user, today, sy_path, sy);
