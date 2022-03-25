@@ -7,11 +7,13 @@
 
 #ifndef string_normalization_h
 #define string_normalization_h
-
-
 #endif /* string_normalization_h */
 
-#include "lib.h"
+#include <string>
+#include <cstring>
+#include <cctype>
+
+using namespace std;
 
 //void normalize_string (string str)
 char* string_to_char (string str);

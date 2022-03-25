@@ -3,8 +3,6 @@
 #include <fstream>
 #include <sstream>
 #include <cstdio>
-#include <filesystem>
-#include "display.h"
 #include "date.h"
 #include "clist.h"
 

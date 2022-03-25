@@ -1,7 +1,5 @@
 #include "student.h"
 
-namespace fs = std::filesystem;
-
 string F_ID (int ID)
 {
     while (to_string(ID).length()>2)
@@ -12,6 +10,7 @@ string F_ID (int ID)
     
     return path;
 }
+
 void get_student_path (int ID,string &path_re)
 {
     ifstream fin;

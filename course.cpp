@@ -1,8 +1,8 @@
 #include "course.h"
 
-cqueue<path> getSchoolyearPath() {
-    cqueue<path> list;
-    for (auto const& dir : directory_iterator{"data\\Courses"}) {
+cqueue<fs::path> getSchoolyearPath() {
+    cqueue<fs::path> list;
+    for (auto const& dir : fs::directory_iterator{"data\\Courses"}) {
         if (dir.is_directory()) {
             list.push_back(dir.path());
         }
@@ -10,7 +10,7 @@ cqueue<path> getSchoolyearPath() {
     return list;
 }
 
-cqueue<schoolyear> genSchoolyearList(const cqueue<path>& path) {
+cqueue<schoolyear> genSchoolyearList(const cqueue<fs::path>& path) {
     cqueue<schoolyear> list;
     string word;
     for (auto i = path.cbegin(); i != nullptr ; i++) {
@@ -34,9 +34,9 @@ cqueue<schoolyear> genSchoolyearList(const cqueue<path>& path) {
     return list;
 }
 
-cqueue<path> getSemesterPath(const schoolyear& sy) {
-    cqueue<path> list;
-    for (auto const& dir : directory_iterator{sy.folder_path}) {
+cqueue<fs::path> getSemesterPath(const schoolyear& sy) {
+    cqueue<fs::path> list;
+    for (auto const& dir : fs::directory_iterator{sy.folder_path}) {
         if (dir.is_directory()) {
             list.push_back(dir.path());
         }
@@ -44,7 +44,7 @@ cqueue<path> getSemesterPath(const schoolyear& sy) {
     return list;
 }
 
-cqueue<semester> genSemesterList(const cqueue<path>& path) {
+cqueue<semester> genSemesterList(const cqueue<fs::path>& path) {
     cqueue<semester> list;
     string word;
     for (auto i = path.cbegin(); i != nullptr ; i++) {
@@ -68,8 +68,8 @@ cqueue<semester> genSemesterList(const cqueue<path>& path) {
     return list;
 }
 
-bool isBeginning(const date& d0, const cqueue<path>& sy_path) {
-    string year = to_string(d0.year) + "+" + to_string(d0.year + 1);
+bool isBeginning(const date& d0, const cqueue<fs::path>& sy_path) {
+    string year = to_string(d0.year) + "-" + to_string(d0.year + 1);
     for (auto i = sy_path.cbegin(); i != nullptr; ++i) {
         if ((*i).string() == year) {
             return true;
@@ -94,7 +94,7 @@ schoolyear createNewSchoolyear(const date& today) {
     schoolyear sy0;
     string sy_name = to_string(today.year) + "-" + to_string(today.year + 1);
     string dir_path = "data\\Courses\\" + sy_name;
-    create_directories(dir_path);
+    fs::create_directories(dir_path);
     date start = set_date(5, 9, today.year), end = set_date(11, 7, today.year + 1);
     createDateProperties(dir_path, start, end);
     sy0.start_date = start;
@@ -102,17 +102,17 @@ schoolyear createNewSchoolyear(const date& today) {
     sy0.folder_name = sy_name;
     sy0.folder_path = dir_path;
     //Term 1
-    create_directory(dir_path + "\\Term 1");
+    fs::create_directory(dir_path + "\\Term 1");
     start = set_date(5, 9, today.year);
     end = set_date(31, 12, today.year);
     createDateProperties(dir_path + "\\Term 1", start, end);
     //Term 2
-    create_directory(dir_path + "\\Term 2");
+    fs::create_directory(dir_path + "\\Term 2");
     start = set_date(14, 1, today.year + 1);
     end = set_date(31, 3, today.year + 1);
     createDateProperties(dir_path + "\\Term 2", start, end);
     //Term 3
-    create_directory(dir_path + "\\Term 3");
+    fs::create_directory(dir_path + "\\Term 3");
     start = set_date(14, 2, today.year + 1);
     end = set_date(11, 7, today.year + 1);
     createDateProperties(dir_path + "\\Term 3", start, end);

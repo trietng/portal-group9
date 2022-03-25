@@ -7,7 +7,7 @@
 #include "clist.h"
 
 using namespace std;
-using namespace filesystem;
+namespace fs = std::filesystem;
 
 /*
 position to the get the folder name of a schoolyear from its path
@@ -42,13 +42,12 @@ struct course {
     int credits;
 };
 
-cqueue<path> getSchoolyearPath();
-cqueue<schoolyear> genSchoolyearList(const cqueue<path>& path);
-cqueue<path> getSemesterPath(const schoolyear& sy);
-cqueue<semester> genSemesterList(const cqueue<path>& path);
-bool isBeginning(const date& d0, const cqueue<path>& sy_path);
+cqueue<fs::path> getSchoolyearPath();
+cqueue<schoolyear> genSchoolyearList(const cqueue<fs::path>& path);
+cqueue<fs::path> getSemesterPath(const schoolyear& sy);
+cqueue<semester> genSemesterList(const cqueue<fs::path>& path);
+bool isBeginning(const date& d0, const cqueue<fs::path>& sy_path);
 void createDateProperties(const string& folder_path, const date& start, const date& end);
 schoolyear createNewSchoolyear(const date &today);
 course take_course (string str);
 cqueue<course> take_course_profile (string path,int schoolyear,int sem); //merge two years into one integer (for ex:2020-2021->20202021)
-
