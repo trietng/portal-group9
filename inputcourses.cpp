@@ -1,5 +1,5 @@
 #include "part4.h"
-void inputclasses(string a)
+void inputcourses(string a)
 {
     ofstream ofs("");
     ofs << a << endl;
