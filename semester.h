@@ -22,6 +22,8 @@ string create_sem_folder (int schoolyear,int sem);
 
 void set_sem (string path);
 
-void add_course(); //building
+course create_course();
+
+void add_course(string path);
 
 void delete_course(); //building

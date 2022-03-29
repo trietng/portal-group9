@@ -37,8 +37,8 @@ struct course {
     string lecturer_name;
     int max_num_student;
     cqueue<string> student_path;
-    date start_date;
-    date end_date;
+    string start_date;
+    string end_date;
     int credits;
 };
 
