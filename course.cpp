@@ -69,7 +69,7 @@ cqueue<semester> genSemesterList(const cqueue<fs::path>& path) {
 }
 
 bool isBeginning(const date& d0, const cqueue<fs::path>& sy_path) {
-    string year = to_string(d0.year) + "-" + to_string(d0.year + 1);
+    string year = "data\\Courses\\" + to_string(d0.year) + "-" + to_string(d0.year + 1);
     for (auto i = sy_path.cbegin(); i != nullptr; ++i) {
         if ((*i).string() == year) {
             return true;

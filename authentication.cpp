@@ -25,11 +25,11 @@ cqueue<account> readUserDB() {
     if (fin.is_open()) {
         while (getline(fin, line)) {
             stringstream ss(line);
-            getline(ss, temp.username, ',');
-            getline(ss, temp.password, ',');
-            getline(ss, word, ',');
+            getline(ss, temp.username, ';');
+            getline(ss, temp.password, ';');
+            getline(ss, word, ';');
             temp.type = to_int(word);
-            getline(ss, temp.profile_path, ',');
+            getline(ss, temp.profile_path, ';');
             db.push_back(temp);
         }
         fin.close();
@@ -89,7 +89,7 @@ int is_password(string& password) {
         switch (password[i]) {
         case '\\':
             return 0;
-        case ',':
+        case ';':
             return 0;
         case ' ':
             return 0;
@@ -128,7 +128,7 @@ account* promptLogin(cqueue<account>& db) {
         getline(cin, stmp);
         check = is_password(stmp);
         if (check == 0) {
-            cout << "Invalid password. Password cannot contain '\\', ',' or ' '.\n";
+            cout << "Invalid password. Password cannot contain '\\', ';' or ' '.\n";
             continue;
         }
         else if (check == -1) {

@@ -8,9 +8,9 @@ staff* loadProfile(account* acc) {
     string word;
     fin.open(stf->staff_path);
     if (fin) {
-        getline(fin, stf->staff_name, ',');
+        getline(fin, stf->staff_name, ';');
         while(!fin.eof()) {
-            getline(fin, word, ',');
+            getline(fin, word, ';');
             stf->course_id.push_back(word);
         }
     }

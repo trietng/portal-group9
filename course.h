@@ -33,7 +33,7 @@ struct course {
     string course_path;
     semester semester;
     schoolyear schoolyear;
-    staff* lecturer;
+    string lecturer_path;
     string lecturer_name;
     int max_num_student;
     cqueue<string> student_path;
