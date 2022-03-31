@@ -11,6 +11,7 @@
 
 #endif /* semester_h */
 #include <iostream>
+#include <sstream>
 #include <cstring>
 #include <iomanip>
 #include "clist.h"
@@ -18,12 +19,14 @@
 
 using namespace std;
 
-string create_sem_folder (int schoolyear,int sem);
+string create_sem_folder (int schoolyear1,int schoolyear2,int sem);
 
-void set_sem (string path);
+string set_sem (int schoolyear1,int schoolyear2,int sem);
 
-course create_course();
+course create_course(string path);
 
 void add_course(string path);
+
+void add_student_to_course (int student_id,string student_name,string path);
 
 void delete_course(); //building

@@ -101,6 +101,7 @@ schoolyear createNewSchoolyear(const date& today) {
     sy0.end_date = end;
     sy0.folder_name = sy_name;
     sy0.folder_path = dir_path;
+    /*
     //Term 1
     fs::create_directory(dir_path + "\\Term 1");
     start = set_date(5, 9, today.year);
@@ -115,6 +116,6 @@ schoolyear createNewSchoolyear(const date& today) {
     fs::create_directory(dir_path + "\\Term 3");
     start = set_date(14, 2, today.year + 1);
     end = set_date(11, 7, today.year + 1);
-    createDateProperties(dir_path + "\\Term 3", start, end);
+    createDateProperties(dir_path + "\\Term 3", start, end);*/
     return sy0;
 }
