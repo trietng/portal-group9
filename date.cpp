@@ -286,9 +286,9 @@ void outputdate(const date& d0, ofstream& fout) {
     fout << d0.day << "/";
     fout << d0.minute << "/"; 
     fout << d0.second << "/";
-    cout << d0.day << "/";
-    cout << d0.month << "/";
-    cout << d0.year;
+    fout << d0.day << "/";
+    fout << d0.month << "/";
+    fout << d0.year;
 }
 
 std::string string_cast(date d0) {

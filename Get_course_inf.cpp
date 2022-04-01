@@ -24,9 +24,9 @@ course take_course (string str)
         to_month>>tmpd.month;
         to_year>>tmpd.year;
         if (i==0)
-            course.start_date=tmpd;
+            course.start_date=string_cast(tmpd);
         else
-            course.end_date=tmpd;
+            course.end_date=string_cast(tmpd);
     }
     getline (ss,tmp,';');
     stringstream to_cre (tmp);
