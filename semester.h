@@ -27,6 +27,11 @@ course create_course(string path);
 
 void add_course(string path);
 
-void add_student_to_course (int student_id,string student_name,string path);
+void add_student_to_course (string std_path,string path);
+
+cqueue<course> list_of_courses (string path);
+
+void show_courses (cqueue<course> courses);
 
 void delete_course(); //building
+
