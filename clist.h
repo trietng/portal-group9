@@ -31,6 +31,27 @@ public:
                 pdel = nullptr;
             }
         }
+        void erase_cur ()
+        {
+            if(!pcur)
+            {
+                return;
+            }
+            snode<T>* tmp;
+            tmp=pcur->pnext;
+            if (tmp)
+            {
+                *pcur=*tmp;
+                tmp->pnext=nullptr;
+                delete tmp;
+            }
+            else
+            {
+                delete pcur;
+                pcur=nullptr;
+            }
+            tmp=nullptr;
+        }
     public:
         iterator() {
             pcur = nullptr;
@@ -183,6 +204,18 @@ public:
             ptail = now.pcur;
         }
         now.erase_next();
+        counter--;
+    }
+    void erase_cur (iterator& cur)
+    {
+        if (cur==end())
+        {
+            iterator t;
+            for (t=begin();t!=cur.pcur-1;t++);
+            ptail=t.pcur;
+            ptail->pnext=nullptr;
+        }
+        cur.erase_cur();
         counter--;
     }
 };
