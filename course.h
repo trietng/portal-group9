@@ -21,11 +21,12 @@ struct schoolyear {
     string folder_path;
 };
 struct semester {
-    int schoolyear;
-    date start_date;
-    date end_date;
-    string folder_name;
-    string folder_path;
+    string schoolyear;
+    int sem;
+    string start_date;
+    string end_date;
+    //string folder_name;
+    //string folder_path;
 };
 struct course {
     string course_id;

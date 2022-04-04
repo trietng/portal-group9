@@ -21,7 +21,7 @@ string set_sem (int schoolyear1,int schoolyear2,int sem)
     fout<<to_string(schoolyear1)+'-'+to_string(schoolyear2)<<';'<<sem<<endl;
     cout<<"input start date: ";
     getline(cin,str);
-    fout<<str<<endl;
+    fout<<str<<';';
     cout<<"input end date: ";
     getline(cin,str);
     fout<<str<<endl;
@@ -56,9 +56,9 @@ course create_course(string path)
     return courses;
 }
 
-void add_course(string path)
+void add_course(course course,string path)
 {
-    course course=create_course(path);
+    //course course=create_course(path);
     ofstream fout;
     fout.open (path+"/course_management.csv",ios::app);
     fout<<course.schoolyear<<';';
@@ -89,13 +89,13 @@ cqueue<course> list_of_courses (string path)
     course courset;
     string tmp,node,tmp2;
     ifstream fin;
-    fin.open(path+"/course_management.csv");
-    for (int i=0;i<3;i++)
+    fin.open(path);
+    for (int i=0;i<2;i++)
         getline(fin,tmp);
-    while (1)
+    while (getline(fin,tmp))
     {
         course courset;
-        getline(fin,tmp);
+        cout<<tmp<<endl;
         if (tmp.empty())
             break;
         stringstream ss(tmp);
@@ -128,6 +128,26 @@ cqueue<course> list_of_courses (string path)
     return courses;
 }
 
+semester sem_inf (string path)
+{
+    string tmp,tmps;
+    semester sem;
+    ifstream fin;
+    fin.open(path);
+    getline(fin,tmp);
+    stringstream ss1(tmp);
+    getline(ss1,sem.schoolyear,';');
+    getline(ss1,tmps,';');
+    stringstream to_sem (tmps);
+    to_sem>>sem.sem;
+    getline (fin,tmp);
+    stringstream ss2(tmp);
+    getline(ss2,sem.start_date,';');
+    getline(ss2, sem.end_date, ';');
+    fin.close();
+    return sem;
+}
+
 void show_courses (cqueue<course> list)
 {
     for (auto p=list.begin();p!=nullptr;p++)
@@ -140,6 +160,46 @@ void show_courses (cqueue<course> list)
         cout<<"course credit: "<<(*p).credits<<endl;
         cout<<"course max student: "<<(*p).max_num_student<<endl;
     }
+}
+
+void add_list_of_courses (semester sem_set,cqueue<course> list,string path)
+{
+    string schoolyear,start_date;
+    ofstream fout;
+    fout.open(path+"/course_management.csv");
+    fout<<sem_set.schoolyear<<';';
+    fout<<sem_set.sem<<endl;
+    fout<<sem_set.start_date<<';';
+    fout<<sem_set.end_date<<endl;
+    for (auto t=list.begin();t!=nullptr;t++)
+    {
+        fout<<(*t).schoolyear<<';';
+        fout<<(*t).semester<<';';
+        fout<<(*t).course_id<<';';
+        fout<<(*t).course_name<<';';
+        fout<<(*t).course_path<<';';
+        fout<<(*t).lecturer_name<<';';
+        fout<<(*t).start_date<<';';
+        fout<<(*t).end_date<<';';
+        fout<<(*t).credits<<';';
+        fout<<(*t).max_num_student<<endl;
+    }
+    fout.close();
+}
+
+void delete_course (cqueue<course> list,string course_ID,string path)
+{
+    for (auto t=list.begin();t!=nullptr;t++)
+    {
+        if ((*t).course_id.compare(course_ID)==0)
+        {
+            fs::remove((*t).course_path);
+            list.erase_cur(t);
+            break;
+        }
+    }
+    semester sem_set=sem_inf(path+"/course_management.csv");
+    add_list_of_courses(sem_set,list, path);
 }
 
 void add_student_to_course (string std_path,string path){

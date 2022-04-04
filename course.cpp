@@ -44,7 +44,7 @@ cqueue<fs::path> getSemesterPath(const schoolyear& sy) {
     return list;
 }
 
-cqueue<semester> genSemesterList(const cqueue<fs::path>& path) {
+/*cqueue<semester> genSemesterList(const cqueue<fs::path>& path) {
     cqueue<semester> list;
     string word;
     for (auto i = path.cbegin(); i != nullptr ; i++) {
@@ -66,7 +66,7 @@ cqueue<semester> genSemesterList(const cqueue<fs::path>& path) {
         }
     }
     return list;
-}
+}*/
 
 bool isBeginning(const date& d0, const cqueue<fs::path>& sy_path) {
     string year = "data\\Courses\\" + to_string(d0.year) + "-" + to_string(d0.year + 1);
