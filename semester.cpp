@@ -209,3 +209,15 @@ void add_student_to_course (string std_path,string path){
     fout.close();
     return;
 }
+
+void take_from_outside_file (string path_out,string path)
+{
+    semester sem;
+    cqueue<course> list;
+    sem=sem_inf(path_out);
+    list=list_of_courses(path_out);
+    for (auto p=list.begin();p!=nullptr;p++)
+    {
+        add_course(*p, path);
+    }
+}

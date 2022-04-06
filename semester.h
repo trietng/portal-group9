@@ -39,3 +39,4 @@ void add_list_of_courses (semester sem_set,cqueue<course> list,string path);
 
 void delete_course (cqueue<course> list,string course_ID,string path);
 
+void take_from_outside_file (string path_out,string path);
