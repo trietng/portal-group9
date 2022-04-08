@@ -49,6 +49,8 @@ course create_course(string path)
     getline(cin,courses.start_date);
     cout<<"input end date: ";
     getline(cin,courses.end_date);
+    cout<<"input session: ";
+    getline(cin,courses.Sesson);
     cout<<"input number of credit: ";
     cin>>courses.credits;
     cout<<"input maximum student: ";
@@ -65,10 +67,10 @@ void add_course(course course,string path)
     fout<<course.semester<<';';
     fout<<course.course_id<<';';
     fout<<course.course_name<<';';
-    fout<<path+'/'+course.course_id+".csv"<<';'; //course path
     fout<<course.lecturer_name<<';';
     fout<<course.start_date<<';';
     fout<<course.end_date<<';';
+    fout<<course.Sesson<<';';
     fout<<course.credits<<';';
     fout<<course.max_num_student<<endl;
     fout.close();
@@ -78,7 +80,6 @@ void add_course(course course,string path)
     fout<<course.course_id<<';';
     fout<<course.course_name<<endl;
     fout<<course.lecturer_name<<endl;
-    //fout lecturer path
     fout.close();
 }
 
@@ -95,7 +96,6 @@ cqueue<course> list_of_courses (string path)
     while (getline(fin,tmp))
     {
         course courset;
-        cout<<tmp<<endl;
         if (tmp.empty())
             break;
         stringstream ss(tmp);
@@ -109,13 +109,13 @@ cqueue<course> list_of_courses (string path)
         getline(ss,node,';');
         courset.course_name=node;
         getline(ss,node,';');
-        courset.course_path=node;
-        getline(ss,node,';');
         courset.lecturer_name=node;
         getline(ss,node,';');
         courset.start_date=node;
         getline(ss,node,';');
         courset.end_date=node;
+        getline(ss,node,';');
+        courset.Sesson=node;
         getline(ss,tmp2,';');
         stringstream tocre(tmp2);
         tocre>>courset.credits;
@@ -148,6 +148,64 @@ semester sem_inf (string path)
     return sem;
 }
 
+cqueue<session> sessioninf (string sess)
+{
+    cqueue<session> sessions;
+    session ses;
+    int t=0;
+    for (int i=0;i<sess.length();i++)
+    {
+        if (sess[i]=='-' || (i==sess.length()-1))
+        {
+            for (int m=t;m<i;m++)
+            {
+                if (sess[m]=='/')
+                {
+                    int tmp=sess[m+2]-'0';
+                    ses.sess=tmp;
+                    break;
+                }
+                ses.day+=sess[m];
+            }
+            t=i+1;
+            sessions.push_back(ses);
+            ses.day.clear();
+        }
+    }
+    return sessions;
+}
+
+void show_session (cqueue<session> ses)
+{
+    int i=0;
+    for (auto p=ses.begin();p!=nullptr;p++,i++)
+    {
+        cout<<"session "<<i+1<<": "<<endl;
+        cout<<"day: "<<(*p).day<<endl;
+        cout<<"time: ";
+        switch ((*p).sess)
+        {
+            case 1:
+                cout<<"7:30 am";
+                break;
+            case 2:
+                cout<<"9:30 am";
+                break;
+            case 3:
+                cout<<"13:30 pm";
+                break;
+            case 4:
+                cout<<"15:30 pm";
+                break;
+            default:
+                cout<<"error";
+                break;
+        }
+        if (p.next()!=nullptr)
+            cout<<endl;
+    }
+}
+
 void show_courses (cqueue<course> list)
 {
     for (auto p=list.begin();p!=nullptr;p++)
@@ -157,6 +215,9 @@ void show_courses (cqueue<course> list)
         cout<<"course name: "<<(*p).course_name<<endl;
         cout<<"course lecturer: "<<(*p).lecturer_name<<endl;
         cout<<"course start and end date: "<<(*p).start_date<<" - "<<(*p).end_date<<endl;
+        cout<<"session: "<<endl;
+        show_session(sessioninf((*p).Sesson));
+        cout<<endl;
         cout<<"course credit: "<<(*p).credits<<endl;
         cout<<"course max student: "<<(*p).max_num_student<<endl;
     }
@@ -177,10 +238,10 @@ void add_list_of_courses (semester sem_set,cqueue<course> list,string path)
         fout<<(*t).semester<<';';
         fout<<(*t).course_id<<';';
         fout<<(*t).course_name<<';';
-        fout<<(*t).course_path<<';';
         fout<<(*t).lecturer_name<<';';
         fout<<(*t).start_date<<';';
         fout<<(*t).end_date<<';';
+        fout<<(*t).Sesson<<';';
         fout<<(*t).credits<<';';
         fout<<(*t).max_num_student<<endl;
     }
@@ -193,7 +254,7 @@ void delete_course (cqueue<course> list,string course_ID,string path)
     {
         if ((*t).course_id.compare(course_ID)==0)
         {
-            fs::remove((*t).course_path);
+            fs::remove(path+'/'+(*t).course_id+".csv");
             list.erase_cur(t);
             break;
         }
@@ -220,4 +281,55 @@ void take_from_outside_file (string path_out,string path)
     {
         add_course(*p, path);
     }
+}
+
+course search_course (string search,string path)
+{
+    course tmp;
+    cqueue<course> list=list_of_courses(path+"/course_management.csv");
+    for (auto p=list.begin();p!=nullptr;p++)
+    {
+        if ((*p).course_id==search)
+        {
+            tmp.course_id=(*p).course_id;
+            tmp.course_name=(*p).course_name;
+            tmp.semester=(*p).semester;
+            tmp.schoolyear=(*p).schoolyear;
+            tmp.lecturer_name=(*p).lecturer_name;
+            tmp.Sesson=(*p).Sesson;
+            tmp.max_num_student=(*p).max_num_student;
+            tmp.start_date=(*p).start_date;
+            tmp.end_date=(*p).end_date;
+            tmp.credits=(*p).credits;
+            break;
+        }
+    }
+    return tmp;
+}
+
+void is_conflict_session (course ctmp,cqueue<course> list)
+{
+    int time=0;
+    cqueue<session> tmp1,tmp2;
+    tmp1=sessioninf(ctmp.Sesson);
+    for (auto p=list.begin();p!=nullptr;p++)
+    {
+        tmp2=sessioninf((*p).Sesson);
+        time=0;
+        for (auto m=tmp2.begin();m!=nullptr;m++)
+        {
+            for (auto n=tmp1.begin();n!=nullptr;n++)
+            {
+                if((*n).day==(*m).day && (*n).sess==(*m).sess && (*p).course_id!=ctmp.course_id)
+                {
+                    cout<<"your course is conflict session with "<<(*p).course_id<<endl;
+                    time++;
+                    break;
+                }
+            }
+            if(time>=1)
+                break;
+        }
+    }
+
 }

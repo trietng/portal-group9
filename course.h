@@ -28,16 +28,22 @@ struct semester {
     //string folder_name;
     //string folder_path;
 };
-struct course {
+
+struct session
+{
+    string day;
+    int sess;
+};
+// course course_id->course name-> lecturer name -> start date -> end date -> session->credit->max student
+struct course {// course path: ../schoolyear/sem/courseID
     string course_id;
     string course_name;
-    string course_path;
     int semester;
     string schoolyear;
-    string lecturer_path;
     string lecturer_name;
     int max_num_student;
     //cqueue<string> student_path;
+    string Sesson; // day1/ses1-day2/ses2
     string start_date;
     string end_date;
     int credits;
