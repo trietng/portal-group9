@@ -310,6 +310,7 @@ course search_course (string search,string path)
 void is_conflict_session (course ctmp,cqueue<course> list)
 {
     int time=0;
+    bool is_conflict=false;
     cqueue<session> tmp1,tmp2;
     tmp1=sessioninf(ctmp.Sesson);
     for (auto p=list.begin();p!=nullptr;p++)
@@ -322,6 +323,7 @@ void is_conflict_session (course ctmp,cqueue<course> list)
             {
                 if((*n).day==(*m).day && (*n).sess==(*m).sess && (*p).course_id!=ctmp.course_id)
                 {
+                    is_conflict=true;
                     cout<<"your course is conflict session with "<<(*p).course_id<<endl;
                     time++;
                     break;
@@ -330,6 +332,49 @@ void is_conflict_session (course ctmp,cqueue<course> list)
             if(time>=1)
                 break;
         }
+        if (p.next()==nullptr && is_conflict==false)
+        {
+            cout<<"your course is ok"<<endl;
+            return;
+        }
     }
 
+}
+
+cqueue<string> take_studentpath_list_of_course(string path)
+{
+    cqueue<string> list;
+    ifstream fin;
+    fin.open(path);
+    string str,tmp;
+    for (int i=0;i<3;i++)
+        getline(fin,str);
+    while(getline(fin,str))
+    {
+        stringstream ss(str);
+        getline(ss,tmp,';');
+        list.push_back(tmp);
+    }
+    return list;
+}
+void update_course (cqueue<course>list,string search,string path)
+{
+    cqueue<string> student_list;
+    for (auto p=list.begin();p!=nullptr;p++)
+    {
+        if ((*p).course_id==search)
+        {
+            student_list=take_studentpath_list_of_course(path+'/'+search+".csv");
+            delete_course(list,search,path);
+            cout<<"start to change course: "<<endl;
+            course course = create_course(path);
+            add_course(course, path);
+            for (auto p=student_list.begin();p!=nullptr;p++)
+            {
+                add_student_to_course((*p).data(), path+'/'+course.course_id+".csv");
+            }
+            return;
+        }
+    }
+    cout<<"course is not existed.";
 }

@@ -47,4 +47,6 @@ course search_course (string search,string path);
 
 void is_conflict_session (course ctmp,cqueue<course> list);
 
+cqueue<string> take_studentpath_list_of_course(string path);
 
+void update_course (cqueue<course>list,string search,string path);
