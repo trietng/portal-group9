@@ -59,6 +59,7 @@ cqueue<fs::path> getSemesterPath(const schoolyear& sy);
 cqueue<semester> genSemesterList(const cqueue<fs::path>& path);
 bool isBeginning(const date& d0, const cqueue<fs::path>& sy_path);
 void createDateProperties(const string& folder_path, const date& start, const date& end);
+bool can_enroll_course(date& today,date& start_day, date& end_day);
 schoolyear createNewSchoolyear(const date &today);
 course take_course (string str);
 cqueue<course> take_course_profile (string path,int schoolyear,int sem); 

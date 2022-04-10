@@ -86,6 +86,15 @@ void createDateProperties(const string& folder_path, const date& start, const da
     outputdate(end, fout);
 }
 
+bool can_enroll_course(date& today,date& start_day, date& end_day){
+    if (cmpdate(today,start_day) >= 0 && cmpdate(today,end_day) <= 0) return true;
+    return false;
+}
+
+void enroll_course(student& Student){
+    
+}
+
 schoolyear createNewSchoolyear(const date& today) {
     /*Issues need to be resolved: Find the first Monday of a term,
     set that day as the starting date. Find exactly 13 weeks 

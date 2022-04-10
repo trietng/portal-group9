@@ -45,5 +45,7 @@ cqueue<fs::path> getUniclassPath();
 cqueue<uniclass> genUniclassList(const cqueue<fs::path>& path);
 cqueue<fs::path> getStudentPath(const uniclass& uc);
 cqueue<student> genStudentList();
+student* loadProfileStudent(account* acc);
+void getstudentDOB(date& Date,ifstream& fin);
 void importUniclass(cqueue<fs::path>& uc_path, cqueue<uniclass>& uc);
 void importStudent();

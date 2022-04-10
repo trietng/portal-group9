@@ -83,3 +83,17 @@ void importUniclass(cqueue<fs::path>& uc_path, cqueue<uniclass>& uc) {
         fin.close();
     }
 }
+
+student* loadProfileStudent(account* acc){
+    student* std= new student;
+    std->student_path = acc->profile_path;
+    ifstream fin(std->student_path);
+    if (fin){
+        getline(fin,std->name,';');
+        getline(fin,std->class_name,';');
+    }
+}
+
+void getstudentDOB(date& Date,ifstream& fin){
+    
+}
