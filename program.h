@@ -7,5 +7,8 @@ using namespace std;
 namespace fs = std::filesystem;
 
 int dialogYesNo(const char& input);
-void staff_menu(staff*& user, date& today, cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy);
+void dialogPause();
+void printSeperator();
+void import_menu(cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy, cqueue<fs::path>& uc_path, cqueue<uniclass>& uc);
+void staff_menu(staff*& user, date& today, cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy, cqueue<fs::path>& uc_path, cqueue<uniclass>& uc);
 void portal();

@@ -1,6 +1,6 @@
 #include "staff.h"
 
-staff* loadProfile(account* acc) {
+staff* loadProfileStaff(account* acc) {
     staff* stf = new staff;
     stf->staff_path = acc->profile_path;
     stf->username = acc->username;

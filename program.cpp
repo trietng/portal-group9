@@ -16,37 +16,94 @@ int dialogYesNo(const char& input) {
     return -1;
 }
 
-void staff_menu(staff*& user, date& today, cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy) {
-    cout << "Academic staff menu";
-    cout << "\nToday is ";
-    outputdate(today, false);
-    if (isBeginning(today, sy_path)) {
-        cout << "No school year detected";
-        cout << "\nCreate a new school year (y/n)?";
-        char ans;
-        cin >> ans;
-        int choice = dialogYesNo(ans);
-        if (choice == 1) {
-            schoolyear sy0 = createNewSchoolyear(today);
+void printSeperator() {
+    cout << "===============================================================================\n";
+}
+
+void import_menu(cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy, cqueue<fs::path>& uc_path, cqueue<uniclass>& uc) {
+    ifstream fin;
+    fin.open("import\\date.txt");
+    string schoolyear;
+    if (fin.is_open()) {
+        fin >> schoolyear;
+        fin.close();
+    }
+    if (!fs::is_directory("data\\Courses\\" + schoolyear)) {
+        fs::create_directory("data\\Courses\\" + schoolyear);
+        cout << "Folder '" << schoolyear << "' created\n";
+        fin.open("import\\classes.csv");
+        if (fin.is_open()) {
+            fin.close();
+            importUniclass(uc_path, uc);
+            cout << "Successfully imported 'classes.csv'";
         }
         else {
-            return;
+            fin.close();
+            cout << "Failed to import 'classes.csv'";
         }
+        cout << "\n";
+        fin.open("import\\students.csv");
+        if (fin.is_open()) {
+            fin.close();
+            //Import students here
+            cout << "Successfully imported 'students.csv'";
+        }
+        else {
+            fin.close();
+            cout << "Failed to import 'students.csv'";
+        }
+        fin.close();
     }
     else {
-
+        cout << "OPERATION DENIED: " << schoolyear << " has already been created";
     }
+    cout << "\n";
+}
+
+void staff_menu(staff*& user, date& today, cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy, cqueue<fs::path>& uc_path, cqueue<uniclass>& uc) {
+    int option;
+    do {
+        cout << "Academic staff menu";
+        cout << "\nToday is ";
+        outputdate(today, false);
+        cout << "\n";
+        printSeperator();
+        cout << "1. Create a new schoolyear";
+        cout << "\n2. View user's profile";
+        cout << "\n0. Quit the program";
+        cout << "\nChoose an option: ";
+        cin >> option;
+        switch (option) {
+        case 0:
+            return;
+            break;
+        case 1:
+            clrscr();
+            import_menu(sy_path, sy, uc_path, uc);
+            break;
+        case 2:
+            //add a function here
+            break;
+        default:
+            break;
+        }
+    } while (option != 0);
+    thread_sleep(5000);
+    clrscr();
 }
 
 void portal() {
     cqueue<fs::path> sy_path = getSchoolyearPath();
+    cqueue<fs::path> uc_path = getUniclassPath();
     cqueue<schoolyear> sy = genSchoolyearList(sy_path);
+    cqueue<uniclass> uc = genUniclassList(uc_path);
     cqueue<account> acc_db = readUserDB();
     account* acc = promptLogin(acc_db);
+    clrscr();
     date today = getsysdate();
     if (acc->type == 0) {
-        staff* user = loadProfile(acc);
-        staff_menu(user, today, sy_path, sy);
+        staff* user = loadProfileStaff(acc);
+        staff_menu(user, today, sy_path, sy, uc_path, uc);
     }
     else {
         //student* user = loadProfile(acc);

@@ -6,6 +6,7 @@
 
 using namespace std;
 namespace fs = std::filesystem;
+const int pos_uc = 21;
 
 enum gender {
     male,
@@ -41,7 +42,7 @@ string F_ID (int ID); //take 2 first number of ID
 void get_student_path (int ID,string &path_re);
 
 cqueue<fs::path> getUniclassPath();
-cqueue<uniclass> genUniclassList();
+cqueue<uniclass> genUniclassList(const cqueue<fs::path>& path);
 cqueue<fs::path> getStudentPath(const uniclass& uc);
 cqueue<student> genStudentList();
 void importUniclass(cqueue<fs::path>& uc_path, cqueue<uniclass>& uc);
