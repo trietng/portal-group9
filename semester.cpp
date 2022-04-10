@@ -289,7 +289,7 @@ course search_course (string search,string path)
     cqueue<course> list=list_of_courses(path+"/course_management.csv");
     for (auto p=list.begin();p!=nullptr;p++)
     {
-        if ((*p).course_id==search)
+        if (search.compare((*p).course_id)==0)
         {
             tmp.course_id=(*p).course_id;
             tmp.course_name=(*p).course_name;
@@ -346,6 +346,11 @@ cqueue<string> take_studentpath_list_of_course(string path)
     cqueue<string> list;
     ifstream fin;
     fin.open(path);
+    if (!fin)
+    {
+        cout<<"cannot open file"<<endl;
+        exit(0);
+    }
     string str,tmp;
     for (int i=0;i<3;i++)
         getline(fin,str);
@@ -355,17 +360,22 @@ cqueue<string> take_studentpath_list_of_course(string path)
         getline(ss,tmp,';');
         list.push_back(tmp);
     }
+    fin.close();
     return list;
-}
+} 
+
 void update_course (cqueue<course>list,string search,string path)
 {
     cqueue<string> student_list;
     for (auto p=list.begin();p!=nullptr;p++)
     {
-        if ((*p).course_id==search)
+        if (search.compare((*p).course_id)==0)
         {
+            cout<<1<<endl;
             student_list=take_studentpath_list_of_course(path+'/'+search+".csv");
+            cout<<1<<endl;
             delete_course(list,search,path);
+            cout<<1<<endl;
             cout<<"start to change course: "<<endl;
             course course = create_course(path);
             add_course(course, path);
@@ -377,4 +387,33 @@ void update_course (cqueue<course>list,string search,string path)
         }
     }
     cout<<"course is not existed.";
+}
+
+void take_csv_file_ofStudent_ofCourse (string located_path,string path,string course_id)
+{
+    string course_path=path+'/'+course_id+".csv";
+    string tmp,name,tmp2;
+    int student_id;
+    ofstream fout;
+    ifstream fin;
+    course courses=search_course(course_id, path);
+    cqueue<string> list=take_studentpath_list_of_course(course_path);
+    fout.open(located_path+'/'+course_id+".csv",ios::app);
+    fout<<courses.course_id<<';';
+    fout<<courses.course_name<<endl;
+    fout<<courses.lecturer_name<<endl;
+    for (auto p=list.begin();p!=nullptr;p++)
+    {
+        fin.open((*p).data());
+        getline(fin,tmp);
+        stringstream ss(tmp);
+        getline(ss,tmp2,';');
+        stringstream toid(tmp2);
+        toid>>student_id;
+        getline (ss,name,';');
+        fin.close();
+        fout<<student_id<<';';
+        fout<<name<<endl;
+    }
+    fout.close();
 }

@@ -16,6 +16,7 @@
 #include <iomanip>
 #include "clist.h"
 #include "course.h"
+#include "student.h"
 
 using namespace std;
  //path=../course/schoolyear/sem
@@ -47,6 +48,8 @@ course search_course (string search,string path);
 
 void is_conflict_session (course ctmp,cqueue<course> list);
 
-cqueue<string> take_studentpath_list_of_course(string path);
+cqueue<string> take_studentpath_list_of_course(string path); //must have at least 1 student path already.
 
 void update_course (cqueue<course>list,string search,string path);
+
+void take_csv_file_ofStudent_ofCourse (string located_path,string path,string course_id); //for scoreboard: 1. input schoolyear+term 2. choose options

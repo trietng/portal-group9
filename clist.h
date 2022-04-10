@@ -210,8 +210,10 @@ public:
     {
         if (cur==end())
         {
-            iterator t;
-            for (t=begin();t!=cur.pcur-1;t++);
+            iterator t=begin();
+            while (t.pcur->pnext->pnext!=nullptr)
+                t++;
+            
             ptail=t.pcur;
             ptail->pnext=nullptr;
         }
