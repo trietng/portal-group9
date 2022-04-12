@@ -20,17 +20,49 @@ void printSeperator() {
     cout << "===============================================================================\n";
 }
 
+void import_student() {
+    ifstream fin;
+    string line, student_id, class_name;
+    fin.open("import\\students.csv");
+    if (fin) {
+        while (getline(fin, line)) {
+            stringstream ss(line);
+            getline(ss, student_id, ';');
+            getline(ss, class_name, ';');
+            ofstream fout;
+            fout.open("data\\People\\Students\\" + class_name + "\\" + student_id + ".csv");
+            if (fout) {
+                fout << line.substr(9);
+            }
+            fout.close();
+        }
+        fin.close();
+    }
+}
+
 void import_menu(cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy, cqueue<fs::path>& uc_path, cqueue<uniclass>& uc) {
     ifstream fin;
     fin.open("import\\date.txt");
-    string schoolyear;
+    string sy_name;
+    schoolyear sy0;
+    string word;
     if (fin.is_open()) {
-        fin >> schoolyear;
+        fin >> sy_name;
         fin.close();
     }
-    if (!fs::is_directory("data\\Courses\\" + schoolyear)) {
-        fs::create_directory("data\\Courses\\" + schoolyear);
-        cout << "Folder '" << schoolyear << "' created\n";
+    if (!fs::is_directory("data\\Courses\\" + sy_name)) {
+        fs::create_directory("data\\Courses\\" + sy_name);
+        cout << "Folder '" << sy_name << "' created\n";
+        sy0.folder_path = "data\\Courses\\" + sy_name;
+        sy0.folder_name = sy_name;
+        cout << "Schoolyear's starting date: ";
+        getline(cin, word);
+        sy0.start_date = to_date("0/0/0/" + word);
+        cout << "Schoolyear's ending date: ";
+        getline(cin, word);
+        sy0.end_date = to_date("0/0/0/" + word);
+        sy_path.push_back(sy0.folder_path);
+        sy.push_back(sy0);
         fin.open("import\\classes.csv");
         if (fin.is_open()) {
             fin.close();
@@ -45,7 +77,7 @@ void import_menu(cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy, cqueue<fs::p
         fin.open("import\\students.csv");
         if (fin.is_open()) {
             fin.close();
-            //Import students here
+            import_student();
             cout << "Successfully imported 'students.csv'";
         }
         else {
@@ -55,7 +87,7 @@ void import_menu(cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy, cqueue<fs::p
         fin.close();
     }
     else {
-        cout << "OPERATION DENIED: " << schoolyear << " has already been created";
+        cout << "OPERATION DENIED: " << sy_name << " has already been created";
     }
     cout << "\n";
 }
@@ -66,9 +98,8 @@ void staff_menu(staff*& user, date& today, cqueue<fs::path>& sy_path, cqueue<sch
         cout << "Academic staff menu";
         cout << "\nToday is ";
         outputdate(today, false);
-        cout << "\n";
         printSeperator();
-        cout << "1. Create a new schoolyear";
+        cout << "\n1. Create a new schoolyear";
         cout << "\n2. View user's profile";
         cout << "\n0. Quit the program";
         cout << "\nChoose an option: ";
@@ -92,6 +123,8 @@ void staff_menu(staff*& user, date& today, cqueue<fs::path>& sy_path, cqueue<sch
     clrscr();
 }
 
+//Your code is incomplete, please make sure it's valid before committing - trietng
+/*
 void student_menu(student*& user, date& today, cqueue<fs::path>& sy_path,cqueue<schoolyear>& sy){
     cout << "Student menu\n";
     cout <<"Today is";
@@ -115,6 +148,7 @@ void student_menu(student*& user, date& today, cqueue<fs::path>& sy_path,cqueue<
     }
     
 }
+*/
 
 void portal() {
     cqueue<fs::path> sy_path = getSchoolyearPath();
@@ -130,7 +164,7 @@ void portal() {
         staff_menu(user, today, sy_path, sy, uc_path, uc);
     }
     else {
-        //student* user = loadProfile(acc);
+        //student* user = loadProfileStudent(acc);
         //do your program here
     }
 }
