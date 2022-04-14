@@ -1,5 +1,5 @@
 #include "part4.h"
-void deleteCourses(string a)
+void viewListStudents()
 {
     int b=0;
     string temp[100];
@@ -9,12 +9,8 @@ void deleteCourses(string a)
         ifs >> temp[b];
         b++;
     }
-    ifs.close();
-    ofstream ofs("");
     for (int i=0; i++; i<b)
     {
-        if (temp[i]!=a)
-        ofs << temp[i] << endl;
+        cout << i << ". " << temp->substr(temp->length()-5) << endl;
     }
-    ofs.close();
 }
