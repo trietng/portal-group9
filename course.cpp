@@ -91,8 +91,42 @@ bool can_enroll_course(date& today,date& start_day, date& end_day){
     return false;
 }
 
-void enroll_course(student& Student){
-    
+void displayCourseInfo(cqueue<std::string>& course_path) {
+    string line, word, course_id, course_name, lecturer;
+    for (auto i = course_path.begin(); i != nullptr; ++i) {
+        ofstream fout(*i);
+        if (fout) {
+            stringstream ss(line);
+            getline(ss, word, ';');
+            getline(ss, word, ';');
+            getline(ss, course_id, ';');
+            cout << "Course ID: " << course_id;
+            getline(ss, course_name, ';');
+            cout << "\nCourse name': " << course_name;
+            getline(ss, lecturer, ';');
+            cout << "\nLecturer: " << lecturer;
+            cout << "\nCredits: ";
+            cout << "\nSessions:";
+            fout.close();
+        }
+        cout << "\n";
+    }
+}
+
+cqueue<std::string> listOfEnrolledCourse(student* user) {
+    string line, word;
+    ifstream fin;
+    cqueue<std::string> course_path;
+    fin.open(user->student_path);
+    if (fin) {
+        getline(fin, line);
+        while (getline(fin, line)) {
+            stringstream ss(line);
+            getline(ss, word, ';');
+            course_path.push_back(word);
+        }
+    }
+    return course_path;
 }
 
 schoolyear createNewSchoolyear(const date& today) {
@@ -128,3 +162,4 @@ schoolyear createNewSchoolyear(const date& today) {
     createDateProperties(dir_path + "\\Term 3", start, end);*/
     return sy0;
 }
+

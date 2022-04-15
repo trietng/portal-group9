@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <chrono>
 #include <thread>
-#include <curses.h>
 
 void clrscr();
 void thread_sleep(const unsigned int& time);

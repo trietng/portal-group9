@@ -96,24 +96,23 @@ void student_menu(student*& user, date& today, cqueue<fs::path>& sy_path,cqueue<
     cout << "Student menu\n";
     cout <<"Today is";
     outputdate(today, false);
-    if (can_enroll_course(today,start_day,end_day)){  //start_day and end_day is just temporary variables.
+    printSeperator();
+    cout << "\n";
+    /*
+    if (can_enroll_course(today, start_day, end_day)){  //start_day and end_day is just temporary variables.
         int choose;
         cout << "Today is valid for enrolling courses. You want:\n";
-        cout << "1.Enroll a course\n";
-        cout << "2.See a list of enrolled courses\n";
-        cout << "You choose:"
+        cout << "1. Enroll a course\n";
+        cout << "2. See a list of enrolled courses\n";
+        cout << "You choose:";
         cin >> choose;
-        switch (choose){
-            case 1: enroll_courses();
-            break;
-            default: view_courses();
+        switch (choose) {
+            
         }
     }
     else{
-        student* user = loadProfile(acc);
-        student_menu(user,today,sy_path,sy)
-    }
-    
+            
+    }*/    
 }
 
 void portal() {

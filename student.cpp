@@ -94,6 +94,3 @@ student* loadProfileStudent(account* acc){
     }
 }
 
-void getstudentDOB(date& Date,ifstream& fin){
-    
-}
