@@ -173,33 +173,30 @@ int to_day(const date& d0) {
     return n;
 }
 
-int cmpdate(const date& d1, const date& d2) {
-    if (d1.year < d2.year) {
-        return -1;
-    }
-    else if (d1.year > d2.year) {
-        return 1;
-    }
+int comp_date(const date& d1, const date& d2) {
+    if (d1.year < d2.year) return -1;
+    else if (d1.year > d2.year) return 1;
     else {
-        if (d1.month < d2.month) {
-            return -1;
-        }
-        else if (d1.month > d2.month) {
-            return 1;
-        }
+        if (d1.month < d2.month) return -1;
+        else if (d1.month > d2.month) return 1;
         else {
-            if (d1.day < d2.day) {
-                return -1;
-            }
-            else if (d1.day > d2.day) {
-                return 1;
-            }
+            if (d1.day < d2.day) return -1;
+            else if (d1.day > d2.day) return 1;
             else {
-                return 0;
+                if (d1.hour < d2.hour) return -1;
+                else if (d1.hour > d2.hour) return 1;
+                else {
+                    if (d1.minute < d2.minute) return -1;
+                    else if (d1.minute > d2.minute) return 1;
+                    else {
+                        if (d1.second < d2.second) return -1;
+                        else if (d1.second > d2.second) return 1;
+                    }
+                }
             }
         }
     }
-    return -2;
+    return 0;
 }
 
 int countdigits(long long x) { 
@@ -321,4 +318,24 @@ date set_date(const int& day, const int& month, const int& year) {
     d0.minute = month;
     d0.year = year;
     return d0;
+}
+
+bool operator>(const date& d1, const date& d2) {
+    return (comp_date(d1, d2) == 1) ? true : false;
+}
+
+bool operator>=(const date& d1, const date& d2) {
+    return (comp_date(d1, d2) >= 0) ? true : false;
+}
+
+bool operator<(const date& d1, const date& d2) {
+    return (comp_date(d1, d2) == -1) ? true : false;
+}
+
+bool operator<=(const date& d1, const date& d2) {
+    return (comp_date(d1, d2) <= 0) ? true : false;
+}
+
+bool operator==(const date& d1, const date& d2) {
+    return (comp_date(d1, d2) == 0) ? true : false;
 }

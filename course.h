@@ -42,7 +42,7 @@ struct course {// course path: ../schoolyear/sem/courseID
     string schoolyear;
     string lecturer_name;
     int max_num_student;
-    //cqueue<string> student_path;
+    cqueue<string> student_path;
     string Sesson; // day1/ses1-day2/ses2
     string start_date;
     string end_date;
@@ -51,6 +51,18 @@ struct course {// course path: ../schoolyear/sem/courseID
 struct course_detail {
     course course;
     cqueue<string> student_path;
+};
+
+struct status {
+    date start_registration;
+    date end_registration;
+    string semester_folder;
+};
+
+struct database {
+    schoolyear schoolyear;
+    semester semester;
+    cqueue<course> course;
 };
 
 cqueue<fs::path> getSchoolyearPath();
@@ -63,5 +75,6 @@ bool can_enroll_course(date& today,date& start_day, date& end_day);
 void displayCourseInfo(cqueue<std::string>& course_path);
 cqueue<std::string> listOfEnrolledCourse(student* user);
 schoolyear createNewSchoolyear(const date &today);
-course take_course (string str);
-cqueue<course> take_course_profile (string path,int schoolyear,int sem);
+//void exportCourseStudents(const string& course_id);
+database getDB();
+bool isRegistrable(const date& d0, const status& status);

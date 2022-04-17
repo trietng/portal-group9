@@ -62,14 +62,20 @@ void import_menu(cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy, cqueue<fs::p
 
 void staff_menu(staff*& user, date& today, cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy, cqueue<fs::path>& uc_path, cqueue<uniclass>& uc) {
     int option;
+    string word;
     do {
         cout << "Academic staff menu";
         cout << "\nToday is ";
         outputdate(today, false);
         cout << "\n";
         printSeperator();
-        cout << "1. Create a new schoolyear";
-        cout << "\n2. View user's profile";
+        cout << "\n1. View user's profile";
+        cout << "\n2. Create a new schoolyear";
+        cout << "\n3. Export a course's list of students to a file";
+        cout << "\n4. Import scoreboard";
+        cout << "\n5. View scoreboard of a course";
+        cout << "\n6. View scoreboard of a class";
+        cout << "\n7. Update a student's result";
         cout << "\n0. Quit the program";
         cout << "\nChoose an option: ";
         cin >> option;
@@ -78,11 +84,16 @@ void staff_menu(staff*& user, date& today, cqueue<fs::path>& sy_path, cqueue<sch
             return;
             break;
         case 1:
+            //add a function here
+            break;
+        case 2:
             clrscr();
             import_menu(sy_path, sy, uc_path, uc);
             break;
-        case 2:
-            //add a function here
+        case 3:
+            clrscr();
+            cout << "Enter the course's ID: ";
+            getline(cin, word);
             break;
         default:
             break;

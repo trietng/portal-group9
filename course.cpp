@@ -87,7 +87,7 @@ void createDateProperties(const string& folder_path, const date& start, const da
 }
 
 bool can_enroll_course(date& today,date& start_day, date& end_day){
-    if (cmpdate(today,start_day) >= 0 && cmpdate(today,end_day) <= 0) return true;
+    if (comp_date(today,start_day) >= 0 && comp_date(today,end_day) <= 0) return true;
     return false;
 }
 
@@ -163,3 +163,12 @@ schoolyear createNewSchoolyear(const date& today) {
     return sy0;
 }
 
+/*
+void exportCourseStudents(const string& course_id) {
+    ofstream fout("data/Courses/");
+}
+*/
+
+bool isRegistrable(const date& d0, const status& status) {
+    return ((d0 >= status.start_registration) && (d0 <= status.end_registration)) ? true : false;
+}

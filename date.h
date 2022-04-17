@@ -10,6 +10,11 @@ using namespace std;
 
 struct date {
     int second, minute, hour, day, month, year;
+    friend bool operator>(const date&, const date&);
+    friend bool operator>=(const date&, const date&);
+    friend bool operator<(const date&, const date&);
+    friend bool operator<=(const date&, const date&);
+    friend bool operator==(const date&, const date&);
 };
 
 void strext(char* dest, const std::string& source, const int& start, const int& end);
@@ -23,7 +28,7 @@ int to_int(const char* str);
 date to_date(const std::string& str);
 date to_date(const char* str);
 int to_day(const date& d0);
-int cmpdate(const date& d1, const date& d2);
+int comp_date(const date& d1, const date& d2);
 int get_weekday(date d0);
 date getsysdate();
 std::string string_equalizer(const int& digits, const int& pos, const char& ch);
