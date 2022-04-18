@@ -57,3 +57,16 @@ void take_csv_file_ofStudent_ofCourse (string located_path,string path,string co
 void create_registration_period (string path,semester sem); //path to status file
 
 cqueue<string> registration_period (string path);
+
+void copy_file (string input_path,string output_path);
+
+cqueue<scoreboard> list_score_byCourse (string scoreboard_path);
+
+void store_list_ofScoreboard (string path,string scoreboard_path,cqueue<scoreboard> list,string course_id);
+
+void view_scoreboard_ofCourse (string scoreboard_path);
+
+void update_score (string path,string scoreboard_path,int student_ID,string course_id); //scoreboardpath to sem of scoreboad,path is as above
+
+
+void gen_scoreboard (ofstream &fout,course courses);

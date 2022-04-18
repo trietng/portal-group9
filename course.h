@@ -65,6 +65,7 @@ struct database {
     cqueue<course> course;
 };
 
+
 cqueue<fs::path> getSchoolyearPath();
 cqueue<schoolyear> genSchoolyearList(const cqueue<fs::path>& path);
 cqueue<fs::path> getSemesterPath(const schoolyear& sy);

@@ -401,6 +401,31 @@ void update_course (cqueue<course>list,string search,string path)
     cout<<"course is not existed.";
 }
 
+void gen_scoreboard (ofstream &fout,course courses)
+{
+    fout<<"schoolyear:"<<';';
+    fout<<courses.schoolyear<<endl;
+    fout<<"semester: "<<';';
+    fout<<courses.semester<<endl;
+    fout<<"Course ID: "<<';';
+    fout<<courses.course_id<<endl;
+    fout<<"Course name: "<<';';
+    fout<<courses.course_name<<endl;
+    fout<<"Lecturer name: "<<';';
+    fout<<courses.lecturer_name<<endl;
+    fout<<"Course sesson: "<<';';
+    fout<<courses.Sesson<<endl;
+    fout<<"Course credit: "<<';';
+    fout<<courses.credits<<endl;
+    fout<<"No"<<';';
+    fout<<"Student ID"<<';';
+    fout<<"Student Name"<<';';
+    fout<<"Midterm mark"<<';';
+    fout<<"Final mark"<<';';
+    fout<<"Other mark"<<';';
+    fout<<"Total mark"<<endl;
+}
+
 void take_csv_file_ofStudent_ofCourse (string located_path,string path,string course_id)
 {
     string course_path=path+'/'+course_id+".csv";
@@ -411,13 +436,7 @@ void take_csv_file_ofStudent_ofCourse (string located_path,string path,string co
     course courses=search_course(course_id, path);
     cqueue<string> list=take_studentpath_list_of_course(course_path);
     fout.open(located_path+'/'+course_id+".csv");
-    fout<<courses.schoolyear<<';';
-    fout<<courses.semester<<endl;
-    fout<<courses.course_id<<';';
-    fout<<courses.course_name<<endl;
-    fout<<courses.lecturer_name<<endl;
-    fout<<courses.Sesson<<endl;
-    fout<<courses.credits<<endl;
+    gen_scoreboard(fout, courses);
     int i=1;
     for (auto p=list.begin();p!=nullptr;p++,i++)
     {
@@ -476,4 +495,130 @@ cqueue<string> registration_period (string path)
     tmp.push_back(sem.end_date);
     fin.close();
     return tmp;
+}
+
+void copy_file (string input_path,string output_path)
+{
+    ifstream fin;
+    ofstream fout;
+    fin.open(input_path,ios::binary);
+    fout.open(output_path,ios::binary);
+    const int take=4096;
+    char bit[take];
+    while (!fin.eof())
+    {
+        fin.read (bit,take);
+        if (fin.gcount()<=0)
+            break;
+        fout.write (bit,fin.gcount());
+    }
+    fin.close();
+    fout.close();
+}
+
+cqueue<scoreboard> list_score_byCourse (string scoreboard_path)
+{
+    cqueue<scoreboard> list;
+    scoreboard score;
+    string str,tmp;
+    ifstream fin;
+    fin.open (scoreboard_path);
+    for (int i=0;i<8;i++)
+        getline (fin,str);
+    while (getline(fin,str))
+    {
+        stringstream ss(str);
+        getline(ss,tmp,';');
+        getline(ss,tmp,';');
+        stringstream toID(tmp);
+        toID>>score.student_ID;
+        getline(ss,score.student_name,';');
+        getline(ss,tmp,';');
+        stringstream toMid(tmp);
+        toMid>>score.mid;
+        getline(ss,tmp,';');
+        stringstream toFinal(tmp);
+        toFinal>>score.final_p;
+        getline(ss,tmp,';');
+        stringstream other(tmp);
+        other>>score.other;
+        getline(ss,tmp,';');
+        stringstream total(tmp);
+        total>>score.total;
+        list.push_back(score);
+    }
+    return list;
+}
+
+void store_list_ofScoreboard (string path,string scoreboard_path,cqueue<scoreboard> list,string course_id)
+{
+    int i=1;
+    ofstream fout;
+    fout.open(scoreboard_path);
+    course courses=search_course(course_id, path);
+    gen_scoreboard(fout, courses);
+    for (auto p=list.begin();p!=nullptr;p++,i++)
+    {
+        fout<<i<<';';
+        fout<<(*p).student_ID<<';';
+        fout<<(*p).student_name<<';';
+        fout<<(*p).mid<<';';
+        fout<<(*p).final_p<<';';
+        fout<<(*p).other<<';';
+        fout<<(*p).total<<endl;
+    }
+}
+
+void view_scoreboard_ofCourse (string scoreboard_path)
+{
+    int i=1;
+    string tmp;
+    cqueue<scoreboard>list=list_score_byCourse(scoreboard_path);
+    for (auto p=list.begin();p!=nullptr;p++,i++)
+    {
+        cout<<"---------------------------------"<<endl;
+        cout<<"No: "<<i<<endl;
+        cout<<"student ID: "<<(*p).student_ID<<endl;
+        cout<<"student name: "<<(*p).student_name<<endl;
+        cout<<"midterm mark: "<<(*p).mid<<endl;
+        cout<<"final mark: "<<(*p).final_p<<endl;
+        cout<<"other mark: "<<(*p).other<<endl;
+        cout<<"total mark: "<<(*p).total<<endl;
+    }
+    
+}
+
+void update_score (string path,string scoreboard_path,int student_ID,string course_id)
+{
+    scoreboard_path+='/'+course_id+".csv";
+    float update;
+    bool is_exist=false;
+    cqueue<scoreboard> list=list_score_byCourse(scoreboard_path);
+    for (auto p=list.begin();p!=nullptr;p++)
+    {
+        if ((*p).student_ID==student_ID)
+        {
+            cout<<"start to update the scoreboard of "<<(*p).student_ID<<endl;
+            cout<<"update midterm mark: ";
+            cin>>update;
+            (*p).mid=update;
+            cout<<"update final mark: ";
+            cin>>update;
+            (*p).final_p=update;
+            cout<<"update other mark: ";
+            cin>>update;
+            (*p).other=update;
+            cout<<"update total mark: ";
+            cin>>update;
+            (*p).total=update;
+            is_exist=true;
+            break;
+        }
+    }
+    if (is_exist==false)
+    {
+        cout<<"the student id is not existed.";
+        return;
+    }
+    store_list_ofScoreboard(path, scoreboard_path, list, course_id);
 }
