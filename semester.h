@@ -52,4 +52,8 @@ cqueue<string> take_studentpath_list_of_course(string path); //must have at leas
 
 void update_course (cqueue<course>list,string search,string path);
 
-void take_csv_file_ofStudent_ofCourse (string located_path,string path,string course_id); //for scoreboard: 1. input schoolyear+term 2. choose options
+void take_csv_file_ofStudent_ofCourse (string located_path,string path,string course_id); //for scoreboard: 1. input schoolyear+term 2. choose options 
+
+void create_registration_period (string path,semester sem); //path to status file
+
+cqueue<string> registration_period (string path);

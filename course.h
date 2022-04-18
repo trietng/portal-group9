@@ -42,7 +42,7 @@ struct course {// course path: ../schoolyear/sem/courseID
     string schoolyear;
     string lecturer_name;
     int max_num_student;
-    cqueue<string> student_path;
+    //cqueue<string> student_path;
     string Sesson; // day1/ses1-day2/ses2
     string start_date;
     string end_date;

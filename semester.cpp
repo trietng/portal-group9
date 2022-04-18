@@ -14,6 +14,7 @@ string create_sem_folder (int schoolyear1,int schoolyear2,int sem)
 
 string set_sem (int schoolyear1,int schoolyear2,int sem)
 {
+    semester sems;
     string path=create_sem_folder(schoolyear1, schoolyear2, sem);
     string str;
     ofstream fout;
@@ -26,6 +27,9 @@ string set_sem (int schoolyear1,int schoolyear2,int sem)
     getline(cin,str);
     fout<<str<<endl;
     fout.close();
+    sems.schoolyear=to_string(schoolyear1)+'-'+to_string(schoolyear2);
+    sems.sem=sem;
+    create_registration_period("/Users/kelsmac/Documents/2nd semester/CS 162/sem_building/DerivedData/sem_building/Build/Products/Debug/course/status.csv",sems);
     return path;
 }
 
@@ -80,6 +84,8 @@ void add_course(course course,string path)
     fout<<course.course_id<<';';
     fout<<course.course_name<<endl;
     fout<<course.lecturer_name<<endl;
+    fout<<course.Sesson<<endl;
+    fout<<course.credits<<endl;
     fout.close();
 }
 
@@ -122,7 +128,9 @@ cqueue<course> list_of_courses (string path)
         getline(ss,tmp2,';');
         stringstream tomax(tmp2);
         tomax>>courset.max_num_student;
+
         courses.push_back(courset);
+
     }
     fin.close();
     return courses;
@@ -250,14 +258,21 @@ void add_list_of_courses (semester sem_set,cqueue<course> list,string path)
 
 void delete_course (cqueue<course> list,string course_ID,string path)
 {
+    bool mark_done=false;
     for (auto t=list.begin();t!=nullptr;t++)
     {
         if ((*t).course_id.compare(course_ID)==0)
         {
             fs::remove(path+'/'+(*t).course_id+".csv");
             list.erase_cur(t);
+            mark_done=true;
             break;
         }
+    }
+    if (mark_done==false)
+    {
+        cout<<"unexisted course"<<endl;
+        return;
     }
     semester sem_set=sem_inf(path+"/course_management.csv");
     add_list_of_courses(sem_set,list, path);
@@ -352,7 +367,7 @@ cqueue<string> take_studentpath_list_of_course(string path)
         exit(0);
     }
     string str,tmp;
-    for (int i=0;i<3;i++)
+    for (int i=0;i<5;i++)
         getline(fin,str);
     while(getline(fin,str))
     {
@@ -371,11 +386,8 @@ void update_course (cqueue<course>list,string search,string path)
     {
         if (search.compare((*p).course_id)==0)
         {
-            cout<<1<<endl;
             student_list=take_studentpath_list_of_course(path+'/'+search+".csv");
-            cout<<1<<endl;
             delete_course(list,search,path);
-            cout<<1<<endl;
             cout<<"start to change course: "<<endl;
             course course = create_course(path);
             add_course(course, path);
@@ -398,12 +410,18 @@ void take_csv_file_ofStudent_ofCourse (string located_path,string path,string co
     ifstream fin;
     course courses=search_course(course_id, path);
     cqueue<string> list=take_studentpath_list_of_course(course_path);
-    fout.open(located_path+'/'+course_id+".csv",ios::app);
+    fout.open(located_path+'/'+course_id+".csv");
+    fout<<courses.schoolyear<<';';
+    fout<<courses.semester<<endl;
     fout<<courses.course_id<<';';
     fout<<courses.course_name<<endl;
     fout<<courses.lecturer_name<<endl;
-    for (auto p=list.begin();p!=nullptr;p++)
+    fout<<courses.Sesson<<endl;
+    fout<<courses.credits<<endl;
+    int i=1;
+    for (auto p=list.begin();p!=nullptr;p++,i++)
     {
+        fout<<i<<';';
         fin.open((*p).data());
         getline(fin,tmp);
         stringstream ss(tmp);
@@ -416,4 +434,46 @@ void take_csv_file_ofStudent_ofCourse (string located_path,string path,string co
         fout<<name<<endl;
     }
     fout.close();
+}
+
+void create_registration_period (string path,semester sem)
+{
+    ofstream fout;
+    string str;
+    fout.open(path);
+    fout<<sem.schoolyear<<';';
+    fout<<sem.sem<<';';
+    cout<<"registration start date: ";
+    getline (cin,str);
+    fout<<str<<';';
+    cout<<"registration end date: ";
+    getline (cin,str);
+    fout<<str<<';';
+    fout.close();
+}
+
+cqueue<string> registration_period (string path)
+{
+    
+    semester sem;
+    cqueue<string> tmp;
+    ifstream fin;
+    string str,to_sem;
+    fin.open(path);
+    if (fin.is_open())
+    {
+        getline (fin,str);
+        stringstream ss(str);
+        getline(ss,sem.schoolyear,';');
+        getline(ss,to_sem,';');
+        stringstream to_semss(to_sem);
+        to_semss>>sem.sem;
+        getline(ss,sem.start_date,';');//registration date
+        getline(ss, sem.end_date, ';');
+        fin.close();
+    }
+    tmp.push_back(sem.start_date);
+    tmp.push_back(sem.end_date);
+    fin.close();
+    return tmp;
 }
