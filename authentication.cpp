@@ -46,7 +46,7 @@ bool removeAccount(cqueue<account>& db, string username) {
         db.pop_front();
         return true;
     }
-    for (auto i = db.begin(); i != db.end(); i++) {
+    for (auto i = db.begin().next(); i != db.end(); i++) {
         if ((*(i.next())).username == username) {
             db.erase_next(i);
             return true;

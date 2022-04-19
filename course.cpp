@@ -172,3 +172,9 @@ void exportCourseStudents(const string& course_id) {
 bool isRegistrable(const date& d0, const status& status) {
     return ((d0 >= status.start_registration) && (d0 <= status.end_registration)) ? true : false;
 }
+
+void write2File(const std::string& path, const std::string& str) {
+    ofstream fout(path);
+    fout << str;
+    fout.close();
+}

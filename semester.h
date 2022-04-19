@@ -18,11 +18,13 @@
 #include "course.h"
 #include "student.h"
 
+const string status_path = "data/Courses/status.csv";
+
 using namespace std;
  //path=../course/schoolyear/sem
-string create_sem_folder (int schoolyear1,int schoolyear2,int sem);
+string create_sem_folder (const int& schoolyear1, const int& schoolyear2, const int& sem);
 
-string set_sem (int schoolyear1,int schoolyear2,int sem);
+semester set_sem (int schoolyear1,int schoolyear2,int sem);
 
 course create_course(string path);
 
@@ -34,13 +36,15 @@ cqueue<course> list_of_courses (string path); //path of any folder
 
 semester sem_inf (string path); //path of any folder want to copy
 
-void show_courses (cqueue<course> courses);
+void show_courses (const cqueue<course>& list);
 
-void add_list_of_courses (semester sem_set,cqueue<course> list,string path);
+void add_list_of_courses (string start_end_dates, const cqueue<course>& list,string path);
 
-void delete_course (cqueue<course> list,string course_ID,string path);
+void delete_course (cqueue<course>& list, string course_ID, string path);
 
-void take_from_outside_file (string path_out,string path);
+void importCourses (string path_out,string path);
+
+void importCourses(const semester& sem);
 
 cqueue<session> sessioninf (string sess);
 
@@ -54,7 +58,7 @@ void update_course (cqueue<course>list,string search,string path);
 
 void take_csv_file_ofStudent_ofCourse (string located_path,string path,string course_id); //for scoreboard: 1. input schoolyear+term 2. choose options 
 
-void create_registration_period (string path,semester sem); //path to status file
+void create_registration_period(const semester& sem); //path to status file
 
 cqueue<string> registration_period (string path);
 

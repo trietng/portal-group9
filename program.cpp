@@ -63,6 +63,9 @@ void import_menu(cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy, cqueue<fs::p
 void staff_menu(staff*& user, date& today, cqueue<fs::path>& sy_path, cqueue<schoolyear>& sy, cqueue<fs::path>& uc_path, cqueue<uniclass>& uc) {
     int option;
     string word;
+    semester sem;
+    cqueue<course> c0;
+    int num;
     do {
         cout << "Academic staff menu";
         cout << "\nToday is ";
@@ -71,14 +74,20 @@ void staff_menu(staff*& user, date& today, cqueue<fs::path>& sy_path, cqueue<sch
         printSeperator();
         cout << "\n1. View user's profile";
         cout << "\n2. Create a new schoolyear";
-        cout << "\n3. Export a course's list of students to a file";
-        cout << "\n4. Import scoreboard";
-        cout << "\n5. View scoreboard of a course";
-        cout << "\n6. View scoreboard of a class";
-        cout << "\n7. Update a student's result";
+        cout << "\n3. Create a new semester and import new courses";
+        cout << "\n4. View the list of courses";
+        cout << "\n5. Update information of a course";
+        cout << "\n6. Delete a course";
+        cout << "\n7. Export a course's list of students to a file";
+        cout << "\n8. Import scoreboard";
+        cout << "\n9. View scoreboard of a course";
+        cout << "\n10. View scoreboard of a class";
+        cout << "\n11. Update a student's result";
         cout << "\n0. Quit the program";
         cout << "\nChoose an option: ";
         cin >> option;
+        cin.clear();
+        cin.ignore();
         switch (option) {
         case 0:
             return;
@@ -92,15 +101,44 @@ void staff_menu(staff*& user, date& today, cqueue<fs::path>& sy_path, cqueue<sch
             break;
         case 3:
             clrscr();
-            cout << "Enter the course's ID: ";
-            getline(cin, word);
+            cout << "Enter schoolyear: ";
+            cin >> word;
+            cout << "Enter semester: ";
+            cin >> num;
+            cin.clear();
+            cin.ignore();
+            sem = set_sem(to_int(word.substr(0, 4)), to_int(word.substr(5, 4)), num);
+            importCourses(sem);
+            break;
+        case 4:
+            clrscr();
+            cout << "Enter schoolyear: ";
+            cin >> word;
+            cout << "Enter semester: ";
+            cin >> num;
+            show_courses(list_of_courses("data/Courses/" + word + "/Sem " + to_string(num)));
+            break;
+        case 6:
+            clrscr();
+            word = "2022-2023";
+            num = 1;
+            
+
+            {
+                string path = "data/Courses/" + word + "/Sem " + to_string(num), course_id;
+                cqueue<course> list = list_of_courses(path);
+                cout << "Enter course ID: ";
+                getline(cin, course_id);
+                delete_course(list, course_id, path);
+            }
             break;
         default:
             break;
         }
+        thread_sleep(10000);
+        clrscr();
     } while (option != 0);
-    thread_sleep(5000);
-    clrscr();
+    
 }
 
 void student_menu(student*& user, date& today, cqueue<fs::path>& sy_path,cqueue<schoolyear>& sy){

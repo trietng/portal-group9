@@ -26,7 +26,7 @@ struct semester {
     string start_date;
     string end_date;
     //string folder_name;
-    //string folder_path;
+    string folder_path;
 };
 
 struct session
@@ -43,7 +43,7 @@ struct course {// course path: ../schoolyear/sem/courseID
     string lecturer_name;
     int max_num_student;
     //cqueue<string> student_path;
-    string Sesson; // day1/ses1-day2/ses2
+    string session; // day1/ses1-day2/ses2
     string start_date;
     string end_date;
     int credits;
@@ -79,3 +79,4 @@ schoolyear createNewSchoolyear(const date &today);
 //void exportCourseStudents(const string& course_id);
 database getDB();
 bool isRegistrable(const date& d0, const status& status);
+void write2File(const std::string& path, const std::string& str);
