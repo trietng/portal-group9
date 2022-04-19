@@ -2,11 +2,16 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 #include <cstdio>
 #include "date.h"
 #include "clist.h"
 
 using namespace std;
+namespace fs = std::filesystem;
+
+const std::string log_path = "data/log.txt";
+const int log_max_size = 1024 * 5;
 
 struct account {
     string username;

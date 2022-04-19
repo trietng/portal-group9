@@ -127,7 +127,7 @@ public:
         counter = 0;
     }
     ~cqueue() {
-        while (!phead) {
+        while (phead) {
             pop_front();
         }
     }
@@ -198,7 +198,7 @@ public:
         now.erase_next();
         counter--;
     }
-    void erase_cur (iterator& now) {
+    void erase_cur(iterator& now) {
         if (now == end()) {
             iterator t = begin();
             while (t.next() != end()) {

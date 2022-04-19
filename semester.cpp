@@ -14,7 +14,7 @@ semester set_sem (int schoolyear1,int schoolyear2,int sem) {
     string path = create_sem_folder(schoolyear1, schoolyear2, sem);
     string str;
     ofstream fout;
-    fout.open ( path + "/course_management.csv");
+    fout.open ( path + "/MANAGEMENT.csv");
     fout << to_string(schoolyear1) + '-' + to_string(schoolyear2) << ';' << sem << endl;
     cout << "Enter start date: ";
     getline(cin , str);
@@ -33,7 +33,7 @@ semester set_sem (int schoolyear1,int schoolyear2,int sem) {
 course create_course(string path) {
     course courses;
     ifstream fin;
-    fin.open(path + "/course_management.csv");
+    fin.open(path + "/MANAGEMENT.csv");
     getline(fin, courses.schoolyear, ';');
     fin >> courses.semester;
     fin.clear();
@@ -61,7 +61,7 @@ course create_course(string path) {
 void add_course(course course,string path) {
     //course course=create_course(path);
     ofstream fout;
-    fout.open (path+"/course_management.csv",ios::app);
+    fout.open (path+"/MANAGEMENT.csv",ios::app);
     fout<<course.schoolyear<<';';
     fout<<course.semester<<';';
     fout<<course.course_id<<';';
@@ -87,10 +87,8 @@ void add_course(course course,string path) {
 
 cqueue<course> list_of_courses (string path) {
     cqueue<course> list;
-    path += "/course_management.csv";
+    path += "/MANAGEMENT.csv";
     course course;
-    course.schoolyear = "";
-    course.semester = 0;
     string word, line;
     ifstream fin;
     fin.open(path);
@@ -99,20 +97,15 @@ cqueue<course> list_of_courses (string path) {
         while (!fin.eof()) {
             getline(fin, line);
             stringstream ss(line);
-            for (int i = 0; i < 3; ++i) {
-                getline(ss, word, ';');
-            }
-            course.course_id = word;
+            getline(ss, course.schoolyear, ';');
             getline(ss, word, ';');
-            course.course_name = word;
-            getline(ss, word, ';');
-            course.lecturer_name = word;
-            getline(ss, word, ';');
-            course.start_date = word;
-            getline(ss, word, ';');
-            course.end_date = word;
-            getline(ss, word, ';');
-            course.session = word;
+            course.semester = to_int(word);
+            getline(ss, course.course_id, ';');
+            getline(ss, course.course_name, ';');
+            getline(ss, course.lecturer_name, ';');
+            getline(ss, course.start_date, ';');
+            getline(ss, course.end_date, ';');
+            getline(ss, course.session, ';');
             getline(ss, word, ';');
             course.credits = to_int(word);
             getline(ss, word, ';');
@@ -218,9 +211,10 @@ void show_courses (const cqueue<course>& list) {
 
 void add_list_of_courses (string start_end_dates, const cqueue<course>& list,string path) {
     ofstream fout;
-    fout.open(path+"/course_management.csv");
-    fout << start_end_dates << endl;
+    fout.open(path+"/MANAGEMENT.csv");
+    fout << start_end_dates;
     for (auto t = list.cbegin();t!=nullptr;t++) {
+        fout << "\n";
         fout<<(*t).schoolyear<<';';
         fout<<(*t).semester<<';';
         fout<<(*t).course_id<<';';
@@ -230,7 +224,7 @@ void add_list_of_courses (string start_end_dates, const cqueue<course>& list,str
         fout<<(*t).end_date<<';';
         fout<<(*t).session<<';';
         fout<<(*t).credits<<';';
-        fout<<(*t).max_num_student << endl;
+        fout<<(*t).max_num_student;
     }
     fout.close();
 }
@@ -251,7 +245,7 @@ void delete_course (cqueue<course>& list, string course_id, string path) {
         cout << "ERROR: Course does not exist"<<endl;
         return;
     }
-    ifstream fin(path + "/course_management.csv");
+    ifstream fin(path + "/MANAGEMENT.csv");
     getline(fin, line);
     add_list_of_courses(line, list, path);
 }
@@ -282,7 +276,7 @@ void importCourses(const semester& sem) {
     ofstream fout;
     if (fin) {
         getline(fin, line);
-        fout.open(sem.folder_path + "/course_management.csv");
+        fout.open(sem.folder_path + "/MANAGEMENT.csv");
         fout << line;
         fout.close();
         while (!fin.eof()) {
@@ -294,7 +288,7 @@ void importCourses(const semester& sem) {
             fout.open(sem.folder_path + "/" + word + ".csv");
             fout << line;
             fout.close();
-            fout.open(sem.folder_path + "/course_management.csv", ios::app);
+            fout.open(sem.folder_path + "/MANAGEMENT.csv", ios::app);
             fout << "\n" << line;
             fout.close();
         }
@@ -305,7 +299,7 @@ void importCourses(const semester& sem) {
 course search_course (string search,string path)
 {
     course tmp;
-    cqueue<course> list=list_of_courses(path+"/course_management.csv");
+    cqueue<course> list=list_of_courses(path+"/MANAGEMENT.csv");
     for (auto p=list.begin();p!=nullptr;p++)
     {
         if (search.compare((*p).course_id)==0)

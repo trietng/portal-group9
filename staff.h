@@ -6,11 +6,10 @@
 using namespace std;
 
 struct staff {
-    int ID; //using for pathname
-    string staff_name;
-    string staff_path;
     string username;
-    cqueue<string> course_id;
+    string staff_path;
+    string staff_name;
+    cqueue<std::string> course_path;
 };
 
 staff* loadProfileStaff(account* acc);

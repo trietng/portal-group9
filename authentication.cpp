@@ -42,13 +42,9 @@ void addAccount(cqueue<account>& db, const account& acc) {
 }
 
 bool removeAccount(cqueue<account>& db, string username) {
-    if (db.front().username == username) {
-        db.pop_front();
-        return true;
-    }
-    for (auto i = db.begin().next(); i != db.end(); i++) {
-        if ((*(i.next())).username == username) {
-            db.erase_next(i);
+    for (auto i = db.begin(); i != db.end(); i++) {
+        if ((*i).username == username) {
+            db.erase_cur(i);
             return true;
         }
     }
@@ -71,7 +67,12 @@ account* findAccount(cqueue<account>& db, string username) {
 
 void logAttempt(account* attempt, const bool& is_success) {
     ofstream fout;
-    fout.open("data\\log.txt", ios::app);
+    if (fs::file_size(log_path) < log_max_size) {
+        fout.open(log_path, ios::app);
+    }
+    else {
+        fout.open(log_path);
+    }
     fout << "\n" << string_cast(getsysdate()) << " " << attempt->username << " ";
     if (is_success) {
         fout << "success";
@@ -156,4 +157,3 @@ void display(cqueue<account>& db) {
         cout << "\n";
     }
 }
-

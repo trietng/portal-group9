@@ -5,13 +5,12 @@ staff* loadProfileStaff(account* acc) {
     stf->staff_path = acc->profile_path;
     stf->username = acc->username;
     ifstream fin;
-    string word;
+    string line;
     fin.open(stf->staff_path);
     if (fin) {
-        getline(fin, stf->staff_name, ';');
-        while(!fin.eof()) {
-            getline(fin, word, ';');
-            stf->course_id.push_back(word);
+        getline(fin, stf->staff_name);
+        while(getline(fin, line)) {
+            stf->course_path.push_back(line);
         }
     }
     return stf;

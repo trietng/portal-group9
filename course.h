@@ -14,12 +14,8 @@ position to the get the folder name of a schoolyear from its path
 */
 const int pos_sy = 5;
 
-struct schoolyear {
-    date start_date;
-    date end_date;
-    string folder_name;
-    string folder_path;
-};
+const string status_path = "data/Courses/status.csv";
+
 struct semester {
     string schoolyear;
     int sem;
@@ -29,24 +25,25 @@ struct semester {
     string folder_path;
 };
 
-struct session
-{
+struct session {
     string day;
     int sess;
 };
 // course course_id->course name-> lecturer name -> start date -> end date -> session->credit->max student
-struct course {// course path: ../schoolyear/sem/courseID
+class course {// course path: ../schoolyear/sem/courseID
+public:
     string course_id;
     string course_name;
     int semester;
     string schoolyear;
     string lecturer_name;
     int max_num_student;
-    //cqueue<string> student_path;
     string session; // day1/ses1-day2/ses2
     string start_date;
     string end_date;
     int credits;
+    cqueue<string> student_path;
+    course();
 };
 struct course_detail {
     course course;
@@ -54,29 +51,22 @@ struct course_detail {
 };
 
 struct status {
+    string schoolyear;
+    int semester;
     date start_registration;
     date end_registration;
-    string semester_folder;
 };
 
-struct database {
-    schoolyear schoolyear;
-    semester semester;
-    cqueue<course> course;
-};
-
-
-cqueue<fs::path> getSchoolyearPath();
-cqueue<schoolyear> genSchoolyearList(const cqueue<fs::path>& path);
-cqueue<fs::path> getSemesterPath(const schoolyear& sy);
-cqueue<semester> genSemesterList(const cqueue<fs::path>& path);
 bool isBeginning(const date& d0, const cqueue<fs::path>& sy_path);
 void createDateProperties(const string& folder_path, const date& start, const date& end);
 bool can_enroll_course(date& today,date& start_day, date& end_day);
 void displayCourseInfo(cqueue<std::string>& course_path);
 cqueue<std::string> listOfEnrolledCourse(student* user);
-schoolyear createNewSchoolyear(const date &today);
+bool createNewSchoolyear();
 //void exportCourseStudents(const string& course_id);
-database getDB();
+//database getDB();
 bool isRegistrable(const date& d0, const status& status);
 void write2File(const std::string& path, const std::string& str);
+status getStatus();
+std::string getWorkingDirectory(const status& status);
+cqueue<course> getCourseList(const std::string work_dir);

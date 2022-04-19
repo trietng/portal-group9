@@ -18,8 +18,6 @@
 #include "course.h"
 #include "student.h"
 
-const string status_path = "data/Courses/status.csv";
-
 using namespace std;
  //path=../course/schoolyear/sem
 string create_sem_folder (const int& schoolyear1, const int& schoolyear2, const int& sem);

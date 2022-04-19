@@ -6,13 +6,13 @@
 
 using namespace std;
 namespace fs = std::filesystem;
-const int pos_uc = 21;
 
 enum gender {
     male,
     female,
     other
 };
+
 struct scoreboard {
     string student_name;
     int student_ID;
@@ -38,15 +38,8 @@ struct student {
     scoreboard scoreboard;
 };
 
-string F_ID (int ID); //take 2 first number of ID
-
-void get_student_path (int ID,string &path_re);
-
-cqueue<fs::path> getUniclassPath();
-cqueue<uniclass> genUniclassList(const cqueue<fs::path>& path);
-cqueue<fs::path> getStudentPath(const uniclass& uc);
-cqueue<student> genStudentList();
+gender to_gender(const long long& num);
 student* loadProfileStudent(account* acc);
 void getstudentDOB(date& Date,ifstream& fin);
-void importUniclass(cqueue<fs::path>& uc_path, cqueue<uniclass>& uc);
+void importUniclass();
 void importStudent();
