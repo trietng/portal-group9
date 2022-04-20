@@ -24,7 +24,6 @@ bool isdateseperator(const char& ch);
 bool is_leap(const int& year);
 int countLeapDays(int year);
 int monthMaxDay(const int& month, const int& year);
-int to_int(const char* str);
 date to_date(const std::string& str);
 date to_date(const char* str);
 int to_day(const date& d0);

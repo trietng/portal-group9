@@ -20,7 +20,6 @@ struct account {
     string profile_path;
 };
 
-int to_int(const string& str);
 void file_copy(const string& dest, const string& source);
 cqueue<account> readUserDB();
 void addAccount(cqueue<account>& db, const account& acc);

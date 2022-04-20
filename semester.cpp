@@ -106,7 +106,7 @@ cqueue<course> list_of_courses (string path) {
             stringstream ss(line);
             getline(ss, course.schoolyear, ';');
             getline(ss, word, ';');
-            course.semester = to_int(word);
+            course.semester = stoi(word);
             getline(ss, course.course_id, ';');
             getline(ss, course.course_name, ';');
             getline(ss, course.lecturer_name, ';');
@@ -114,9 +114,9 @@ cqueue<course> list_of_courses (string path) {
             getline(ss, course.end_date, ';');
             getline(ss, course.session, ';');
             getline(ss, word, ';');
-            course.credits = to_int(word);
+            course.credits = stoi(word);
             getline(ss, word, ';');
-            course.max_num_student = to_int(word);
+            course.max_num_student = stoi(word);
             list.push_back(course);
         }
     }

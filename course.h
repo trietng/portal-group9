@@ -14,7 +14,7 @@ position to the get the folder name of a schoolyear from its path
 */
 const int pos_sy = 5;
 
-const string status_path = "data/Courses/status.csv";
+const std::string status_path = "data/Courses/status.csv";
 
 struct semester {
     string schoolyear;
@@ -43,7 +43,6 @@ public:
     string end_date;
     int credits;
     cqueue<string> student_path;
-    course();
 };
 struct course_detail {
     course course;
@@ -69,4 +68,6 @@ bool isRegistrable(const date& d0, const status& status);
 void write2File(const std::string& path, const std::string& str);
 status getStatus();
 std::string getWorkingDirectory(const status& status);
-cqueue<course> getCourseList(const std::string work_dir);
+cqueue<course> getCourseList(const std::string& work_dir);
+void exportStudentInfo2List(ofstream& fout, const student& student, const int& no);
+void exportStudentsFromCourse(const std::string& course_id);

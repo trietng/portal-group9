@@ -161,8 +161,8 @@ public:
         snode<T>* pdel = phead;
         phead = phead->pnext;
         delete pdel;
-        return true;
         counter--;
+        return true;
     }
     bool empty() {
         if (!phead && !ptail) {

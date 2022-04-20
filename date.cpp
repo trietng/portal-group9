@@ -42,17 +42,9 @@ void strext(char* dest, const char* source, const int& start, const int& end) {
     dest[j] = '\0';
 }
 
-int to_int(const char* str) {
-    int res = 0;
-    for (int i = 0; i < strlen(str); i++) {
-        res = res * 10 + str[i] - '0';
-    }
-    return res;
-}
-
 date to_date(const std::string& str) {
     date d0;
-    char tmp[5][6];
+    char tmp[6][5];
     int begin = 0, end = -2, j = 0;
     for (int i = 0; i <= str.length(); i++) {
         if ((isdateseperator(str[i])) || (str[i] == '\0')) {
@@ -62,18 +54,18 @@ date to_date(const std::string& str) {
             j++;
         }
     }
-    d0.second = to_int(tmp[0]);
-    d0.minute = to_int(tmp[1]);
-    d0.hour = to_int(tmp[2]);
-    d0.day = to_int(tmp[3]);
-    d0.month = to_int(tmp[4]);
-    d0.year = to_int(tmp[5]);
+    d0.second = stoi(tmp[0]);
+    d0.minute = stoi(tmp[1]);
+    d0.hour = stoi(tmp[2]);
+    d0.day = stoi(tmp[3]);
+    d0.month = stoi(tmp[4]);
+    d0.year = stoi(tmp[5]);
     return d0;
 }
 
 date to_date(const char* str) {
     date d0;
-    char tmp[5][6];
+    char tmp[6][5];
     int begin = 0, end = -2, j = 0;
     for (int i = 0; i <= strlen(str); i++) {
         if ((isdateseperator(str[i])) || (str[i] == '\0')) {
@@ -83,12 +75,12 @@ date to_date(const char* str) {
             j++;
         }
     }
-    d0.second = to_int(tmp[0]);
-    d0.minute = to_int(tmp[1]);
-    d0.hour = to_int(tmp[2]);
-    d0.day = to_int(tmp[3]);
-    d0.month = to_int(tmp[4]);
-    d0.year = to_int(tmp[5]);
+    d0.second = stoi(tmp[0]);
+    d0.minute = stoi(tmp[1]);
+    d0.hour = stoi(tmp[2]);
+    d0.day = stoi(tmp[3]);
+    d0.month = stoi(tmp[4]);
+    d0.year = stoi(tmp[5]);
     return d0;
 }
 
@@ -291,7 +283,7 @@ void outputdate(const date& d0, ofstream& fout) {
 std::string string_cast(date d0) {
     std::string str = string_equalizer(countdigits(d0.year), 4, '0') + to_string(d0.year) + "/" +
     string_equalizer(countdigits(d0.month), 2, '0') + to_string(d0.month) + "/" +
-    string_equalizer(countdigits(d0.day), 2, '0')+ to_string(d0.day) + "-" +
+    string_equalizer(countdigits(d0.day), 2, '0') + to_string(d0.day) + "-" +
     string_equalizer(countdigits(d0.hour), 2, '0') + to_string(d0.hour) + ":" +
     string_equalizer(countdigits(d0.minute), 2, '0') + to_string(d0.minute) + ":" +
     string_equalizer(countdigits(d0.second), 2, '0') + to_string(d0.second);

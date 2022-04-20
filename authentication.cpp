@@ -2,14 +2,6 @@
 
 using namespace std;
 
-int to_int(const string& str) {
-    int res = 0;
-    for (int i = 0; i < str.size(); i++) {
-        res = res * 10 + str[i] - '0';
-    }
-    return res;
-}
-
 void file_copy(const string& dest, const string& source) {
     ifstream fin(source, std::ios::binary);
     ofstream fout(dest, std::ios::binary);
@@ -28,7 +20,7 @@ cqueue<account> readUserDB() {
             getline(ss, temp.username, ';');
             getline(ss, temp.password, ';');
             getline(ss, word, ';');
-            temp.type = to_int(word);
+            temp.type = stoi(word);
             getline(ss, temp.profile_path, ';');
             db.push_back(temp);
         }

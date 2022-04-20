@@ -1,5 +1,17 @@
 #include "student.h"
 
+gender to_gender(const std::string& str) {
+    return (str == "male") ? male : ((str == "female") ? female : other);
+}
+
+gender to_gender(const long long& num) {
+    return (num == 0) ? male : ((num == 1) ? female : other);
+}
+
+std::string string_cast(const gender& gender) {
+    return (gender == male) ? "male" : ((gender == female) ? "female" : "other");
+}
+
 void importUniclass() {
     ifstream fin;
     string line, word, class_name, class_path;
@@ -12,7 +24,7 @@ void importUniclass() {
             class_path = "data/People/Students/" + class_name;
             fs::create_directory(class_path);
             getline(ss, word, ';');
-            max_student = to_int(word);
+            max_student = stoi(word);
             ofstream fout(class_path + "/max_student.txt");
             fout << max_student;
             fout.close();

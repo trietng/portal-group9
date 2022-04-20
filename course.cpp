@@ -1,19 +1,5 @@
 #include "course.h"
 
-course::course() {
-    course_id = "";
-    course_name = "";
-    semester = 0;
-    schoolyear = "";
-    lecturer_name = "";
-    max_num_student = 0;
-    session = ""; // day1/ses1-day2/ses2
-    start_date = "";
-    end_date = "";
-    credits = 0;
-    student_path = cqueue<string>();
-}
-
 void displayCourseInfo(cqueue<std::string>& course_path) {
     string line, word, course_id, course_name, lecturer;
     for (auto i = course_path.begin(); i != nullptr; ++i) {
@@ -93,7 +79,7 @@ status getStatus() {
         stringstream ss(line);
         getline(ss, s0.schoolyear, ';');
         getline(ss, word, ';');
-        s0.semester = to_int(word);
+        s0.semester = stoi(word);
         getline(ss, word, ';');
         s0.start_registration = to_date("0/0/0/" + word);
         getline(ss, word, ';');
@@ -105,4 +91,48 @@ status getStatus() {
 
 std::string getWorkingDirectory(const status& status) {
     return "data/Courses/" + status.schoolyear + "/Sem " + to_string(status.semester);
+}
+
+void exportStudentInfo2List(ofstream& fout, const student& student, const int& no) {
+    fout << "\n" << no << ";" << student.student_id << ';' << student.name << ";";
+    fout << string_cast(student.gender) << ";";
+    fout << string_equalizer(countdigits(student.dob.day), 2, '0') << student.dob.day << "/"
+    << string_equalizer(countdigits(student.dob.month), 2, '0') << student.dob.month << "/"
+    << string_equalizer(countdigits(student.dob.year), 4, '0') << student.dob.year << ";";
+    fout << student.class_name << ";";
+}
+
+
+void exportStudentsFromCourse(const std::string& course_id) {
+    ifstream fin(getWorkingDirectory(getStatus()) + "/" + course_id + ".csv");
+    ofstream fout("export/" + course_id + "_list.csv");
+    fout << course_id << "\nNo;Student ID;Name;Gender;Date of birth;Class";
+    if (fin) {
+        string student_path;
+        getline(fin, student_path);
+        int no = 0;
+        while (getline(fin, student_path)) {
+            ifstream is(student_path);
+            student student;
+            student.social_id = "";
+            student.student_path = "";
+            student.student_id = stoi(fs::path(student_path).filename().string().substr(0, 9));
+            if (is) {
+                string info, word;
+                getline(is, info);
+                stringstream ss(info);
+                getline(ss, student.class_name, ';');
+                getline(ss, student.name, ';');
+                getline(ss, word, ';');
+                student.gender = to_gender(stoi(word));
+                getline(ss, word, ';');
+                student.dob = to_date(word);
+                is.close();
+            }
+            exportStudentInfo2List(fout, student, no + 1);
+            ++no;
+        }
+    }
+    fin.close();
+    fout.close();
 }
