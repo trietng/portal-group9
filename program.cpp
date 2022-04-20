@@ -76,7 +76,7 @@ void staff_menu(staff*& user, date& today) {
                 cin >> num;
                 cin.clear();
                 cin.ignore();
-                sem = set_sem(to_int(word.substr(0, 4)), to_int(word.substr(5, 4)), num);
+                sem = set_sem(stoi(word.substr(0, 4)), stoi(word.substr(5, 4)), num);
                 importCourses(sem);
                 break;
             case 4:
