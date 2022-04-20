@@ -283,7 +283,7 @@ void outputdate(const date& d0, ofstream& fout) {
 std::string string_cast(date d0) {
     std::string str = string_equalizer(countdigits(d0.year), 4, '0') + to_string(d0.year) + "/" +
     string_equalizer(countdigits(d0.month), 2, '0') + to_string(d0.month) + "/" +
-    string_equalizer(countdigits(d0.day), 2, '0')+ to_string(d0.day) + "-" +
+    string_equalizer(countdigits(d0.day), 2, '0') + to_string(d0.day) + "-" +
     string_equalizer(countdigits(d0.hour), 2, '0') + to_string(d0.hour) + ":" +
     string_equalizer(countdigits(d0.minute), 2, '0') + to_string(d0.minute) + ":" +
     string_equalizer(countdigits(d0.second), 2, '0') + to_string(d0.second);

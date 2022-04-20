@@ -34,11 +34,13 @@ struct student {
     gender gender;
     date dob;
     string social_id;
-    cqueue<string> course_path;
     scoreboard scoreboard;
+    cqueue<string> course_path;
 };
 
+gender to_gender(const std::string& str);
 gender to_gender(const long long& num);
+std::string string_cast(const gender& gender);
 student* loadProfileStudent(account* acc);
 void getstudentDOB(date& Date,ifstream& fin);
 void importUniclass();
