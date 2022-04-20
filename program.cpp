@@ -60,8 +60,11 @@ void staff_menu(staff*& user, date& today) {
         cin.clear();
         cin.ignore();
         switch (option) {
+        case 0:
+            loop = false;
+            break;
         case 1:
-            //add a function here
+
             break;
         case 2:
             clrscr();
@@ -75,7 +78,7 @@ void staff_menu(staff*& user, date& today) {
             cin >> num;
             cin.clear();
             cin.ignore();
-            sem = set_sem(to_int(word.substr(0, 4)), to_int(word.substr(5, 4)), num);
+            sem = set_sem(stoi(word.substr(0, 4)), stoi(word.substr(5, 4)), num);
             importCourses(sem);
             break;
         case 4:
@@ -103,7 +106,7 @@ void staff_menu(staff*& user, date& today) {
         default:
             break;
         }
-    } while (option != 0);
+    } while (loop);
 }
 
 void portal() {

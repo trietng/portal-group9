@@ -12,7 +12,7 @@ void importUniclass() {
             class_path = "data/People/Students/" + class_name;
             fs::create_directory(class_path);
             getline(ss, word, ';');
-            max_student = to_int(word);
+            max_student = stoi(word);
             ofstream fout(class_path + "/max_student.txt");
             fout << max_student;
             fout.close();

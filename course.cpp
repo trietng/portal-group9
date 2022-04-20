@@ -93,7 +93,7 @@ status getStatus() {
         stringstream ss(line);
         getline(ss, s0.schoolyear, ';');
         getline(ss, word, ';');
-        s0.semester = to_int(word);
+        s0.semester = stoi(word);
         getline(ss, word, ';');
         s0.start_registration = to_date("0/0/0/" + word);
         getline(ss, word, ';');
