@@ -36,6 +36,7 @@ void staff_menu(staff*& user, date& today) {
     cqueue<course> c0;
     bool loop = true;
     int num;
+    status stat;
     do {
         clrscr();
         cout << "Academic staff menu";
@@ -60,48 +61,52 @@ void staff_menu(staff*& user, date& today) {
         cin.clear();
         cin.ignore();
         switch (option) {
-        case 1:
-            //add a function here
-            break;
-        case 2:
-            clrscr();
-            import_menu();
-            break;
-        case 3:
-            clrscr();
-            cout << "Enter schoolyear: ";
-            cin >> word;
-            cout << "Enter semester: ";
-            cin >> num;
-            cin.clear();
-            cin.ignore();
-            sem = set_sem(to_int(word.substr(0, 4)), to_int(word.substr(5, 4)), num);
-            importCourses(sem);
-            break;
-        case 4:
-            clrscr();
-            cout << "Enter schoolyear: ";
-            cin >> word;
-            cout << "Enter semester: ";
-            cin >> num;
-            show_courses(list_of_courses("data/Courses/" + word + "/Sem " + to_string(num)));
-            thread_sleep(5000);
-            break;
-        case 6:
-            clrscr();
-            word = "2022-2023";
-            num = 1;
-            {
-                string path = "data/Courses/" + word + "/Sem " + to_string(num), course_id;
-                cqueue<course> list = list_of_courses(path);
-                cout << "Enter course ID: ";
-                getline(cin, course_id);
-                delete_course(list, course_id, path);
-            }
-            thread_sleep(5000);
-            break;
-        default:
-            break;
+            case 1:
+                //add a function here
+                break;
+            case 2:
+                clrscr();
+                import_menu();
+                break;
+            case 3:
+                clrscr();
+                cout << "Enter schoolyear: ";
+                cin >> word;
+                cout << "Enter semester: ";
+                cin >> num;
+                cin.clear();
+                cin.ignore();
+                sem = set_sem(to_int(word.substr(0, 4)), to_int(word.substr(5, 4)), num);
+                importCourses(sem);
+                break;
+            case 4:
+                clrscr();
+                stat=getStatus();
+                show_courses(list_of_courses("data/Courses/" + stat.schoolyear + "/Sem " + to_string(stat.semester)));
+                thread_sleep(5000);
+                break;
+            case 5:
+                clrscr();
+                cout<<"Enter course ID: ";
+                getline (cin,word);
+                {
+                    update_course(list, word);
+                }
+                break;
+            case 6:
+                clrscr();
+                {
+                    stat=getStatus();
+                    string course_id;
+                    cqueue<course> list = list_of_courses("data/Courses/" + stat.schoolyear + "/Sem " + to_string(stat.semester));
+                    cout << "Enter course ID: ";
+                    getline(cin, course_id);
+                    delete_course(list, course_id, "data/Courses/" + stat.schoolyear + "/Sem " + to_string(stat.semester));
+                }
+                thread_sleep(5000);
+                break;
+            default:
+                break;
         }
     } while (option != 0);
 }

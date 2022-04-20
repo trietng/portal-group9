@@ -17,6 +17,8 @@
 #include "clist.h"
 #include "course.h"
 #include "student.h"
+#include "date.h"
+#include "authentication.h"
 
 using namespace std;
  //path=../course/schoolyear/sem
@@ -26,7 +28,9 @@ semester set_sem (int schoolyear1,int schoolyear2,int sem);
 
 course create_course(string path);
 
-void add_course(course course,string path);
+void update_management (course course);
+
+void update_course_file (course course);
 
 void add_student_to_course (string std_path,string path);
 
@@ -52,7 +56,7 @@ void is_conflict_session (course ctmp,cqueue<course> list);
 
 cqueue<string> take_studentpath_list_of_course(string path); //must have at least 1 student path already.
 
-void update_course (cqueue<course>list,string search,string path);
+void update_course (string search);
 
 void take_csv_file_ofStudent_ofCourse (string located_path,string path,string course_id); //for scoreboard: 1. input schoolyear+term 2. choose options 
 
