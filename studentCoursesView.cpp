@@ -1,9 +1,10 @@
 #include "part4.h"
-void viewListStudents()
+#include "student.h"
+void studentCoursesView(student a)
 {
     int b=0;
     string temp[100];
-    ifstream ifs("");
+    ifstream ifs(a.student_path);
     while(!ifs.eof())
     {
         ifs >> temp[b];

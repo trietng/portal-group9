@@ -3,7 +3,7 @@ void showclasses()
 {
     int i=1;
     string str;
-    ifstream ifs("");
+    ifstream ifs("data\List\classes.txt");
     cout << "List of classes: " << endl;
 	while(ifs  >> str)
     { 

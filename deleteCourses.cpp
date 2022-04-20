@@ -3,7 +3,7 @@ void deleteCourses(string a)
 {
     int b=0;
     string temp[100];
-    ifstream ifs("");
+    ifstream ifs("data\List\courses.txt");
     while(!ifs.eof())
     {
         ifs >> temp[b];
