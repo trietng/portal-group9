@@ -1,41 +1,134 @@
 #include "course.h"
 
-void displayCourseInfo(cqueue<std::string>& course_path) {
-    string line, word, course_id, course_name, lecturer;
-    for (auto i = course_path.begin(); i != nullptr; ++i) {
-        ofstream fout(*i);
-        if (fout) {
-            stringstream ss(line);
-            getline(ss, word, ';');
-            getline(ss, word, ';');
-            getline(ss, course_id, ';');
-            cout << "Course ID: " << course_id;
-            getline(ss, course_name, ';');
-            cout << "\nCourse name': " << course_name;
-            getline(ss, lecturer, ';');
-            cout << "\nLecturer: " << lecturer;
-            cout << "\nCredits: ";
-            cout << "\nSessions:";
-            fout.close();
-        }
+void displayCourseInfo(cqueue<course>& course_list) {
+    for (auto i = course_list.begin(); i != nullptr; ++i) {
+            cout << "Course ID: " << (*i).course_id;
+            cout << "\nCourse name': " << (*i).course_name;
+            cout << "\nLecturer: " << (*i).lecturer_name;
+            cout << "\nCredits: "; (*i).credits;
+            cout << "\nSessions:"; (*i).session;
         cout << "\n";
     }
 }
 
-cqueue<std::string> listOfEnrolledCourse(student* user) {
-    string line, word;
-    ifstream fin;
-    cqueue<std::string> course_path;
-    fin.open(user->student_path);
-    if (fin) {
-        getline(fin, line);
-        while (getline(fin, line)) {
+cqueue<course> listOfCourse(status& stt, cqueue<course>& enrolled_course){
+    string word,line;
+    course temp;
+    cqueue<course> course_list;
+    ifstream fin(getWorkingDirectory(stt) + "/MANAGEMENT.csv");
+    if (fin){
+        getline(fin,line);
+        while(getline(fin,line)){
             stringstream ss(line);
-            getline(ss, word, ';');
-            course_path.push_back(word);
+            getline(ss,temp.schoolyear,';');
+            getline(ss,word,';');
+            temp.semester = stoi(word);
+            getline(ss,temp.course_id,';');
+            getline(ss,temp.course_name,';');
+            getline(ss,temp.lecturer_name,';');
+            getline(ss,temp.start_date,';');
+            getline(ss,temp.end_date,';');
+            getline(ss,temp.session,';');
+            getline(ss,word,';');
+            temp.credits = stoi(word);
+            getline(ss,word,';');
+            temp.max_num_student = stoi(word);
+            if (validForEnroll(enrolled_course,temp.course_id)) course_list.push_back(temp);
         }
     }
-    return course_path;
+    return course_list;
+}
+
+bool is_conflict_session(course* x,cqueue<course>& list) {
+    for (auto i = list.begin(); i != nullptr; ++i){
+        if (x->session == (*i).session && x->schoolyear != (*i).schoolyear && x->semester != (*i).semester) return true;
+    }
+    return false;
+}
+
+course* findCourse(string str,cqueue<course>& list){
+    for (auto i = list.begin(); i != nullptr; ++i){
+        if (str == (*i).course_id) return &(*i);
+    }
+    return nullptr;
+}
+
+void deleteCourse(student*& user,string& ID,status& stt,cqueue<course>& enrolled_course){
+    cqueue <string> list;
+    string str = getWorkingDirectory(stt) + "/"+ ID;
+    string line,word;
+    ifstream fin(str);
+    if (fin){
+        getline(fin,line);
+        while (getline(fin,word)){
+            if (user->student_path !=  word) list.push_back(word);
+        }
+    }
+    fin.close();
+    ofstream fout(str);
+    if (fout){
+        fout << line << endl;
+        for (auto i = list.begin();i != nullptr; ++ i){
+            fout << (*i) << endl;
+        }
+    }
+    fout.close();
+    fin.open(user->student_path);
+    cqueue <string> list1;
+    if (fin){
+        getline(fin, line);
+        while (getline(fin,word)){
+            if (str != word) list1.push_back(word);
+        }
+    }
+    fin.close();
+    fout.open(user->student_path);
+    if (fout){
+        fout << line << endl;
+        for (auto i = list1.begin(); i != nullptr; ++i){
+            fout << (*i) << endl;
+        }
+    }
+    for (auto i = enrolled_course.begin(); i != nullptr ; ++i){
+        if ((*i).course_id == ID) enrolled_course.erase_cur(i);
+        break;
+    }
+}
+
+cqueue<course> listOfEnrolledCourse(student*& user,status& stt,int& count) {
+    string word,line;
+    course temp;
+    cqueue<course> enroll_course;
+    ifstream fin(getWorkingDirectory(stt) + "/MANAGEMENT.csv");
+    if (fin){
+        getline(fin,line);
+        while(getline(fin,line)){
+            ++count;
+            stringstream ss(line);
+            getline(ss,temp.schoolyear,';');
+            getline(ss,word,';');
+            temp.semester = stoi(word);
+            getline(ss,temp.course_id,';');
+            getline(ss,temp.course_name,';');
+            getline(ss,temp.lecturer_name,';');
+            getline(ss,temp.start_date,';');
+            getline(ss,temp.end_date,';');
+            getline(ss,temp.session,';');
+            getline(ss,word,';');
+            temp.credits = stoi(word);
+            getline(ss,word,';');
+            temp.max_num_student = stoi(word);
+            enroll_course.push_back(temp);
+        }
+    }
+        return enroll_course;
+}
+
+bool validForEnroll(cqueue<course>& enrolled_course, string words){
+    for (auto i =enrolled_course.begin(); i != nullptr ; ++i){
+        if ((*i).course_id == words) return false;
+    }
+    return true;
 }
 
 bool createNewSchoolyear() {
@@ -67,6 +160,12 @@ bool isRegistrable(const date& d0, const status& status) {
 void write2File(const std::string& path, const std::string& str) {
     ofstream fout(path);
     fout << str;
+    fout.close();
+}
+
+void write2File1(const std::string& path, const std::string& str) {
+    ofstream fout(path, ios ::app);
+    fout << str << endl;
     fout.close();
 }
 
