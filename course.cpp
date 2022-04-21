@@ -11,7 +11,7 @@ void displayCourseInfo(cqueue<course>& course_list) {
     }
 }
 
-cqueue<course> listOfCourse(status& stt,cqueue<course>& enrolled_course){
+cqueue<course> listOfCourse(status& stt, cqueue<course>& enrolled_course){
     string word,line;
     course temp;
     cqueue<course> course_list;
@@ -39,7 +39,7 @@ cqueue<course> listOfCourse(status& stt,cqueue<course>& enrolled_course){
     return course_list;
 }
 
-bool is_conflict_session(course*& x,cqueue<course>& list){
+bool is_conflict_session(course* x,cqueue<course>& list) {
     for (auto i = list.begin(); i != nullptr; ++i){
         if (x->session == (*i).session && x->schoolyear != (*i).schoolyear && x->semester != (*i).semester) return true;
     }

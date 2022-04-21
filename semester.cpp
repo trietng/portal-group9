@@ -305,40 +305,6 @@ course search_course (string search,string path,bool &is_course)
     return tmp;
 }
 
-void is_conflict_session (course ctmp,cqueue<course> list)
-{
-    int time=0;
-    bool is_conflict=false;
-    cqueue<session> tmp1,tmp2;
-    tmp1=sessioninf(ctmp.session);
-    for (auto p=list.begin();p!=nullptr;p++)
-    {
-        tmp2=sessioninf((*p).session);
-        time=0;
-        for (auto m=tmp2.begin();m!=nullptr;m++)
-        {
-            for (auto n=tmp1.begin();n!=nullptr;n++)
-            {
-                if((*n).day==(*m).day && (*n).sess==(*m).sess && (*p).course_id!=ctmp.course_id)
-                {
-                    is_conflict=true;
-                    cout<<"your course is conflict session with "<<(*p).course_id<<endl;
-                    time++;
-                    break;
-                }
-            }
-            if(time>=1)
-                break;
-        }
-        if (p.next()==nullptr && is_conflict==false)
-        {
-            cout<<"your course is ok"<<endl;
-            return;
-        }
-    }
-
-}
-
 cqueue<string> take_studentpath_list_of_course(string path)
 {
     cqueue<string> list;

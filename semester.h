@@ -52,8 +52,6 @@ cqueue<session> sessioninf (string sess);
 
 course search_course (string search,string path,bool &is_course);
 
-void is_conflict_session (course ctmp,cqueue<course> list);
-
 cqueue<string> take_studentpath_list_of_course(string path); //must have at least 1 student path already.
 
 void update_course (string search);
