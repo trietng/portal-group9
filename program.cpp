@@ -141,6 +141,27 @@ void staff_menu(staff*& user, date& today) {
                     cout<<"Enter course ID: ";
                     getline(cin,word);
                     copy_file("import/Scoreboard_" + stat.schoolyear + '_' + to_string(stat.semester) + '_' + word + ".csv", "data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester) + '/' + word + ".csv");
+                    save_score_toStudentfile();
+                    break;
+                }
+            case 12:
+                clrscr();
+                {
+                    stat=getStatus();
+                    cout<<"Enter course ID: ";
+                    getline (cin,word);
+                    view_scoreboard_ofCourse("data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester) + '/' + word + ".csv");
+                    break;
+                }
+            case 14:
+                clrscr();
+                {
+                    cout<<"Enter course ID: ";
+                    getline (cin,word);
+                    cout<<"Enter student ID: ";
+                    cin>>num;
+                    update_score(num, word);
+                    save_score_toStudentfile();
                     break;
                 }
             default:
