@@ -105,6 +105,23 @@ void staff_menu(staff*& user, date& today) {
                 }
                 thread_sleep(5000);
                 break;
+            case 7:
+                clrscr();
+                {
+                    cout<<"Enter course ID: ";
+                    getline (cin,word);
+                    take_csv_file_ofStudent_toScoreboard( word);
+                    break;
+                }
+            case 8:
+                clrscr();
+                {
+                    status stat=getStatus();
+                    cout<<"Enter course ID: ";
+                    getline(cin,word);
+                    copy_file("import/Scoreboard_" + stat.schoolyear + '_' + to_string(stat.semester) + '_' + word + ".csv", "data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester) + '/' + word + ".csv");
+                    break;
+                }
             default:
                 break;
         }

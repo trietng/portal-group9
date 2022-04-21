@@ -50,7 +50,7 @@ void importCourses(const semester& sem);
 
 cqueue<session> sessioninf (string sess);
 
-course search_course (string search,string path);
+course search_course (string search,string path,bool &is_course);
 
 void is_conflict_session (course ctmp,cqueue<course> list);
 
@@ -58,7 +58,7 @@ cqueue<string> take_studentpath_list_of_course(string path); //must have at leas
 
 void update_course (string search);
 
-void take_csv_file_ofStudent_ofCourse (string located_path,string path,string course_id); //for scoreboard: 1. input schoolyear+term 2. choose options 
+void take_csv_file_ofStudent_toScoreboard (string course_id); //for scoreboard: 1. input schoolyear+term 2. choose options 
 
 void create_registration_period(const semester& sem); //path to status file
 
@@ -66,9 +66,9 @@ cqueue<string> registration_period (string path);
 
 void copy_file (string input_path,string output_path);
 
-cqueue<scoreboard> list_score_byCourse (string scoreboard_path);
+cqueue<student> list_score_byCourse (string scoreboard_path);
 
-void store_list_ofScoreboard (string path,string scoreboard_path,cqueue<scoreboard> list,string course_id);
+void store_list_ofScoreboard (string path,cqueue<student> list,string course_id);
 
 void view_scoreboard_ofCourse (string scoreboard_path);
 
