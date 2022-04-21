@@ -45,16 +45,19 @@ void staff_menu(staff*& user, date& today) {
         cout << "\n";
         printSeperator();
         cout << "\n1.  View user's profile";
-        cout << "\n2.  Create a new schoolyear";
-        cout << "\n3.  Create a new semester and import new courses";
-        cout << "\n4.  View the list of courses";
-        cout << "\n5.  Update information of a course";
-        cout << "\n6.  Delete a course";
-        cout << "\n7.  Export a course's list of students to a file";
-        cout << "\n8.  Import scoreboard";
-        cout << "\n9.  View scoreboard of a course";
-        cout << "\n10. View scoreboard of a class";
-        cout << "\n11. Update a student's result";
+        cout << "\n2.  Create a new schoolyear (1)";
+        cout << "\n3.  Create a new semester and import new courses (2, 3, 4, 5)";
+        cout << "\n4.  View the list of courses (9, 19)";
+        cout << "\n5.  View the list of classes (17)";
+        cout << "\n6.  View the list of students in a class (18)";
+        cout << "\n7.  View the list of students in a course (20)";
+        cout << "\n8.  Update information of a course (10)";
+        cout << "\n9.  Delete a course (11)";
+        cout << "\n10. Export a course's list of students to a file (21)";
+        cout << "\n11. Import scoreboard (22)";
+        cout << "\n12. View scoreboard of a course (23)";
+        cout << "\n13. View scoreboard of a class (25)";
+        cout << "\n14. Update a student's result (26)";
         cout << "\n0.  Quit the program";
         cout << "\nChoose an option: ";
         cin >> option;
@@ -65,7 +68,7 @@ void staff_menu(staff*& user, date& today) {
                 loop = false;
                 break;
             case 1:
-                
+                //display user profile
                 break;
             case 2:
                 clrscr();
@@ -90,13 +93,28 @@ void staff_menu(staff*& user, date& today) {
                 break;
             case 5:
                 clrscr();
+                viewListOfClasses();
+                cin.get();
+                break;
+            case 6:
+                clrscr();
+                viewListOfStudentsInClass();
+                cin.get();
+                break;
+            case 7:
+                clrscr();
+                viewListOfStudentsInCourse();
+                cin.get();
+                break;
+            case 8:
+                clrscr();
                 cout << "Enter course ID: ";
                 getline (cin,word);
                 {
                     update_course(word);
                 }
                 break;
-            case 6:
+            case 9:
                 clrscr();
                 {
                     stat=getStatus();
@@ -108,7 +126,7 @@ void staff_menu(staff*& user, date& today) {
                 }
                 thread_sleep(5000);
                 break;
-            case 7:
+            case 10:
                 clrscr();
                 {
                     cout<<"Enter course ID: ";
@@ -116,7 +134,7 @@ void staff_menu(staff*& user, date& today) {
                     take_csv_file_ofStudent_toScoreboard( word);
                     break;
                 }
-            case 8:
+            case 11:
                 clrscr();
                 {
                     status stat=getStatus();
@@ -181,7 +199,7 @@ void enroll_course_menu(student*& user,int& back_to_menu,status& stt,int& count)
     cqueue<course> enrolled_course= listOfEnrolledCourse(user,stt,count);
     cqueue<course> list_of_course = listOfCourse(stt,enrolled_course);
     int enrollCourse = 0;
-    do{
+    do {
     thread_sleep(5000);
     clrscr();
     cout << "You enrolled: " << count  << endl;
