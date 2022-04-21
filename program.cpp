@@ -44,25 +44,28 @@ void staff_menu(staff*& user, date& today) {
         outputdate(today, false);
         cout << "\n";
         printSeperator();
-        cout << "\n1. View user's profile";
-        cout << "\n2. Create a new schoolyear";
-        cout << "\n3. Create a new semester and import new courses";
-        cout << "\n4. View the list of courses";
-        cout << "\n5. Update information of a course";
-        cout << "\n6. Delete a course";
-        cout << "\n7. Export a course's list of students to a file";
-        cout << "\n8. Import scoreboard";
-        cout << "\n9. View scoreboard of a course";
+        cout << "\n1.  View user's profile";
+        cout << "\n2.  Create a new schoolyear";
+        cout << "\n3.  Create a new semester and import new courses";
+        cout << "\n4.  View the list of courses";
+        cout << "\n5.  Update information of a course";
+        cout << "\n6.  Delete a course";
+        cout << "\n7.  Export a course's list of students to a file";
+        cout << "\n8.  Import scoreboard";
+        cout << "\n9.  View scoreboard of a course";
         cout << "\n10. View scoreboard of a class";
         cout << "\n11. Update a student's result";
-        cout << "\n0. Quit the program";
+        cout << "\n0.  Quit the program";
         cout << "\nChoose an option: ";
         cin >> option;
         cin.clear();
         cin.ignore();
         switch (option) {
+            case 0:
+                loop = false;
+                break;
             case 1:
-                //add a function here
+                
                 break;
             case 2:
                 clrscr();
@@ -87,10 +90,10 @@ void staff_menu(staff*& user, date& today) {
                 break;
             case 5:
                 clrscr();
-                cout<<"Enter course ID: ";
+                cout << "Enter course ID: ";
                 getline (cin,word);
                 {
-                    update_course(list, word);
+                    update_course(word);
                 }
                 break;
             case 6:
@@ -125,7 +128,7 @@ void staff_menu(staff*& user, date& today) {
             default:
                 break;
         }
-    } while (option != 0);
+    } while (loop);
 }
 
 void portal() {
