@@ -68,11 +68,14 @@ void copy_file (string input_path,string output_path);
 
 cqueue<student> list_score_byCourse (string scoreboard_path);
 
-void store_list_ofScoreboard (string path,cqueue<student> list,string course_id);
+void store_list_ofScoreboard (string path,cqueue<student> &list,string course_id);
 
 void view_scoreboard_ofCourse (string scoreboard_path);
 
-void update_score (string path,string scoreboard_path,int student_ID,string course_id); //scoreboardpath to sem of scoreboad,path is as above
-
+void update_score (int student_ID,string course_id); //scoreboardpath to sem of scoreboad,path is as above
 
 void gen_scoreboard (ofstream &fout,course courses);
+
+void save_score_toStudentfile ();
+
+void view_score_of_class (string class_name);

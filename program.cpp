@@ -90,7 +90,7 @@ void staff_menu(staff*& user, date& today) {
                 cout<<"Enter course ID: ";
                 getline (cin,word);
                 {
-                    update_course(list, word);
+                    update_course(word);
                 }
                 break;
             case 6:

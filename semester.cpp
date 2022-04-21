@@ -491,18 +491,17 @@ void take_csv_file_ofStudent_toScoreboard (string course_id)
     {
         fout<<i<<';';
         fin.open((*p).data());
+        student_id=stoi(fs::path(*p).filename().string().substr(0,9));
         getline(fin,tmp);
         stringstream ss(tmp);
         getline(ss,class_name,';');
-        getline(ss,tmp2,';');
-        student_id=stoi(tmp2);
         getline (ss,name,';');
         fin.close();
         fout<<student_id<<';';
         fout<<name<<';';
         fout<<class_name<<endl;
     }
-    copy_file(line + '/' + course_id + ".csv", "export/" + stat.schoolyear + '_' + to_string(stat.semester) + '_' + course_id + ".csv");
+    copy_file(line + '/' + course_id + ".csv", "export/Scoreboard_" + stat.schoolyear + '_' + to_string(stat.semester) + '_' + course_id + ".csv");
     fout.close();
 }
 
@@ -581,19 +580,20 @@ cqueue<student> list_score_byCourse (string scoreboard_path)
         getline(ss,score.name,';');
         getline(ss,score.class_name,';');
         getline(ss,tmp,';');
-        score.scoreboard.mid = stoi (tmp);
+        score.scoreboard.mid = stof (tmp);
         getline(ss,tmp,';');
-        score.scoreboard.final_p = stoi(tmp);
+        score.scoreboard.final_p = stof(tmp);
         getline(ss,tmp,';');
-        score.scoreboard.other = stoi(tmp);
+        score.scoreboard.other = stof(tmp);
         getline(ss,tmp,';');
-        score.scoreboard.total = stoi(tmp);
+        score.scoreboard.total = stof(tmp);
         list.push_back(score);
     }
+    fin.close();
     return list;
 }
 
-void store_list_ofScoreboard (string path,cqueue<student> list,string course_id)
+void store_list_ofScoreboard (string path,cqueue<student>& list,string course_id)
 {
     bool is_course=false;
     int i=1;
@@ -627,6 +627,7 @@ void view_scoreboard_ofCourse (string scoreboard_path)
         cout<<"No: "<<i<<endl;
         cout<<"student ID: "<<(*p).student_id<<endl;
         cout<<"student name: "<<(*p).name<<endl;
+        cout<<"student class: "<<(*p).class_name<<endl;
         cout<<"midterm mark: "<<(*p).scoreboard.mid<<endl;
         cout<<"final mark: "<<(*p).scoreboard.final_p<<endl;
         cout<<"other mark: "<<(*p).scoreboard.other<<endl;
@@ -635,29 +636,44 @@ void view_scoreboard_ofCourse (string scoreboard_path)
     
 }
 
-void update_score (string path,string scoreboard_path,int student_ID,string course_id)
+void update_score (int student_ID,string course_id)
 {
-    scoreboard_path+='/'+course_id+".csv";
+    int option;
+    status stat = getStatus();
+    string scoreboard_path = "data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester) + '/'+course_id+".csv";
+    string path = "data/Course/" + stat.schoolyear + "/Sem " + to_string(stat.semester);
     float update;
     bool is_exist=false;
+    cout<<"menu: "<<endl;
+    cout<<"1. update midterm mark."<<endl;
+    cout<<"2. update final mark."<<endl;
+    cout<<"3. update other mark."<<endl;
+    cout<<"your option: ";
+    cin>>option;
     cqueue<student> list=list_score_byCourse(scoreboard_path);
     for (auto p=list.begin();p!=nullptr;p++)
     {
         if ((*p).student_id==student_ID)
         {
             cout<<"start to update the scoreboard of "<<(*p).student_id<<endl;
-            cout<<"update midterm mark: ";
-            cin>>update;
-            (*p).scoreboard.mid=update;
-            cout<<"update final mark: ";
-            cin>>update;
-            (*p).scoreboard.final_p=update;
-            cout<<"update other mark: ";
-            cin>>update;
-            (*p).scoreboard.other=update;
-            cout<<"update total mark: ";
-            cin>>update;
-            (*p).scoreboard.total=update;
+            switch (option)
+            {
+                case 1:
+                    cout<<"update midterm mark: ";
+                    cin>>update;
+                    (*p).scoreboard.mid=update;
+                    break;
+                case 2:
+                    cout<<"update final mark: ";
+                    cin>>update;
+                    (*p).scoreboard.final_p=update;
+                    break;
+                case 3:
+                    cout<<"update other mark: ";
+                    cin>>update;
+                    (*p).scoreboard.other=update;
+                    break;
+            }
             is_exist=true;
             break;
         }
@@ -669,3 +685,52 @@ void update_score (string path,string scoreboard_path,int student_ID,string cour
     }
     store_list_ofScoreboard(path, list, course_id);
 }
+
+void save_score_toStudentfile ()
+{
+    status stat = getStatus();
+    cqueue<class_score> scores;
+    class_score score;
+    ifstream fin;
+    ofstream fout;
+    string str,str2,str3="",str4;
+    for (const auto & tmp : fs::directory_iterator("data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester)))
+    {
+        str=fs::path(tmp).string();
+        str.erase(str.begin(),str.begin()+15);
+        cqueue<student> list = list_score_byCourse (fs::path(tmp).string());
+        for (auto p = list.begin() ; p != nullptr ; p++)
+        {
+            cqueue<string> line;
+            fin.open("data/People/Students/" + (*p).class_name + '/' + to_string((*p).student_id) + ".csv");
+            while(getline(fin,str2))
+            {
+                line.push_back(str2);
+            }
+            fin.close();
+            fout.open("data/People/Students/" + (*p).class_name + '/' + to_string((*p).student_id) + ".csv");
+            for (auto t = line.begin() ; t != nullptr ; t++)
+            {
+                str2.clear();
+                stringstream ss((*t).data());
+                getline(ss,str2,';');
+                str3=str2;
+                str3.erase(str3.begin(),str3.begin()+12);
+                if (str3 == str)
+                {
+                    fout<<str2<<';';
+                    fout << (*p).scoreboard.mid << ';';
+                    fout << (*p).scoreboard.final_p<< ';';
+                    fout << (*p).scoreboard.other << ';' ;
+                    fout << (*p).scoreboard.total ;
+                }
+                else{
+                    fout << (*t).data();
+                }
+                fout<<endl;
+            }
+            fout.close();
+        }
+    }
+}
+
