@@ -42,7 +42,7 @@ struct student {
 gender to_gender(const std::string& str);
 gender to_gender(const long long& num);
 std::string string_cast(const gender& gender);
-student* loadProfileStudent(account* acc);
+student* loadProfileStudent(account*& acc);
 void getstudentDOB(date& Date,ifstream& fin);
 void importUniclass();
 void importStudent();

@@ -58,9 +58,14 @@ struct status {
 
 bool isBeginning(const date& d0, const cqueue<fs::path>& sy_path);
 void createDateProperties(const string& folder_path, const date& start, const date& end);
-bool can_enroll_course(date& today,date& start_day, date& end_day);
-void displayCourseInfo(cqueue<std::string>& course_path);
-cqueue<std::string> listOfEnrolledCourse(student* user);
+void displayCourseInfo(cqueue<course>& course_list);
+cqueue<course> listOfCourse(status& stt,cqueue<course> enrolled_course);
+bool is_conflict_session(course x,cqueue<course> list);
+cqueue<course> listOfEnrolledCourse(student*& user,status& stt,int& count);
+bool validForEnroll(cqueue<course>& enrolled_course, string words);
+course findCourse(string str,cqueue<course> list);
+void deleteCourse(student*& user,string& ID,status& stt,cqueue<course> enrolled_course);
+void write2File1(const std::string& path, const std::string& str);
 bool createNewSchoolyear();
 //void exportCourseStudents(const string& course_id);
 //database getDB();

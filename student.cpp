@@ -55,7 +55,7 @@ void importStudent() {
     }
 }
 
-student* loadProfileStudent(account* acc){
+student* loadProfileStudent(account*& acc){
     student* std= new student;
     std->student_path = acc->profile_path;
     ifstream fin(std->student_path);
