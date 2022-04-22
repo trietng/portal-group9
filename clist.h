@@ -201,8 +201,10 @@ public:
     void erase_cur(iterator& now) {
         if (now == end()) {
             iterator t = begin();
-            while (t.next() != end()) {
-                ++t;
+            if (t.next() != nullptr) {
+                while (t.next() != end()) {
+                    ++t;
+                }
             }
             ptail = t.pcur;
             if (counter == 1) {
@@ -215,7 +217,12 @@ public:
                 ptail->pnext = nullptr;
             }
         }
-        now.erase_cur();
+        else {
+            if (now.next() == end()) {
+                ptail = now.pcur;
+            }
+            now.erase_cur();
+        }
         counter--;
     }
 };

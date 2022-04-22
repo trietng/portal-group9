@@ -13,3 +13,4 @@ struct staff {
 };
 
 staff* loadProfileStaff(account* acc);
+void printProfile(staff* acc);

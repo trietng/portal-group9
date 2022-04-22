@@ -347,11 +347,14 @@ void portal() {
     date today = getsysdate();
     if (acc->type == 0) {
         staff* user = loadProfileStaff(acc);
+        if (!user) return;
         staff_menu(user, today);
-
+        delete user;
     }
     else {
         student* user = loadProfileStudent(acc);
+        if (!user) return;
         student_menu(user, today);
+        delete user;
     }
 }
