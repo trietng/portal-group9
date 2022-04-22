@@ -113,6 +113,8 @@ void staff_menu(staff*& user, date& today) {
                 {
                     update_course(word);
                 }
+                cout<<"updated."<<endl;
+                thread_sleep(5000);
                 break;
             case 9:
                 clrscr();
@@ -123,6 +125,7 @@ void staff_menu(staff*& user, date& today) {
                     cout << "Enter course ID: ";
                     getline(cin, course_id);
                     delete_course(list, course_id, "data/Courses/" + stat.schoolyear + "/Sem " + to_string(stat.semester));
+                    cout<<course_id<<" is deleted."<<endl;
                 }
                 thread_sleep(5000);
                 break;
@@ -153,6 +156,16 @@ void staff_menu(staff*& user, date& today) {
                     view_scoreboard_ofCourse("data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester) + '/' + word + ".csv");
                     break;
                 }
+                thread_sleep(5000); //change to pause...
+            case 13:
+                clrscr();
+                {
+                    cout<<"Enter class name: ";
+                    getline(cin,word);
+                    view_score_of_classeses(word);
+                    break;
+                }
+                thread_sleep (5000); //change to pause...
             case 14:
                 clrscr();
                 {

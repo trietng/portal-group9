@@ -29,8 +29,8 @@ struct session {
     string day;
     int sess;
 };
-// course course_id->course name-> lecturer name -> start date -> end date -> session->credit->max student
-class course {// course path: ../schoolyear/sem/courseID
+
+class course {
 public:
     string course_id;
     string course_name;
@@ -42,8 +42,10 @@ public:
     string start_date;
     string end_date;
     int credits;
+    scoreboard score;
     cqueue<string> student_path;
 };
+
 struct course_detail {
     course course;
     cqueue<string> student_path;

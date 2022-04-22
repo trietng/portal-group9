@@ -20,6 +20,13 @@
 #include "date.h"
 #include "authentication.h"
 
+struct class_scores
+{
+    student student;
+    cqueue<course> courses;
+    float sem_gpa;
+    float overal_gpa;
+};
 using namespace std;
  //path=../course/schoolyear/sem
 string create_sem_folder (const int& schoolyear1, const int& schoolyear2, const int& sem);
@@ -66,7 +73,7 @@ void copy_file (string input_path,string output_path);
 
 cqueue<student> list_score_byCourse (string scoreboard_path);
 
-void store_list_ofScoreboard (string path,cqueue<student> &list,string course_id);
+void store_list_ofScoreboard (string path, cqueue<student> &list,string course_id);
 
 void view_scoreboard_ofCourse (string scoreboard_path);
 
@@ -76,4 +83,6 @@ void gen_scoreboard (ofstream &fout,course courses);
 
 void save_score_toStudentfile ();
 
-void view_score_of_class (string class_name);
+void view_score_of_classeses (string class_name);
+
+void take_class_scoreboardsss(string student_path);

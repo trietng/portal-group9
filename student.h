@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 #include <filesystem>
 #include "date.h"
@@ -38,12 +39,7 @@ struct student {
     scoreboard scoreboard;
     cqueue<string> course_path;
 };
-struct class_score{
-    student student;
-    cqueue<float> final_mark;
-    float sem_gpa;
-    float overal_gpa;
-};
+
 
 gender to_gender(const std::string& str);
 gender to_gender(const long long& num);

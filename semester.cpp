@@ -175,9 +175,9 @@ void show_session (cqueue<session> ses)
     int i=0;
     for (auto p=ses.begin();p!=nullptr;p++,i++)
     {
-        cout<<"session "<<i+1<<": "<<endl;
-        cout<<"day: "<<(*p).day<<endl;
-        cout<<"time: ";
+        cout<<setw(15)<<"session "<<i+1<<": "<<endl;
+        cout<<setw(15)<<"day: "<<(*p).day<<endl;
+        cout<<setw(16)<<"time: ";
         switch ((*p).sess)
         {
             case 1:
@@ -568,6 +568,8 @@ void store_list_ofScoreboard (string path,cqueue<student>& list,string course_id
     fout.open("data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester) + '/' + course_id + ".csv");
     course courses=search_course(course_id, path, is_course);
     gen_scoreboard(fout, courses);
+    if (is_course == false)
+        return;
     for (auto p=list.begin();p!=nullptr;p++,i++)
     {
         fout<<i<<';';
@@ -621,7 +623,7 @@ void update_score (int student_ID,string course_id)
     {
         if ((*p).student_id==student_ID)
         {
-            cout<<"start to update the scoreboard of "<<(*p).student_id<<endl;
+            cout<<"start to update the scoreboard of "<<(*p).name<<" ("<<(*p).student_id<<')'<<endl;
             switch (option)
             {
                 case 1:
@@ -655,13 +657,13 @@ void update_score (int student_ID,string course_id)
 void save_score_toStudentfile ()
 {
     status stat = getStatus();
-    cqueue<class_score> scores;
-    class_score score;
     ifstream fin;
     ofstream fout;
     string str,str2,str3="",str4;
     for (const auto & tmp : fs::directory_iterator("data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester)))
     {
+        if (fs::path(tmp).filename().string() == "max_student.txt")
+            continue;
         str=fs::path(tmp).string();
         str.erase(str.begin(),str.begin()+15);
         cqueue<student> list = list_score_byCourse (fs::path(tmp).string());
@@ -700,3 +702,97 @@ void save_score_toStudentfile ()
     }
 }
 
+void take_class_scoreboardsss(string student_path)
+{
+    status stat = getStatus();
+    int times = 0,total_credit_sem = 0,total_credit_overal = 0;
+    course course;
+    class_scores score;
+    ifstream fin;
+    ifstream fin_c;
+    string str,path,line,s,l;
+    str = fs::path(student_path).filename().string();
+    str.erase(str.end()-4,str.end());
+    score.student.student_id = stoi(str);
+    fin.open(student_path);
+    while (getline(fin,str))
+    {
+        stringstream ss(str);
+        if (times == 0)
+        {
+            getline(ss,score.student.class_name,';');
+            getline(ss,score.student.name,';');
+            times ++;
+            continue;
+        }
+        times++;
+        getline(ss,path,';');
+        fin_c.open(path);
+        getline(fin_c,line);
+        stringstream ss2(line);
+        getline(ss2,course.schoolyear,';');
+        getline(ss2,s,';');
+        course.semester = stoi(s);
+        getline(ss2,course.course_id,';');
+        getline(ss2,course.course_name,';');
+        for (int i = 0 ; i < 4 ; i++)
+            getline(ss2,s,';');
+        getline (ss2,s,';');
+        course.credits = stoi (s);
+        fin_c.close();
+        getline(ss,path,';');
+        course.score.mid = stof (path);
+        getline(ss,path,';');
+        course.score.final_p = stof (path);
+        getline(ss,path,';');
+        course.score.other = stof (path);
+        getline(ss,path,';');
+        course.score.total = stof (path);
+        score.courses.push_back(course);
+        if (stat.semester == course.semester && stat.schoolyear == course.schoolyear)
+        {
+            score.sem_gpa += (float)course.score.total * course.credits;
+            total_credit_sem += course.credits;
+        }
+        score.overal_gpa += (float)course.score.total * course.credits;
+        total_credit_overal += course.credits;
+    }
+    score.sem_gpa = (float) score.sem_gpa / total_credit_sem;
+    score.overal_gpa = (float) score.overal_gpa / total_credit_overal;
+    fin.close();
+    cout<<"----------------------------------"<<endl;
+    cout<<"Student name: "<<score.student.name<<endl;
+    cout<<"Student ID: "<<score.student.student_id<<endl;
+    cout<<"Student class: "<<score.student.class_name<<endl;
+    cout<<"Courses in semester:"<<endl<<endl;
+    for (auto t = score.courses.begin() ; t != nullptr ; t++)
+    {
+        if ((*t).semester == stat.semester && (*t).schoolyear == stat.schoolyear)
+        {
+            cout<<setw(15)<<"Course ID: "<<(*t).course_id<<endl;
+            cout<<setw(17)<<"Course name: "<<(*t).course_name<<endl;
+            cout<<setw(19)<<"Course credit: "<<(*t).credits<<endl;
+            cout<<setw(24)<<"Course final point: "<<(*t).score.final_p<<endl;
+            cout<<endl;
+        }
+    }
+    cout<<"Semestes's GPA: " << score.sem_gpa<<endl;
+    cout<<"Overal GPA: " << score.overal_gpa<<endl;
+}
+
+void view_score_of_classeses (string class_name)
+{
+    status stat = getStatus();
+    class_scores score;
+    string str;
+    for (const auto &tmp : fs::directory_iterator("data/People/Students/" + class_name))
+    {
+        str=fs::path(tmp).filename().string();
+        size_t found = str.find (".csv");
+        if (found != string::npos)
+        {
+            take_class_scoreboardsss(fs::path(tmp).string());
+        }
+    }
+    
+}
