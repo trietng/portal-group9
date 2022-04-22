@@ -174,12 +174,11 @@ void student_menu(student*& user, date& today){
     int back_to_menu;
     do {
         clrscr();
-        int count = 0;
         cout << "Student menu\n";
-        cout <<"Today is";
+        cout <<"Today is ";
         outputdate(today, false);
-        printSeperator();
         cout << "\n";
+        printSeperator();
         status stt = getStatus();
         if (isRegistrable(today,stt)){  
             int choose;
@@ -188,71 +187,94 @@ void student_menu(student*& user, date& today){
             do {
             cout << "1. Enroll a course\n";
             cout << "2. See a list of enrolled courses\n";
-            cout << "3.Quit the program\n";
+            cout << "3. Exit program\n";
             cout << "You choose:";
             cin >> choose;
             switch (choose) {
                 case 1:
                     clrscr();
-                    enroll_course_menu(user,back_to_menu,stt,count);
+                    enroll_course_menu(user,back_to_menu,stt);
                     TryAgain == 0;
                     break;
                 case 2:
                     clrscr();
-                    see_enrolled_course_menu(user,back_to_menu,count,stt);
+                    see_enrolled_course_menu(user,back_to_menu,stt);
                     TryAgain == 0;
                     break;
-                case 3:exit(0);
+                case 3: TryAgain == 0;
+                    clrscr();
+                    return;
                     break;
                 default:
                     TryAgain = -1;
                     cout << "Invalid syntax!Try again";
+                    thread_sleep(5000);
                     clrscr();
+                    break;
                 }
             } while (TryAgain == -1);
         }
     } while (back_to_menu == 2);
 }
 
-void enroll_course_menu(student*& user,int& back_to_menu,status& stt,int& count){
+void enroll_course_menu(student*& user,int& back_to_menu,status& stt){
     int choose1;
     string ID;
-    cqueue<course> enrolled_course= listOfEnrolledCourse(user,stt,count);
+    cqueue<course> enrolled_course= listOfEnrolledCourse(user,stt);
     cqueue<course> list_of_course = listOfCourse(stt,enrolled_course);
     int enrollCourse = 0;
     do {
     thread_sleep(5000);
     clrscr();
-    cout << "You enrolled: " << count  << endl;
-    cout << "1.Enter the course ID to remove it\n";
-    cout << "2.Back to student menu";
-    cout << "3.Exit program";
+    cout << "You enrolled: " << enrolled_course.size()  << endl;
+    displayCourseInfo(enrolled_course);
+    cout << "\n1.Enroll the course(note that you can enroll in at most 5 courses)\n";
+    cout << "2.Back to student menu\n";
+    cout << "3.Exit program \n";
     cout << "You want: ";
     cin >> choose1;
     switch (choose1){
                 case 1:
-                clrscr();
-                cout << "Note that you can enroll in at most 5 courses.\n";
-                cout << "Here is the list of course you can enroll\n";
-                displayCourseInfo(list_of_course);
-                cout << "Enter the course ID to enroll it: ";
-                cin >> ID;
-                if (count < 5 && !validForEnroll(list_of_course,ID) && !is_conflict_session(findCourse(ID,list_of_course),list_of_course)){
-                    string str = getWorkingDirectory(stt) + "/" + ID;
-                    write2File1(user->student_path,str);
-                    write2File1(str,user->student_path);
+                if (list_of_course.empty() || enrolled_course.size() >= 5) {
+                    clrscr();
+                    cout << "You can't enroll any courses right now!";
                     enrollCourse = 0;
+                    break;
+                }
+                else{
+                    clrscr();
+                    cout << "Note that you can enroll in at most 5 courses.\n";
+                    cout << "Here is the list of course you can enroll\n";
+                    displayCourseInfo(list_of_course);
+                    cout << "Enter the course ID to enroll it: ";
+                    cin.ignore(1000,'\n');
+                    getline(cin,ID);
+                    if (!validForEnroll(list_of_course,ID) && !is_conflict_session(findCourse(ID,list_of_course),list_of_course)){
+                        string str = getWorkingDirectory(stt) + "/" + ID +".csv";
+                        write2File1(user->student_path,str);
+                        write2File1(str,user->student_path);
+                        cout << "Enroll successfully\n";
+                        addCourseToList(ID,enrolled_course,list_of_course);
+                        removeCourseToList(ID,list_of_course);
+                        enrollCourse = 0;
+                    break;
                 }
                 else {
                     cout << "Read carefully!\n";
                     enrollCourse = -1;
+                    break;
                 }
-                break;
+                }
                 case 2: back_to_menu = 2;
                     return;
-                case 3: exit(0);
+                    break;
+                case 3: enrollCourse = 0;
+                        clrscr();
+                        return;
+                        break;
                 default: cout << "Invalid syntax! Try again";
                         enrollCourse = -1;
+                        break;
     }
     if (enrollCourse != -1){
     int go_on = 0;
@@ -272,7 +294,11 @@ void enroll_course_menu(student*& user,int& back_to_menu,status& stt,int& count)
             break;
         case 2: back_to_menu = 2;
             return;
-        case 3: exit(0);
+            break;
+        case 3: 
+            clrscr();
+            return;
+            break;
         default: cout << "Invalid syntax! Try again";
              go_on = -1;
     }
@@ -281,37 +307,54 @@ void enroll_course_menu(student*& user,int& back_to_menu,status& stt,int& count)
     } while (enrollCourse == -1);
 }
 
-void see_enrolled_course_menu(student*& user,int& back_to_menu,int& count,status& stt){
-    clrscr();
+void see_enrolled_course_menu(student*& user,int& back_to_menu,status& stt){
     string ID;
     int choose1;
-    cqueue<course> enrolled_course= listOfEnrolledCourse(user,stt, count);
+    cqueue<course> enrolled_course= listOfEnrolledCourse(user,stt);
     int see_course = 0;
     do{
-    cout << "You enrolled: " << count  << endl;
-    cout << "Here is the list of course you enrolled\n";
+    clrscr();
+    cout << "You enrolled: " << enrolled_course.size()  << endl;
+    cout << "Here is the list of course you can remove\n";
     displayCourseInfo(enrolled_course);
-    cout << "1.Enter the course ID to remove it\n";
-    cout << "2.Back to student menu";
-    cout << "3.Exit program";
+    if (enrolled_course.size() > 0){
+        cout << "1.Enter the course ID to remove it\n";
+        cout << "2.Back to student menu\n";
+        cout << "3.Exit program\n";
+    }
+    else {
+        cout << "You haven't enrolled any courses for this term\n";
+        cout << "1.Back to student menu\n";
+        cout << "2.Exit program\n";
+    }
     cout << "You want: ";
     cin >> choose1;
+    if (enrolled_course.size() == 0) ++choose1;
     switch (choose1){
-        case 1: cin >>ID;
+        case 1: cout << ("Enter the course ID to enroll it: ");
+                cin.ignore(1000,'\n');
+                getline(cin,ID);
                 if (!validForEnroll(enrolled_course,ID)) {
                     deleteCourse(user,ID,stt,enrolled_course);
                     see_course = 0;
+                    cout << "Remove successfully";
                 }
                 else {
                     cout << "Read carefully!";
+                    thread_sleep(5000);
                     see_course = -1;
                 }
             break;
         case 2: back_to_menu = 2;
             return;
-        case 3: exit(0);
+            break;
+        case 3: 
+            clrscr();
+            return;
+            break;
         default: cout << "Invalid syntax! Try again";
             see_course = -1;
+            break;
     }
     if (see_course != -1){
     int go_on = 0;
@@ -331,7 +374,9 @@ void see_enrolled_course_menu(student*& user,int& back_to_menu,int& count,status
             break;
         case 2: back_to_menu = 2;
             return;
-        case 3: exit(0);
+        case 3:  clrscr();
+                return;
+                break;
         default: cout << "Invalid syntax! Try again";
              go_on = -1;
     }

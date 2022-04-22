@@ -61,10 +61,12 @@ void createDateProperties(const string& folder_path, const date& start, const da
 void displayCourseInfo(cqueue<course>& course_list);
 cqueue<course> listOfCourse(status& stt, cqueue<course>& enrolled_course);
 bool is_conflict_session(course* x,cqueue<course>& list);
-cqueue<course> listOfEnrolledCourse(student*& user,status& stt,int& count);
+cqueue<course> listOfEnrolledCourse(student*& user,status& stt);
 bool validForEnroll(cqueue<course>& enrolled_course, string words);
-course* findCourse(string str, cqueue<course>& list);
+course* findCourse(string& str, cqueue<course>& list);
 void deleteCourse(student*& user,string& ID,status& stt,cqueue<course>& enrolled_course);
+void addCourseToList(string& ID,cqueue<course>& enrolled_course,cqueue<course>& course_list);
+void removeCourseToList(string& ID,cqueue<course>& course_list);
 void write2File1(const std::string& path, const std::string& str);
 bool createNewSchoolyear();
 //void exportCourseStudents(const string& course_id);

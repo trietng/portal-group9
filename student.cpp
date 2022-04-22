@@ -56,12 +56,18 @@ void importStudent() {
 }
 
 student* loadProfileStudent(account*& acc){
-    student* std= new student;
-    std->student_path = acc->profile_path;
-    ifstream fin(std->student_path);
+    student* stdent= new student;
+    string str;
+    stdent->student_path = acc->profile_path;
+    ifstream fin(stdent->student_path);
     if (fin){
-        getline(fin,std->name,';');
-        getline(fin,std->class_name,';');
+        getline(fin,stdent->class_name,';');
+        getline(fin,stdent->name,';');
+        getline(fin,stdent->name,';');
+        getline(fin,str,';');
+        stdent->dob = to_date(str);
+        getline(fin,stdent->social_id,';');
     }
-    return nullptr;
+    fin.close();
+    return stdent;
 }
