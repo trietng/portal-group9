@@ -235,6 +235,10 @@ void exportStudentInfo2List(ofstream& fout, const student& student, const int& n
     fout << student.class_name << ";";
 }
 
+std::string getScoreboardPath(const std::string& course_id) {
+    status stat = getStatus();
+    return "data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester) + '/' + course_id + ".csv";
+}
 
 void exportStudentsFromCourse(const std::string& course_id) {
     ifstream fin(getWorkingDirectory(getStatus()) + "/" + course_id + ".csv");
@@ -267,5 +271,158 @@ void exportStudentsFromCourse(const std::string& course_id) {
         }
     }
     fin.close();
+    fout.close();
+}
+
+void writeScoreboardToStudentFiles(const std::string& scoreboard_path, const std::string& course_id) {
+    ifstream fin(scoreboard_path);
+    string line, word;
+    student student;
+    for (int i = 0; i < 8; ++i) {
+        getline(fin, line);
+    }
+    while (getline(fin, line)) {
+        stringstream ss(line);
+        getline(ss, word, ';');
+        getline(ss, word, ';');
+        student.student_id = stoi(word);
+        getline(ss, student.name, ';');
+        getline(ss, student.class_name, ';');
+        getline(ss, word, ';');
+        student.scoreboard.mid = stof(word);
+        getline(ss, word, ';');
+        student.scoreboard.final_p = stof(word);
+        getline(ss, word, ';');
+        student.scoreboard.other = stof(word);
+        getline(ss, word, ';');
+        student.scoreboard.total = stof(word);
+        student.student_path = "data/People/Students/" + student.class_name + "/" + to_string(student.student_id) + ".csv";
+        ifstream sdfin;
+        sdfin.open(student.student_path);
+        cqueue<string> sdfile;
+        string sdline, sdword, course_path;
+        if (sdfin) {
+            getline(sdfin, sdline);
+            sdfile.push_back(sdline);
+            while (getline(sdfin, sdline)) {
+                stringstream sdss(sdline);
+                getline(sdss, sdword, ';');
+                if (fs::path(sdword).filename().string() != (course_id + ".csv")) {
+                    sdfile.push_back(sdline);
+                }
+                else {
+                    course_path = sdword;
+                }
+            }
+            sdfin.close();
+        }
+        ofstream sdfout;
+        sdfout.open(student.student_path);
+        for (auto i = sdfile.begin(); i != nullptr; ++i) {
+            sdfout << (*i) << "\n";
+        }
+        sdfout << course_path << ";" << student.scoreboard.mid << ";" << student.scoreboard.final_p
+        << ";" << student.scoreboard.other << ";" << student.scoreboard.total;
+        sdfout.close();
+    }
+}
+
+void updateScoreboardFile(const std::string& scoreboard_path, const int& student_id) {
+    ifstream fin(scoreboard_path);
+    string line, word, iter;
+    int pos = -1;
+    cqueue<string> course_info, student_info;
+    student student;
+    bool is_found = false;
+    if (fin) {
+        for (int i = 0; i < 8; ++i) {
+            getline(fin, line);
+            course_info.push_back(line);
+        }
+        while (getline(fin, line)) {
+            stringstream ss(line);
+            getline(ss, iter, ';');
+            getline(ss, word, ';');
+            student.student_id = stoi(word);
+            if (student_id == student.student_id) {
+                pos = stoi(iter);
+                getline(ss, student.name, ';');
+                getline(ss, student.class_name, ';');
+                getline(ss, word, ';');
+                student.scoreboard.mid = stof(word);
+                getline(ss, word, ';');
+                student.scoreboard.final_p = stof(word);
+                getline(ss, word, ';');
+                student.scoreboard.other = stof(word);
+                getline(ss, word, ';');
+                student.scoreboard.total = stof(word);
+                is_found = true;
+                int option;
+                do {
+                    clrscr();
+                    cout << "Start to update the scoreboard of " << student.name << " (" << student.student_id << ')' << endl;
+                    cout << "1. Update mid mark";
+                    cout << "\n2. Update final mark";
+                    cout << "\n3. Update other mark";
+                    cout << "\n0. Exit";
+                    cout << "\nChoose your option:";
+                    cin >> option;
+                    switch (option) {
+                    case 1:
+                        cout << "Enter mid mark: ";
+                        cin >> student.scoreboard.mid;
+                        option = 0;
+                        break;
+                    case 2:
+                        cout << "Enter final mark: ";
+                        cin >> student.scoreboard.final_p;
+                        option = 0;
+                        break;
+                    case 3:
+                        cout << "Enter other mark: ";
+                        cin >> student.scoreboard.other;
+                        option = 0;
+                        break;
+                    default:
+                        break;
+                    }
+                } while (option != 0);
+            }
+            else {
+                student_info.push_back(line);
+            }
+        }
+    }
+    fin.close();
+    if (!is_found) {
+        cout << "No student with the ID of " << student_id;
+        return;
+    }
+    ofstream fout(scoreboard_path);
+    for (auto i = course_info.begin(); i != course_info.end(); ++i) {
+        fout << (*i) << "\n";
+    }
+    fout << *course_info.end();
+    if (pos == 1) {
+        fout << "\n" << pos << ";" << student.student_id
+        << ";" << student.name << ";" << student.class_name
+        << ";" << student.scoreboard.mid << ";" << student.scoreboard.final_p
+        << ";" << student.scoreboard.other << ";" << student.scoreboard.total;
+    }
+    for (auto i = student_info.begin(); i != nullptr; ++i) {
+        stringstream si_ss(*i);
+        getline(si_ss, word, ';');
+        int si_iter = stoi(word);
+        if (si_iter + 1 == pos) {
+            fout << "\n" << *i;
+            fout << "\n" << pos << ";" << student_id
+            << ";" << student.name << ";" << student.class_name
+            << ";" << student.scoreboard.mid << ";" << student.scoreboard.final_p
+            << ";" << student.scoreboard.other << ";" << student.scoreboard.total;
+        }
+        else {
+            fout << "\n" << *i;
+        }
+    }
     fout.close();
 }

@@ -38,7 +38,6 @@ void staff_menu(staff*& user, date& today) {
     int option;
     string word;
     semester sem;
-    cqueue<course> c0;
     bool loop = true;
     int num;
     status stat;
@@ -62,7 +61,7 @@ void staff_menu(staff*& user, date& today) {
         cout << "\n11. Import scoreboard (22)";
         cout << "\n12. View scoreboard of a course (23)";
         cout << "\n13. View scoreboard of a class (25)";
-        cout << "\n14. Update a student's result (26)";
+        cout << "\n14. Update a student's result (24)";
         cout << "\n0.  Quit the program";
         cout << "\nChoose an option: ";
         cin >> option;
@@ -152,7 +151,8 @@ void staff_menu(staff*& user, date& today) {
                     cout<<"Enter course ID: ";
                     getline(cin,word);
                     copy_file("import/Scoreboard_" + stat.schoolyear + '_' + to_string(stat.semester) + '_' + word + ".csv", "data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester) + '/' + word + ".csv");
-                    save_score_toStudentfile();
+                    writeScoreboardToStudentFiles("data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester) + '/' + word + ".csv", word);
+                    //save_score_toStudentfile();
                 }
                 dialogPause();
                 break;
@@ -182,8 +182,9 @@ void staff_menu(staff*& user, date& today) {
                     getline (cin,word);
                     cout<<"Enter student ID: ";
                     cin>>num;
-                    update_score(num, word);
-                    save_score_toStudentfile();
+                    string scoreboard_path = getScoreboardPath(word);
+                    updateScoreboardFile(scoreboard_path, num);
+                    writeScoreboardToStudentFiles(scoreboard_path, word);
                 }
                 dialogPause();
                 break;
@@ -231,11 +232,14 @@ void student_menu(student*& user, date& today){
                 default:
                     TryAgain = -1;
                     cout << "Invalid syntax!Try again";
-                    thread_sleep(5000);
+                    thread_sleep(2000);
                     clrscr();
                     break;
                 }
             } while (TryAgain == -1);
+        }
+        else {
+
         }
     } while (back_to_menu == 2);
 }

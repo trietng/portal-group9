@@ -5,6 +5,7 @@
 #include "staff.h"
 #include "student.h"
 #include "clist.h"
+#include "display.h"
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -58,8 +59,6 @@ struct status {
     date end_registration;
 };
 
-bool isBeginning(const date& d0, const cqueue<fs::path>& sy_path);
-void createDateProperties(const string& folder_path, const date& start, const date& end);
 void displayCourseInfo(cqueue<course>& course_list);
 cqueue<course> listOfCourse(status& stt, cqueue<course>& enrolled_course);
 bool is_conflict_session(course* x,cqueue<course>& list);
@@ -80,3 +79,6 @@ std::string getWorkingDirectory(const status& status);
 cqueue<course> getCourseList(const std::string& work_dir);
 void exportStudentInfo2List(ofstream& fout, const student& student, const int& no);
 void exportStudentsFromCourse(const std::string& course_id);
+std::string getScoreboardPath(const std::string& course_id);
+void writeScoreboardToStudentFiles(const std::string& scoreboard_path, const std::string& course_id);
+void updateScoreboardFile(const std::string& scoreboard_path, const int& student_id);

@@ -604,7 +604,7 @@ void view_scoreboard_ofCourse (string scoreboard_path)
     
 }
 
-void update_score (int student_ID,string course_id)
+string update_score (int student_ID,string course_id)
 {
     int option;
     status stat = getStatus();
@@ -648,10 +648,11 @@ void update_score (int student_ID,string course_id)
     }
     if (is_exist==false)
     {
-        cout<<"the student id is not existed.";
-        return;
+        cout<<"the student id does not existed.";
+        return "";
     }
     store_list_ofScoreboard(path, list, course_id);
+    return scoreboard_path;
 }
 
 void save_score_toStudentfile ()
@@ -794,5 +795,4 @@ void view_score_of_classeses (string class_name)
             take_class_scoreboardsss(fs::path(tmp).string());
         }
     }
-    
 }

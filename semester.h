@@ -77,7 +77,7 @@ void store_list_ofScoreboard (string path, cqueue<student> &list,string course_i
 
 void view_scoreboard_ofCourse (string scoreboard_path);
 
-void update_score (int student_ID,string course_id); //scoreboardpath to sem of scoreboad,path is as above
+string update_score (int student_ID,string course_id); //scoreboardpath to sem of scoreboad,path is as above
 
 void gen_scoreboard (ofstream &fout,course courses);
 
