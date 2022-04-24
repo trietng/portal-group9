@@ -19,6 +19,7 @@
 #include "student.h"
 #include "date.h"
 #include "authentication.h"
+#include "typeinfo"
 
 struct class_scores
 {

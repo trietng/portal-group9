@@ -775,21 +775,26 @@ void take_class_scoreboardsss(string student_path)
         course.credits = stoi (s);
         fin_c.close();
         getline(ss,path,';');
-        course.score.mid = stof (path);
-        getline(ss,path,';');
-        course.score.final_p = stof (path);
-        getline(ss,path,';');
-        course.score.other = stof (path);
-        getline(ss,path,';');
-        course.score.total = stof (path);
-        score.courses.push_back(course);
-        if (stat.semester == course.semester && stat.schoolyear == course.schoolyear)
+        if (path =="")
+            continue;
+        else
         {
-            score.sem_gpa += (float)course.score.total * course.credits;
-            total_credit_sem += course.credits;
+            course.score.mid = stof (path);
+            getline(ss,path,';');
+            course.score.final_p = stof (path);
+            getline(ss,path,';');
+            course.score.other = stof (path);
+            getline(ss,path,';');
+            course.score.total = stof (path);
+            score.courses.push_back(course);
+            if (stat.semester == course.semester && stat.schoolyear == course.schoolyear)
+            {
+                score.sem_gpa += (float)course.score.total * course.credits;
+                total_credit_sem += course.credits;
+            }
+            score.overal_gpa += (float)course.score.total * course.credits;
+            total_credit_overal += course.credits;
         }
-        score.overal_gpa += (float)course.score.total * course.credits;
-        total_credit_overal += course.credits;
     }
     score.sem_gpa = (float) score.sem_gpa / total_credit_sem;
     score.overal_gpa = (float) score.overal_gpa / total_credit_overal;
