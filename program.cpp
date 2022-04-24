@@ -265,7 +265,9 @@ void student_menu(student*& user, date& today){
                     break;
                 case 2:
                     clrscr();
-                    
+                    {
+                        //viewScoreboard();
+                    }
                     break;
                 default:
                     break;

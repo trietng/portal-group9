@@ -101,16 +101,54 @@ void viewListOfStudentsInCourse() {
     }
     fin.close();
 }
-
+//account* user
 void viewScoreboard(account* user) {
-    ifstream fin(user->profile_path);
-    string line, word;
-    int counter = 0;
+    ifstream fin,fin_c;
+    fin.open(user->profile_path);
+    string line, word, str;
+    int counter = 0 , cre;
+    double tmp;
     if (fin) {
-        cout << "No  Course ID   Credits Mid Final Other Total";
+        cout << "No  Course ID   Credits Mid Final Other Total"<<endl;
         getline(fin, line);
-        while (getline(fin, line)) {
-            
+        while (getline(fin, line))
+        {
+            counter++;
+            cout<<counter;
+            stringstream ss (line);
+            getline (ss,word,';');
+            fin_c.open(fs::path(word).string());
+            getline(fin_c,str);
+            stringstream ss_c(str);
+            for (int i = 0;i < 9; i++)
+                getline (ss_c,str,';');
+            cre = stoi (str);
+            fin_c.close();
+            str = fs::path(word).filename().string();
+            str.erase(str.end()-4,str.end());
+            cout << string (4 - ( (int) log10((counter)) + 1),' ')<<str;
+            cout << string (15 - str.length(),' ') << cre;
+            getline (ss,word,';');
+            if (word == "")
+            {
+                cout<<endl;
+                continue;
+            }
+            else
+            {
+                tmp = stof (word);
+                cout << string (5 - ( (int) log10(cre) + 1),' ')<< fixed << setprecision(1) << tmp;
+                getline (ss,word,';');
+                tmp = stof (word);
+                cout << string (2,' ') << fixed <<setprecision(1) << tmp;
+                getline (ss,word,';');
+                tmp = stof (word);
+                cout << string (3,' ') << fixed << setprecision(1) << tmp;
+                getline (ss,word,';');
+                tmp = stof (word);
+                cout << string (3,' ') << fixed << setprecision(1) << tmp << endl;
+            }
         }
+        fin.close();
     }
 }
