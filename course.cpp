@@ -343,8 +343,8 @@ void updateScoreboardFile(const std::string& scoreboard_path, const int& student
             stringstream ss(line);
             getline(ss, iter, ';');
             getline(ss, word, ';');
-            student.student_id = stoi(word);
-            if (student_id == student.student_id) {
+            if (student_id == stoi(word)) {
+                student.student_id = stoi(word);
                 pos = stoi(iter);
                 getline(ss, student.name, ';');
                 getline(ss, student.class_name, ';');
@@ -404,6 +404,7 @@ void updateScoreboardFile(const std::string& scoreboard_path, const int& student
     }
     fout << *course_info.end();
     if (pos == 1) {
+        //cout<<student.student_id<<endl;
         fout << "\n" << pos << ";" << student.student_id
         << ";" << student.name << ";" << student.class_name
         << ";" << student.scoreboard.mid << ";" << student.scoreboard.final_p

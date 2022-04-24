@@ -30,17 +30,27 @@ semester set_sem (int schoolyear1,int schoolyear2,int sem) {
     return sems;
 }
 
-course create_course(string path) {
+course create_course(string path,bool &is_created) {
     course courses;
+    string str;
     ifstream fin;
-    fin.open(path + "/MANAGEMENT.csv");
-    getline(fin, courses.schoolyear, ';');
-    fin >> courses.semester;
-    fin.clear();
-    fin.ignore();
-    fin.close();
+    status stat = getStatus();
+    cqueue<course> list = list_of_courses(path);
+    courses.schoolyear = stat.schoolyear;
+    courses.semester = stat.semester;
+    cout<<"start to import course."<<endl;
+    cout<<"------------------------------"<<endl;
     cout<<"Enter course ID: ";
     getline(cin, courses.course_id);
+    for (auto p = list.begin();p != nullptr;p++)
+    {
+        if ((*p).course_id == courses.course_id)
+        {
+            cout<<"course is already exist."<<endl;
+            is_created = false;
+            return courses;
+        }
+    }
     cout<<"Enter course Name: ";
     getline(cin, courses.course_name);
     cout<<"Enter course lecturer: ";
@@ -58,11 +68,34 @@ course create_course(string path) {
     return courses;
 }
 
+void add_course ()
+{
+    bool is_created = true;
+    status stat = getStatus();
+    string path = "data/Courses/" + stat.schoolyear + "/Sem " + to_string(stat.semester) , str;
+    course courses = create_course(path,is_created);
+    if (!is_created)
+        return;
+    ofstream fout;
+    ifstream fin;
+    update_management(courses);
+    fin.open (path + "/MANAGEMENT.csv");
+    while (!fin.eof())
+    {
+        getline(fin,str);
+    }
+    fin.close();
+    fout.open (path + '/' + courses.course_id + ".csv");
+    fout<<str;
+    fout.close();
+}
+
 void update_management (course course)
 {
     ofstream fout;
     status stat = getStatus();
     fout.open ("data/Courses/" + stat.schoolyear + "/Sem " + to_string(stat.semester) + "/MANAGEMENT.csv",ios::app);
+    fout<<'\n';
     fout<<course.schoolyear<<';';
     fout<<course.semester<<';';
     fout<<course.course_id<<';';
@@ -72,7 +105,7 @@ void update_management (course course)
     fout<<course.end_date<<';';
     fout<<course.session<<';';
     fout<<course.credits<<';';
-    fout<<course.max_num_student<<endl;
+    fout<<course.max_num_student<<';';
     fout.close();
 }
 
@@ -220,7 +253,7 @@ void show_courses (const cqueue<course>& list) {
 void add_list_of_courses (string start_end_dates, const cqueue<course>& list,string path) {
     ofstream fout;
     fout.open(path+"/MANAGEMENT.csv");
-    fout << start_end_dates << endl;
+    fout << start_end_dates;
     fout.close();
     for (auto t = list.cbegin();t!=nullptr;t++)
     {
@@ -278,7 +311,7 @@ void importCourses(const semester& sem) {
             fout << line;
             fout.close();
             fout.open(sem.folder_path + "/MANAGEMENT.csv", ios::app);
-            fout << "\n" << line;
+            fout<< '\n' << line;
             fout.close();
         }
         fin.close();
@@ -781,7 +814,7 @@ void take_class_scoreboardsss(string student_path)
     cout<<"Overal GPA: " << score.overal_gpa<<endl;
 }
 
-void view_score_of_classeses (string class_name)
+void view_score_of_class (string class_name)
 {
     status stat = getStatus();
     class_scores score;

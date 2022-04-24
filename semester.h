@@ -29,11 +29,16 @@ struct class_scores
 };
 using namespace std;
  //path=../course/schoolyear/sem
+
+
+
 string create_sem_folder (const int& schoolyear1, const int& schoolyear2, const int& sem);
 
 semester set_sem (int schoolyear1,int schoolyear2,int sem);
 
-course create_course(string path);
+course create_course(string path,bool &is_created);
+
+void add_course ();
 
 void update_management (course course);
 
@@ -83,6 +88,8 @@ void gen_scoreboard (ofstream &fout,course courses);
 
 void save_score_toStudentfile ();
 
-void view_score_of_classeses (string class_name);
+void view_score_of_class (string class_name);
 
 void take_class_scoreboardsss(string student_path);
+
+
