@@ -101,3 +101,16 @@ void viewListOfStudentsInCourse() {
     }
     fin.close();
 }
+
+void viewScoreboard(account* user) {
+    ifstream fin(user->profile_path);
+    string line, word;
+    int counter = 0;
+    if (fin) {
+        cout << "No  Course ID   Credits Mid Final Other Total";
+        getline(fin, line);
+        while (getline(fin, line)) {
+            
+        }
+    }
+}
