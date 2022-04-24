@@ -16,6 +16,11 @@ int dialogYesNo(const char& input) {
     return -1;
 }
 
+void dialogPause() {
+    cout << "\nPress key ENTER to continue...";
+    cin.get();
+}
+
 void printSeperator() {
     cout << "===============================================================================\n";
 }
@@ -73,6 +78,7 @@ void staff_menu(staff*& user, date& today) {
             case 2:
                 clrscr();
                 import_menu();
+                dialogPause();
                 break;
             case 3:
                 clrscr();
@@ -84,27 +90,28 @@ void staff_menu(staff*& user, date& today) {
                 cin.ignore();
                 sem = set_sem(stoi(word.substr(0, 4)), stoi(word.substr(5, 4)), num);
                 importCourses(sem);
+                dialogPause();
                 break;
             case 4:
                 clrscr();
                 stat=getStatus();
                 show_courses(list_of_courses("data/Courses/" + stat.schoolyear + "/Sem " + to_string(stat.semester)));
-                thread_sleep(5000);
+                dialogPause();
                 break;
             case 5:
                 clrscr();
                 viewListOfClasses();
-                cin.get();
+                dialogPause();
                 break;
             case 6:
                 clrscr();
                 viewListOfStudentsInClass();
-                cin.get();
+                dialogPause();
                 break;
             case 7:
                 clrscr();
                 viewListOfStudentsInCourse();
-                cin.get();
+                dialogPause();
                 break;
             case 8:
                 clrscr();
@@ -114,7 +121,7 @@ void staff_menu(staff*& user, date& today) {
                     update_course(word);
                 }
                 cout<<"updated."<<endl;
-                thread_sleep(5000);
+                dialogPause();
                 break;
             case 9:
                 clrscr();
@@ -127,7 +134,7 @@ void staff_menu(staff*& user, date& today) {
                     delete_course(list, course_id, "data/Courses/" + stat.schoolyear + "/Sem " + to_string(stat.semester));
                     cout<<course_id<<" is deleted."<<endl;
                 }
-                thread_sleep(5000);
+                dialogPause();
                 break;
             case 10:
                 clrscr();
@@ -135,8 +142,9 @@ void staff_menu(staff*& user, date& today) {
                     cout<<"Enter course ID: ";
                     getline (cin,word);
                     take_csv_file_ofStudent_toScoreboard( word);
-                    break;
                 }
+                dialogPause();
+                break;
             case 11:
                 clrscr();
                 {
@@ -145,8 +153,9 @@ void staff_menu(staff*& user, date& today) {
                     getline(cin,word);
                     copy_file("import/Scoreboard_" + stat.schoolyear + '_' + to_string(stat.semester) + '_' + word + ".csv", "data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester) + '/' + word + ".csv");
                     save_score_toStudentfile();
-                    break;
                 }
+                dialogPause();
+                break;
             case 12:
                 clrscr();
                 {
@@ -154,18 +163,18 @@ void staff_menu(staff*& user, date& today) {
                     cout<<"Enter course ID: ";
                     getline (cin,word);
                     view_scoreboard_ofCourse("data/Scoreboard/" + stat.schoolyear + "/Sem " + to_string(stat.semester) + '/' + word + ".csv");
-                    break;
                 }
-                thread_sleep(5000); //change to pause...
+                dialogPause();
+                break;
             case 13:
                 clrscr();
                 {
                     cout<<"Enter class name: ";
                     getline(cin,word);
                     view_score_of_classeses(word);
-                    break;
                 }
-                thread_sleep (5000); //change to pause...
+                dialogPause();
+                break;
             case 14:
                 clrscr();
                 {
@@ -175,8 +184,9 @@ void staff_menu(staff*& user, date& today) {
                     cin>>num;
                     update_score(num, word);
                     save_score_toStudentfile();
-                    break;
                 }
+                dialogPause();
+                break;
             default:
                 break;
         }

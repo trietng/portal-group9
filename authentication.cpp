@@ -2,12 +2,6 @@
 
 using namespace std;
 
-void file_copy(const string& dest, const string& source) {
-    ifstream fin(source, std::ios::binary);
-    ofstream fout(dest, std::ios::binary);
-    fout << fin.rdbuf();
-}
-
 cqueue<account> readUserDB() {
     ifstream fin;
     string line, word;
