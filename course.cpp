@@ -11,12 +11,12 @@ void displayCourseInfo(cqueue<course>& course_list) {
 	cout << setw(116) << "-" << endl;	
 	cout << setfill(' ');
     for (auto i = course_list.begin(); i != nullptr; ++i) {
-            cout << setw(13) << left << (*i).course_id;
-            cout << setw(40) << left << (*i).course_name;
-            cout << setw(8) << left << (*i).credits;
-            cout << setw(1) << left << (*i).semester << setw(1) << left << "/" << setw(13) << left << (*i).schoolyear;
-            cout << setw(15) << left << (*i).session;
-            cout << setw(25) << right << (*i).lecturer_name;
+        cout << setw(13) << left << (*i).course_id;
+        cout << setw(40) << left << (*i).course_name;
+        cout << setw(8) << left << (*i).credits;
+        cout << setw(1) << left << (*i).semester << setw(1) << left << "/" << setw(13) << left << (*i).schoolyear;
+        cout << setw(15) << left << (*i).session;
+        cout << setw(25) << right << (*i).lecturer_name;
         cout << "\n";
     }
 }
@@ -109,15 +109,19 @@ void deleteCourse(student*& user,string& ID,status& stt,cqueue<course>& enrolled
 
 void addCourseToList(string& ID,cqueue<course>& enrolled_course,cqueue<course>& course_list){
     for (auto i = course_list.begin(); i != nullptr ; ++i){
-        if ((*i).course_id == ID) enrolled_course.push_back(*i);
+        if ((*i).course_id == ID) {
+            enrolled_course.push_back(*i);
+        }
         break;
     }
 }
 
 void removeCourseToList(string& ID,cqueue<course>& course_list){
     for (auto i = course_list.begin(); i != nullptr ; ++i){
-        if ((*i).course_id == ID) course_list.erase_cur(i);
-        break;
+        if ((*i).course_id == ID) {
+            course_list.erase_cur(i);
+            break;
+        }
     }
 }
 
