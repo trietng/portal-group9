@@ -19,6 +19,10 @@ void displayCourseInfo(cqueue<course>& course_list) {
         cout << setw(25) << right << (*i).lecturer_name;
         cout << "\n";
     }
+    cout << setfill('-');	
+	cout << setw(116) << "-" << endl;	
+	cout << setfill(' ');
+    cout << "\n";
 }
 
 cqueue<course> listOfCourse(status& stt, cqueue<course>& enrolled_course){
@@ -51,7 +55,7 @@ cqueue<course> listOfCourse(status& stt, cqueue<course>& enrolled_course){
 
 bool is_conflict_session(course* x,cqueue<course>& list) {
     for (auto i = list.begin(); i != nullptr; ++i){
-        if (x->session == (*i).session && x->schoolyear != (*i).schoolyear && x->semester != (*i).semester) return true;
+        if (x->session == (*i).session ) return true;
     }
     return false;
 }
