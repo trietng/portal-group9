@@ -202,11 +202,12 @@ void staff_menu(staff*& user, date& today) {
 }
 
 void student_menu(student*& user, date& today){
-    int back_to_menu = 0;
+    int back_to_menu;
     do {
         clrscr();
         status stt = getStatus();
-        if (isRegistrable(today,stt)){  
+        if (isRegistrable(today,stt)){
+            back_to_menu = 0;  
             int choose;
             cout << "Today ("; outputdate(today, false);
             cout << ") is valid for enrolling courses. You want:\n";
@@ -235,6 +236,7 @@ void student_menu(student*& user, date& today){
                 default:
                     TryAgain = -1;
                     cout << "Invalid syntax!Try again";
+                    cin.ignore(1000,'\n');
                     dialogPause();
                     clrscr();
                     break;
@@ -242,6 +244,7 @@ void student_menu(student*& user, date& today){
             } while (TryAgain == -1);
         }
         else {
+            back_to_menu = 0;
             bool loop = true;
             int option;
             do {
@@ -260,12 +263,13 @@ void student_menu(student*& user, date& today){
                 case 1:
                     clrscr();
                     see_enrolled_course_menu(user,back_to_menu,stt,false);
+                    loop = false;
                     cin.get();
                     break;
                 case 2:
                     clrscr();
                     viewScoreboard(user);
-                    cin.ignore();
+                    cin.ignore(1000,'\n');
                     dialogPause();
                     break;
                 default:
@@ -315,6 +319,7 @@ void enroll_course_menu(student*& user,int& back_to_menu,status& stt){
                     addCourseToList(ID,enrolled_course,list_of_course);
                     removeCourseToList(ID,list_of_course);
                     enrollCourse = 0;
+                    cin.ignore(1000,'\n');
                     dialogPause();
                     break;
                 }
@@ -322,6 +327,7 @@ void enroll_course_menu(student*& user,int& back_to_menu,status& stt){
                     cout << "Read carefully!\n";
                     cout << "Your course's session is conflicting with existing one!\n";
                     enrollCourse = -1;
+                    cin.ignore(1000,'\n');
                     dialogPause();
                     break;
                 }
@@ -367,6 +373,7 @@ void enroll_course_menu(student*& user,int& back_to_menu,status& stt){
                 default: 
                     cout << "Invalid syntax! Try again";
                     go_on = -1;
+                    cin.ignore(1000,'\n');
                     dialogPause();
                     break;
                 }
@@ -398,7 +405,7 @@ void see_enrolled_course_menu(student*& user,int& back_to_menu,status& stt,bool 
     }
     cout << "You want: ";
     cin >> choose1;
-    if (enrolled_course.size() == 0 || check == false) ++choose1;
+    if (choose1 > 0 && (enrolled_course.size() == 0 || check == false)) ++choose1;
     switch (choose1){
         case 1: cout << ("Enter the course ID to remove it: ");
                 cin.ignore(1000,'\n');
@@ -411,6 +418,7 @@ void see_enrolled_course_menu(student*& user,int& back_to_menu,status& stt,bool 
                 else {
                     cout << "Read carefully!";
                     see_course = -1;
+                    cin.ignore(1000,'\n');
                     dialogPause();
                 }
             break;
@@ -418,12 +426,14 @@ void see_enrolled_course_menu(student*& user,int& back_to_menu,status& stt,bool 
             return;
             break;
         case 3: 
+            see_course = 0;
             back_to_menu = 0;
             clrscr();
             return;
             break;
         default: cout << "Invalid syntax! Try again";
             see_course = -1;
+            cin.ignore(1000,'\n');
             dialogPause();
             break;
     }
@@ -449,6 +459,7 @@ void see_enrolled_course_menu(student*& user,int& back_to_menu,status& stt,bool 
                 break;
         default: cout << "Invalid syntax! Try again";
                 go_on = -1;
+                cin.ignore(1000,'\n');
                 dialogPause();
     }
     } while (go_on == -1);
