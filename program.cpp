@@ -205,15 +205,11 @@ void student_menu(student*& user, date& today){
     int back_to_menu = 0;
     do {
         clrscr();
-        cout << "Student menu\n";
-        cout <<"Today is ";
-        outputdate(today, false);
-        cout << "\n";
-        printSeperator();
         status stt = getStatus();
         if (isRegistrable(today,stt)){  
             int choose;
-            cout << "Today is valid for enrolling courses. You want:\n";
+            cout << "Today ("; outputdate(today, false);
+            cout << ") is valid for enrolling courses. You want:\n";
             int TryAgain = 0;
             do {
             cout << "1. Enroll a course\n";
@@ -246,14 +242,14 @@ void student_menu(student*& user, date& today){
             } while (TryAgain == -1);
         }
         else {
-            int back_to_menu = 0;
             bool loop = true;
             int option;
             do {
                 clrscr();
-                cout << "1. List enrolled courses (16)";
+                cout << "Today is "; outputdate(today, false);
+                cout << "\n1. List enrolled courses (16)";
                 cout << "\n2. View scoreboard (26)";
-                cout << "\n3. Quit the program";
+                cout << "\n0. Quit the program";
                 cout << "\nChoose your option: ";
                 cin >> option;
                 switch (option) {
@@ -264,17 +260,15 @@ void student_menu(student*& user, date& today){
                 case 1:
                     clrscr();
                     see_enrolled_course_menu(user,back_to_menu,stt,false);
-                    loop = false;
+                    cin.get();
                     break;
                 case 2:
                     clrscr();
-                    {
-                        //viewScoreboard();
-                    }
+                    viewScoreboard(user);
+                    cin.ignore();
+                    dialogPause();
                     break;
                 default:
-                    clrscr();
-                    loop = false;
                     break;
                 }
             } while (loop);

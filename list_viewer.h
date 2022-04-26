@@ -14,4 +14,4 @@ void displayStudentInfoInCourse(const student& student, const int& i);
 void viewListOfStudentsInClass();
 void viewListOfStudentsInCourse();
 //void viewScoreboard(account* user);
-void viewScoreboard(account* user);
+void viewScoreboard(student* user);

@@ -102,9 +102,9 @@ void viewListOfStudentsInCourse() {
     fin.close();
 }
 //account* user
-void viewScoreboard(account* user) {
+void viewScoreboard(student* user) {
     ifstream fin,fin_c;
-    fin.open(user->profile_path);
+    fin.open(user->student_path);
     string line, word, str;
     int counter = 0 , cre;
     double tmp;

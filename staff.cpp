@@ -15,3 +15,7 @@ staff* loadProfileStaff(account* acc) {
     }
     return stf;
 }
+
+void printProfile(staff* acc) {
+    
+}
