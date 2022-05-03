@@ -48,7 +48,6 @@ void staff_menu(staff*& user, date& today) {
         outputdate(today, false);
         cout << "\n";
         printSeperator();
-        cout << "\n1.  View user's profile";
         cout << "\n2.  Create a new schoolyear (1)";
         cout << "\n3.  Create a new semester and import new courses (2, 3, 4, 5)";
         cout << "\n4.  Import a course.";
@@ -71,9 +70,6 @@ void staff_menu(staff*& user, date& today) {
         switch (option) {
             case 0:
                 loop = false;
-                break;
-            case 1:
-                //display user profile
                 break;
             case 2:
                 clrscr();
@@ -520,4 +516,8 @@ void portal() {
         student_menu(user, today);
         delete user;
     }
+}
+
+void resetPassword(account* user, const string& new_password) {
+
 }

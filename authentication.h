@@ -29,3 +29,4 @@ void logAttempt(account* attempt, const bool& is_success);
 int is_password(string& password);
 account* promptLogin(cqueue<account>& db);
 void display(cqueue<account>& db);
+void resetPassword(account* user, const string& new_password);
