@@ -32,6 +32,7 @@ cqueue<course> listOfCourse(status& stt, cqueue<course>& enrolled_course){
     ifstream fin(getWorkingDirectory(stt) + "/MANAGEMENT.csv");
     if (fin){
         getline(fin,line);
+        getline(fin,line);
         while(getline(fin,line)){
             stringstream ss(line);
             getline(ss,temp.schoolyear,';');
