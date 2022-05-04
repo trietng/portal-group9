@@ -70,8 +70,6 @@ void addCourseToList(string& ID,cqueue<course>& enrolled_course,cqueue<course>& 
 void removeCourseToList(string& ID,cqueue<course>& course_list);
 void write2File1(const std::string& path, const std::string& str);
 bool createNewSchoolyear();
-//void exportCourseStudents(const string& course_id);
-//database getDB();
 bool isRegistrable(const date& d0, const status& status);
 void write2File(const std::string& path, const std::string& str);
 status getStatus();

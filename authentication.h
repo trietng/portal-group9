@@ -6,6 +6,7 @@
 #include <cstdio>
 #include "date.h"
 #include "clist.h"
+#include "display.h"
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -30,3 +31,5 @@ int is_password(string& password);
 account* promptLogin(cqueue<account>& db);
 void display(cqueue<account>& db);
 void resetPassword(account* user, const string& new_password);
+void dialogResetPassword(cqueue<account>& db, account* user);
+void updateUserDB(cqueue<account>& db);

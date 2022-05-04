@@ -25,16 +25,7 @@ void printSeperator() {
     cout << "===============================================================================\n";
 }
 
-void import_menu() {
-    if (createNewSchoolyear()) {
-        cout << "\n";
-        importUniclass();
-        cout << "\n";
-        importStudent();
-    }
-}
-
-void staff_menu(staff*& user, date& today) {
+void staff_menu(staff* user, date& today, cqueue<account>& acc_db, account* acc) {
     int option;
     string word;
     semester sem;
@@ -46,22 +37,25 @@ void staff_menu(staff*& user, date& today) {
         cout << "Academic staff menu";
         cout << "\nToday is ";
         outputdate(today, false);
-        cout << "\n";
+        stat = getStatus();
+        cout << " | Schoolyear " << stat.schoolyear << " | Semester " << stat.semester << "\n";
         printSeperator();
+        cout << "1.  Reset password";
         cout << "\n2.  Create a new schoolyear (1)";
-        cout << "\n3.  Create a new semester and import new courses (2, 3, 4, 5)";
-        cout << "\n4.  Import a course.";
-        cout << "\n5.  View the list of courses (9, 19)";
-        cout << "\n6.  View the list of classes (17)";
-        cout << "\n7.  View the list of students in a class (18)";
-        cout << "\n8.  View the list of students in a course (20)";
-        cout << "\n9.  Update information of a course (10)";
-        cout << "\n10.  Delete a course (11)";
-        cout << "\n11. Export a course's list of students to a file (21)";
-        cout << "\n12. Import scoreboard (22)";
-        cout << "\n13. View scoreboard of a course (23)";
-        cout << "\n14. View scoreboard of a class (25)";
-        cout << "\n15. Update a student's result (24)";
+        cout << "\n3.  Import new classes and students (2, 3, 4, 5)";
+        cout << "\n4.  Create a new semester and import new courses (6, 7)";
+        cout << "\n5.  Add a course manually (8).";
+        cout << "\n6.  View the list of courses (9, 19)";
+        cout << "\n7.  View the list of classes (17)";
+        cout << "\n8.  View the list of students in a class (18)";
+        cout << "\n9.  View the list of students in a course (20)";
+        cout << "\n10. Update information of a course (10)";
+        cout << "\n11. Delete a course (11)";
+        cout << "\n12. Export a course's list of students to a file (21)";
+        cout << "\n13. Import scoreboard (22)";
+        cout << "\n14. View scoreboard of a course (23)";
+        cout << "\n15. View scoreboard of a class (25)";
+        cout << "\n16. Update a student's result (24)";
         cout << "\n0.  Quit the program";
         cout << "\nChoose an option: ";
         cin >> option;
@@ -71,12 +65,23 @@ void staff_menu(staff*& user, date& today) {
             case 0:
                 loop = false;
                 break;
+            case 1:
+                clrscr();
+                dialogResetPassword(acc_db, acc);
+                break;
             case 2:
                 clrscr();
-                import_menu();
+                createNewSchoolyear();
                 dialogPause();
                 break;
             case 3:
+                clrscr();
+                importUniclass();
+                cout << "\n";
+                importStudent();
+                cout << "\n";
+                break;
+            case 4:
                 clrscr();
                 cout << "Enter schoolyear: ";
                 cin >> word;
@@ -88,34 +93,34 @@ void staff_menu(staff*& user, date& today) {
                 importCourses(sem);
                 dialogPause();
                 break;
-            case 4:
+            case 5:
                 clrscr ();
                 add_course ();
                 cout<<"course is added successfully."<<endl;
                 dialogPause();
                 break;
-            case 5:
+            case 6:
                 clrscr();
                 stat=getStatus();
                 show_courses(list_of_courses("data/Courses/" + stat.schoolyear + "/Sem " + to_string(stat.semester)));
                 dialogPause();
                 break;
-            case 6:
+            case 7:
                 clrscr();
                 viewListOfClasses();
                 dialogPause();
                 break;
-            case 7:
+            case 8:
                 clrscr();
                 viewListOfStudentsInClass();
                 dialogPause();
                 break;
-            case 8:
+            case 9:
                 clrscr();
                 viewListOfStudentsInCourse();
                 dialogPause();
                 break;
-            case 9:
+            case 10:
                 clrscr();
                 cout << "Enter course ID: ";
                 getline (cin,word);
@@ -125,7 +130,7 @@ void staff_menu(staff*& user, date& today) {
                 cout<<"updated."<<endl;
                 dialogPause();
                 break;
-            case 10:
+            case 11:
                 clrscr();
                 {
                     stat=getStatus();
@@ -138,7 +143,7 @@ void staff_menu(staff*& user, date& today) {
                 }
                 dialogPause();
                 break;
-            case 11:
+            case 12:
                 clrscr();
                 {
                     cout<<"Enter course ID: ";
@@ -147,7 +152,7 @@ void staff_menu(staff*& user, date& today) {
                 }
                 dialogPause();
                 break;
-            case 12:
+            case 13:
                 clrscr();
                 {
                     status stat=getStatus();
@@ -159,7 +164,7 @@ void staff_menu(staff*& user, date& today) {
                 }
                 dialogPause();
                 break;
-            case 13:
+            case 14:
                 clrscr();
                 {
                     stat=getStatus();
@@ -169,7 +174,7 @@ void staff_menu(staff*& user, date& today) {
                 }
                 dialogPause();
                 break;
-            case 14:
+            case 15:
                 clrscr();
                 {
                     cout<<"Enter class name: ";
@@ -178,7 +183,7 @@ void staff_menu(staff*& user, date& today) {
                 }
                 dialogPause();
                 break;
-            case 15:
+            case 16:
                 clrscr();
                 {
                     cout<<"Enter course ID: ";
@@ -507,7 +512,7 @@ void portal() {
     if (acc->type == 0) {
         staff* user = loadProfileStaff(acc);
         if (!user) return;
-        staff_menu(user, today);
+        staff_menu(user, today, acc_db, acc);
         delete user;
     }
     else {
@@ -516,8 +521,4 @@ void portal() {
         student_menu(user, today);
         delete user;
     }
-}
-
-void resetPassword(account* user, const string& new_password) {
-
 }

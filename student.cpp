@@ -30,6 +30,7 @@ void importUniclass() {
             fout.close();
         }
         fin.close();
+        cout << "File \"import/classes.csv\" imported";
     }
     else {
         cout << "ERROR: \"import/classes.csv\" does not exist";
@@ -46,9 +47,16 @@ void importStudent() {
             stringstream ss(line);
             getline(ss, class_name, ';');
             getline(ss, student_id, ';');
-            ofstream fout("/data/People/Students/" + class_name + "/" + student_id + ".csv");
+            ofstream fout;
+            string student_path = "data/People/Students/" + class_name + "/" + student_id + ".csv";
+            fout.open(student_path);
             fout << line;
+            fout.close();
+            fout.open("data/userdb.csv", ios::app);
+            fout << "\n" << student_id << ";" << student_id << ";" << "1;" << student_path;
+            fout.close();
         }
+        cout << "File \"import/students.csv\" imported";
     }
     else {
         cout << "ERROR: \"import/students.csv\" does not exist";

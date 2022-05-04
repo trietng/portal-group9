@@ -143,3 +143,45 @@ void display(cqueue<account>& db) {
         cout << "\n";
     }
 }
+
+void dialogResetPassword(cqueue<account>& db, account* user) {
+    string old_password, new_password;
+    int attempt = 0;
+    do {
+        cout << "Re-enter your current password: ";
+        getline(cin, old_password);
+        ++attempt;
+        if (user->password != old_password) {
+            cout << "Wrong password. You have " << 3 - attempt << " more tries left.\n";
+        }
+        if (attempt == 3) {
+            thread_sleep(2500);
+            return;
+        }
+    } while (user->password != old_password);
+    int check;
+    do {
+        cout << "Enter new password: ";
+        getline(cin, new_password);
+        check = is_password(new_password);
+        if (check == 0) {
+            cout << "Invalid password. Password cannot contain '\\', ';' or ' '.\n";
+            continue;
+        }
+        else if (check == -1) {
+            cout << "Invalid password. Password's length must in the range of 1-64.\n";
+            continue;
+        }
+    } while (check != 1);
+    user->password = new_password;
+    cout << "Password is successfully changed.";
+    updateUserDB(db);
+}
+
+void updateUserDB(cqueue<account>& db) {
+    ofstream fout("data/userdb.csv");
+    for (auto i = db.begin(); i != db.end(); ++i) {
+        fout << (*i).username << ";" << (*i).password << ";" << (*i).type << ";" << (*i).profile_path << "\n";
+    }
+    fout << (*db.end()).username << ";" << (*db.end()).password << ";" << (*db.end()).type << ";" << (*db.end()).profile_path;
+}

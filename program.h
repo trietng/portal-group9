@@ -12,7 +12,7 @@ int dialogYesNo(const char& input);
 void dialogPause();
 void printSeperator();
 void import_menu();
-void staff_menu(staff*& user, date& today);
+void staff_menu(staff* user, date& today, cqueue<account>& acc_db, account* acc);
 void student_menu(student*& user, date& today);
 void enroll_course_menu(student*& user,int& back_to_menu,status& stt);
 void see_enrolled_course_menu(student*& user,int& back_to_menu,status& stt);
